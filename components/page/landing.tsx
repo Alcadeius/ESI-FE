@@ -10,11 +10,11 @@ export default function landing() {
       style={{
         width: '30%',
         height: 'auto',
-        maxWidth:'100px',
-        minWidth: '80px',
+        maxWidth:'50px',
+        minWidth: '40px',
       }}/>
       <div className='hidden lg:grid grid-cols-subgrid col-span-4'>
-      <button className="text-white text-sm px-4 py-2 rounded-full lg:bg-transparent underline underline-offset-8  decoration-white/30 col-start-4 lg:font-bold lg:text-lg">Masuk/Daftar</button>
+      <a href='/login' className="text-white text-sm px-4 py-2 rounded-full lg:bg-transparent underline underline-offset-8  decoration-white/30 col-start-4 lg:font-bold lg:text-lg">Masuk/Daftar</a>
       </div>
         <button><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" className="size-6 lg:hidden">
   <path fillRule="evenodd" d="M3 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 5.25Zm0 4.5A.75.75 0 0 1 3.75 9h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 9.75Zm0 4.5a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Zm0 4.5a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
@@ -23,12 +23,12 @@ export default function landing() {
       </header>
       <div className="flex justify-between items-center px-4 bg-white lg:hidden">
         <a href="#" className="text-black text-sm uppercase">Belum Punya Akun Esi Denpasar?</a>
-        <button className="text-white text-sm px-4 py-2 rounded-full bg-[#FF0000]">Masuk/Daftar</button>
+        <a href='/login' className="text-white text-sm px-4 py-2 rounded-full bg-[#FF0000]">Masuk/Daftar</a>
       </div>
       {/* Hero Section */}
       <section className="py-10 px-4 flex flex-col bg-white lg:bg-transparent lg:px-32 lg:my-14">
         <h4 className="text-white bg-[#FF0000] w-fit text-sm mb-5 lg:font-bold lg:text-lg">ESPORT DENPASAR</h4>
-        <h2 className="text-xl font-bold text-[#FF0000] lg:text-white lg:text-2xl">ESPORTS DENPASAR <br /> TANTANGAN DAN KEMENANGAN</h2>
+        <h2 className="text-lg font-bold text-[#FF0000] lg:text-white lg:text-2xl">ESPORTS DENPASAR :<br /> TANTANGAN DAN KEMENANGAN</h2>
       </section>
       <section className="hidden lg:grid grid-cols-1 relative z-50 gap-9 content-center items-center text-center">
       <h1 className='font-bold text-2xl'>Berita</h1>

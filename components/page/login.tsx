@@ -8,10 +8,10 @@ export default function Login() {
   const [password, setPassword] = useState('');
 
   return (
-      <div className='bg-black overflow-hidden h-screen my-auto text-white'>
+      <div className='bg-black lg:overflow-hidden h-screen my-auto text-white'>
     {/* Header */}
           <header className="flex justify-between items-center px-4 py-2 h-32">
-            <Image src="/images/logo.png" alt='logo' width={100} height={100} sizes="100vw" className='order-last'
+            <Image src="/images/logo.png" alt='logo' width={100} height={100} sizes="100vw" className='lg:order-last'
           style={{
               width: '10%',
               height: 'auto',
@@ -23,11 +23,11 @@ export default function Login() {
     </button>
     </header>
     {/* Hero */}
-    <section className="flex px-5 my-1 lg:px-0 flex-col lg:grid lg:gap-3 lg:grid-cols-12 2xl:items-start 2xl:content-start sm:text-center bg-[url('/images/logo(1).png')] bg-contain sm:max-h-[90vh] bg-no-repeat bg-center h-[50vh] sm:h-[70vh] lg:bg-none">
-      <div className='col-span-4 lg:px-5 h-screen 2xl:my-[20vh]'>
+    <section className="flex px-5 my-1 lg:px-0 flex-col h-[50vh] min-h-[80vh] lg:grid lg:gap-3 lg:grid-cols-12 2xl:items-start 2xl:content-start sm:text-center bg-[url('/images/logo(1).png')] bg-contain sm:max-h-[90vh] bg-no-repeat bg-center  sm:h-[70vh] lg:bg-none">
+      <div className='col-span-4 lg:px-5 2xl:my-[20vh] my-auto'>
         <h1 className='uppercase text-3xl 2xl:text-5xl font-bold my-2'>Halo,<br /> Nak Kodya!</h1>
         <h4 className='uppercase text-xs 2xl:text-xl font-semibold '>selamat datang para aTlet dan komunitas! selesaikan login atau registrasi terlebih dahulu!</h4>
-    <form className="max-w-lg 2xl:max-w-xl  w-full sm:mx-auto my-5 col-span-2">
+    <form className="max-w-lg 2xl:max-w-xl w-full sm:mx-auto my-5 col-span-2">
       <div className="relative my-5">
         <div className="absolute inset-y-0 start-0 flex items-center ps-1.5 pointer-events-none">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray" className="size-6">

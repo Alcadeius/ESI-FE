@@ -40,7 +40,7 @@ export default function Register() {
     </button>
     </header>
     {/* Hero */}
-    <section className="flex px-5 my-1 lg:my-[15vh] lg:px-0 flex-col h-[50vh] min-h-[80vh] lg:grid lg:gap-3 lg:grid-cols-12 2xl:items-start 2xl:content-start sm:text-center bg-[url('/images/logo(1).png')] bg-contain sm:max-h-[90vh] bg-no-repeat bg-center  sm:h-[70vh] lg:bg-none">
+    <section className="flex px-5 my-1 lg:my-[15vh] lg:px-0 flex-col h-[50vh] min-h-[80vh] lg:grid lg:gap-3 lg:grid-cols-12 2xl:items-start 2xl:content-start sm:text-center bg-[url('/images/DSCF4041-3.png')] sm:bg-cover bg-contain sm:max-h-[90vh] bg-no-repeat bg-center  sm:h-[70vh] lg:bg-none">
       <div className='col-span-4 lg:px-5 2xl:my-[20vh] my-auto'>
         <h1 className='uppercase text-3xl 2xl:text-5xl font-bold my-2'>Halo,<br /> Nak Kodya!</h1>
         <h4 className='uppercase text-xs 2xl:text-xl font-semibold '>selamat datang para aTlet dan komunitas! selesaikan login atau registrasi terlebih dahulu!</h4>

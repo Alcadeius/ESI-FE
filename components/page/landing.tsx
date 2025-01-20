@@ -1,134 +1,28 @@
-import Image from 'next/image';
+import Logo from "../logo";
+import { Button } from "../ui/button";
 
 export default function landing() {
   return (
-    <div className="bg-black lg:bg-transparent text-white">
-      <div className="bg-cover h-auto bg-none lg:h-[120vh] xl:h-[190vh] bg-no-repeat bg-center lg:bg-[url('/images/DSCF4041-2.png')]">
-      {/* Header */}
-      <header className="flex justify-between items-center px-4 py-2 bg-white lg:bg-transparent lg:grid lg:grid-cols-5 h-32">
-        <Image src="/images/logo.png" alt='logo' width={10} height={10} sizes="100vw"
-      style={{
-        width: '30%',
-        height: 'auto',
-        maxWidth:'50px',
-        minWidth: '40px',
-      }}/>
-      <div className='hidden lg:grid grid-cols-subgrid col-span-4'>
-      <a href='/login' className="text-white text-sm px-4 py-2 rounded-full lg:bg-transparent underline underline-offset-8  decoration-white/30 col-start-4 lg:font-bold lg:text-lg">Masuk/Daftar</a>
-      </div>
-        <button><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" className="size-6 lg:hidden">
-  <path fillRule="evenodd" d="M3 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 5.25Zm0 4.5A.75.75 0 0 1 3.75 9h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 9.75Zm0 4.5a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Zm0 4.5a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
-</svg>
-</button>
-      </header>
-      <div className="flex justify-between items-center px-4 bg-white lg:hidden">
-        <a href="#" className="text-black text-sm uppercase">Belum Punya Akun Esi Denpasar?</a>
-        <a href='/login' className="text-white text-sm px-4 py-2 rounded-full bg-[#FF0000]">Masuk/Daftar</a>
-      </div>
-      {/* Hero Section */}
-      <section className="py-10 px-4 flex flex-col bg-white lg:bg-transparent lg:px-32 lg:my-14">
-        <h4 className="text-white bg-[#FF0000] w-fit text-sm mb-5 lg:font-bold lg:text-lg">ESPORT DENPASAR</h4>
-        <h2 className="text-lg font-bold text-[#FF0000] lg:text-white lg:text-2xl">ESPORTS DENPASAR :<br /> TANTANGAN DAN KEMENANGAN</h2>
-      </section>
-      <section className="hidden lg:grid grid-cols-1 relative z-50 gap-9 content-center items-center text-center">
-      <h1 className='font-bold text-2xl'>Berita</h1>
-      <div className='bg-[#D9D9D9] mx-24 py-28 lg:h-[40vh] xl:h-[60vh] rounded-xl'>
-      
-      </div>
-      </section>
-      <div className='hidden lg:inline-block bg-[#4D41B3]/70 z-10 relative w-full lg:h-[49vh] lg:-top-[35%] xl:h-[80vh] blur-3xl '></div>
-      </div>
-        <section className="flex flex-col text-center items-center h-[30vh] md:h-[40vh] bg-contain bg-no-repeat bg-center bg-[url('/images/DSCF4041-1.png')] lg:hidden">
-            <Image src="/images/logo.png" alt='logo' width={70} height={70} className='py-5 md:my-7' />
-          <h1 className="font-semibold">EVENT ESI DENPASAR</h1>
-        <p className=" text-white/80 text-xs sm:text-sm px-4 py-4">Sebagai platform bagi siswa/komunitas/atlet untuk mengembangkan hobi, bakat, dan minat mereka di bidang esports melalui kegiatan ekstrakurikuler.</p>
-        </section>
-      {/* Gallery */}
-      <section className="px-16 py-8 grid grid-cols-4 sm:grid-cols-6  lg:grid-cols-3 gap-4 content-center lg:hidden">
-        <div className='col-span-2 sm:col-span-3'>
-        <Image src="/images/DSC09344-1.png" alt="Event 1" width={300} height={200} className="rounded w-full h-auto object-cover" />
-
+    <div className="bg-[url('/images/backdrop_esi.png')] w-screen h-screen bg-cover bg-center flex items-center">
+      <div className="p-4 md:p-10 bg-black bg-opacity-50 w-full h-full flex items-center justify-center">
+        <div className="w-full h-full md:flex flex-col md:justify-between relative grid grid-row-2">
+          <header className="flex items-end pb-4 md:pb-0 md:items-center md:justify-between justify-center">
+            <Logo className="md:h-fit md:w-fit h-32 w-32"/>
+            <Button variant={"destructive"} className="text-2xl px-16 py-6 hidden md:flex">Login</Button>
+          </header>
+          <div className="space-y-4 pb-14">
+            <div className="bg-destructive text-white px-8 py-2 rounded-sm w-fit md:m-0 mx-auto font-bold">ESPORT DENPASAR</div>
+            <h1 id="title" className="text-3xl md:text-5xl font-bold text-white uppercase">eSports Denpasar: <br /> Tantangan dan Kemenangan</h1>
+            <p className="text-white md:text-lg md:w-1/2 ps-1">
+              Platform bagi siswa,komunitas,atlet untuk mengembangkan hobi, bakat, dan minat mereka di bidang Esports melalui kegiatan ekstrakurikuler.
+            </p>
+            <a href="#" className="text-white text-lg flex items-center gap-2 ps-1 underline">Informasi lebih lanjut</a>
+          </div>
+          <footer className="absolute bottom-0 right-0 left-0 md:left-1 text-center text-white">
+            2025 @ GAR Developers Team
+          </footer>
         </div>
-        <div className='col-span-2 sm:col-span-3'>
-        <Image src="/images/DSC09242-1.png" alt="Event 2" width={300} height={200} className="rounded w-full h-auto object-cover" />
-
-        </div>
-        <div className='col-span-1 sm:col-span-2'>
-
-        <Image src="/images/DSC09241-1.png" alt="Event 3" width={600} height={400} className="rounded w-full h-auto object-cover " />
-        </div>
-        <div className="content-center col-span-3 sm:col-span-4">
-        <Image src="/images/DSC05243-1.png" alt="Event 4" width={300} height={200} className="rounded w-full h-auto object-fill " />
-        </div>
-      </section>
-      <section className='grid grid-cols-3 px-14 sm:my-7 content-center lg:hidden'>
-      <div>
-      <Image src="/images/ml.png" alt='ml' width={50} height={50} className="w-full h-auto object-cover "/>
-
       </div>
-      <div>
-      <Image src="/images/pubg.png" alt='pubg' width={100} height={100} className="w-full h-auto object-cover "/>
-
-      </div>
-      <div>
-      <Image src="/images/ff.png" alt='ff' width={100} height={100} className="w-full h-auto object-cover "/>
-
-      </div>
-      </section>
-      
-      <section className='text-center justify-center text-sm flex my-[20%] lg:hidden'>
-        <div className=' bg-[#FF0000] rounded-sm flex p-1'>
-        <a href='#' className='uppercase rounded-md sm:text-base '>Lihat Recap Event Lainnya</a>
-        <span className='mx-1'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
-  <path fillRule="evenodd" d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
-</svg>
-</span>
-        </div>
-        
-      </section>
-      <div className='text-white text-center my-[10%] lg:hidden'>
-        <a href='#' className='bg-[#FF0000] inline p-1 sm:text-base'>More Info</a>
-      </div>
-      {/* Event Rekap */}
-      <h1 className='uppercase hidden lg:flex justify-center font-bold text-xl py-3 text-black'>Recap Event</h1>
-      <section className='bg-white hidden lg:grid grid-cols-2 gap-5 mb-16'>
-      <div className='px-7 py-16'>
-      <Image src="/images/DSCF4386-1.png" alt='' width={500} height={500}/>
-      </div>
-      <div className='grid grid-cols-1 text-black  items-center content-center text-center'>
-      <Image src="/images/logo.png" alt='logo' width={10} height={10} sizes="100vw" className='mx-auto'
-        style={{
-        width: '30%',
-        height: 'auto',
-      }}/>
-      <p className='font-bold text-xl'>Recap Event Esi Denpasar</p>
-      <p className='text-sm xl:text-base'>Sebagai platform bagi siswa,komunitas,atlet untuk mengembangkan hobi, bakat, dan minat mereka di bidang Esports melalui kegiatan ekstrakurikuler.</p>
-      <a href="#" className='bg-[#FF0000] text-white w-fit p-1 mx-auto my-3'>Dokumentasi Kegiatan</a>
-      </div>
-      </section>
-      {/* Achivement */}
-      <h1 className='hidden lg:flex uppercase font-bold text-xl justify-center py-3  bg-[#3A3737] text-white underline underline-offset-4'>Achievement</h1>
-      <section className='hidden lg:grid grid-cols-3 items-center content-center text-center bg-[#3A3737] '>
-      <div className='flex flex-col px-5 py-10 justify-center'>
-      <Image src="/images/DSCF3369-1.png" alt='' width={400} height={400}/>
-      <p className='text-white underline uppercase font-bold text-lg my-3 underline-offset-4'>Achievement</p>
-      <p className='text-white text-sm'>Sebagai platform bagi siswa,komunitas,atlet untuk mengembangkan hobi, bakat, dan minat mereka di bidang Esports melalui kegiatan ekstrakurikuler.</p>
-      </div>
-      <div className='flex flex-col px-5 py-10 justify-center'>
-      <Image src="/images/DSCF4142-1.png" alt='' width={400} height={400}/>
-      <p className='text-white underline uppercase font-bold text-lg my-3 underline-offset-4'>Achievement</p>
-      <p className='text-white text-sm'>Sebagai platform bagi siswa,komunitas,atlet untuk mengembangkan hobi, bakat, dan minat mereka di bidang Esports melalui kegiatan ekstrakurikuler.</p>
-      </div>
-      <div className='flex flex-col px-5 py-10 justify-center'>
-      <Image src="/images/DSCF4117-1.png" alt='' width={400} height={400}/>
-      <p className='text-white underline uppercase font-bold text-lg my-3 underline-offset-4'>Achievement</p>
-      <p className='text-white text-sm'>Sebagai platform bagi siswa,komunitas,atlet untuk mengembangkan hobi, bakat, dan minat mereka di bidang Esports melalui kegiatan ekstrakurikuler.</p>
-      </div>
-      </section>
-      {/* Footer */}
-      <footer className="text-center py-4 uppercase opacity-65 text-xs lg:hidden bg-black">
-        <p>2024&copy;Copyright GardevTeam</p>
-      </footer>
     </div>
   );
 }

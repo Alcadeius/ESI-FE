@@ -1,29 +1,29 @@
 "use client";
-import { useState } from 'react';
+// import { useState } from 'react';
 import Image from 'next/image';
 import { Checkbox } from "@/components/ui/checkbox"
 import Logo from "../logo";
 
 export default function Register() {
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-      });
+    // const [formData, setFormData] = useState({
+    //     username: '',
+    //     email: '',
+    //     password: '',
+    //     confirmPassword: '',
+    //   });
     
-      const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-          ...formData,
-          [name]: value,
-        });
-      };
+    //   const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setFormData({
+    //       ...formData,
+    //       [name]: value,
+    //     });
+    //   };
     
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Register Data:', formData);
-      };
+    //   const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     console.log('Register Data:', formData);
+    //   };
 
   return (
       <div className='bg-black h-[125vh]  lg:h-[100vh] xl:h-[100vh] lg:overflow-hidden text-white'>
@@ -38,7 +38,7 @@ export default function Register() {
     {/* Hero */}
     <section className="flex h-screen px-5 my-1 xl:h-screen lg:px-0 flex-col  min-h-[80vh] lg:grid lg:gap-3 lg:grid-cols-12 2xl:items-start 2xl:content-start sm:text-center bg-[url('/images/DSCF4041-3.png')] sm:bg-cover bg-contain sm:max-h-[90vh] xl:max-h-[80vh] 2xl:max-h-[85vh] bg-no-repeat bg-center  sm:h-[70vh] lg:bg-none">
       <div className='col-span-4 grid content-center items-center object-center place-items-center lg:h-screen xl:h-full 2xl:h-fit lg:col-span-5 xl:col-span-4 lg:mt-[-14vh] xl:mt-0 xl:my-0 lg:px-5 2xl:my-[20vh] my-auto'>
-    <form onSubmit={handleSubmit} className="max-w-lg 2xl:max-w-xl w-full sm:mx-auto my-5 lg:my-auto col-span-2">
+    <form className="max-w-lg 2xl:max-w-xl w-full sm:mx-auto my-5 lg:my-auto col-span-2">
         <h1 className='uppercase text-3xl lg:text-2xl 2xl:text-5xl font-bold my-2'>Halo,<br /> Nak Kodya!</h1>
         <h4 className='uppercase text-xs 2xl:text-xl font-semibold '>selamat datang para aTlet dan komunitas! selesaikan login atau registrasi terlebih dahulu!</h4>
       <div className="relative my-5">
@@ -48,8 +48,7 @@ export default function Register() {
     </svg>
     </div>
     <input type="text" id="email-address-icon" className="bg-white outline-none text-black text-sm rounded-lg 2xl:text-lg block w-full ps-10 2xl:ps-12 p-2.5 lg:ps-10 lg:p-1.5 xl:p-2.5 xl:ps-10 2xl:p-5" placeholder="USERNAME"
-    value={formData.username}
-    onChange={handleChange}
+    
     />
   </div>
   <div className="relative my-5">
@@ -60,8 +59,7 @@ export default function Register() {
 </svg>
     </div>
     <input type="text" id="email-address-icon" className="bg-white outline-none text-black text-sm rounded-lg 2xl:text-lg block w-full ps-10 2xl:ps-12 p-2.5 2xl:p-5 lg:ps-10 lg:p-1.5 xl:p-2.5 xl:ps-10" placeholder="EMAIL"
-    value={formData.email}
-    onChange={handleChange}
+   
     />
   </div>
   <div className="relative my-5">
@@ -71,8 +69,7 @@ export default function Register() {
 </svg>
     </div>
     <input type="password" id="email-address-icon" className="bg-white outline-none text-black text-sm rounded-lg 2xl:text-lg block w-full ps-10 2xl:ps-12 p-2.5 2xl:p-5 lg:ps-10 lg:p-1.5 xl:p-2.5 xl:ps-10" placeholder="PASSWORD"
-    value={formData.password}
-    onChange={handleChange} />
+     />
   </div>
   <div className="relative">
     <div className="absolute inset-y-0 start-0 flex items-center ps-1.5 pointer-events-none">
@@ -81,8 +78,7 @@ export default function Register() {
 </svg>
     </div>
     <input type="password" id="email-address-icon" className="bg-white outline-none text-black text-sm rounded-lg 2xl:text-lg block w-full ps-10 2xl:ps-12 p-2.5 2xl:p-5 lg:ps-10 lg:p-1.5 xl:p-2.5 xl:ps-10" placeholder="RE-PASSWORD"
-    value={formData.password}
-    onChange={handleChange} />
+     />
   </div>
     <div className='flex justify-between py-5'>
       <div className='flex'>

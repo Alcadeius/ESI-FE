@@ -5,8 +5,51 @@ import Image from 'next/image';
 import Logo from "../logo";
 import { Input } from "@/components/ui/input"
 import DragAndDropInput from "@/components/dragdrop";
+import { useState } from "react";
+import axios from "axios";
 
 export default function Event() {
+  const [formData, setFormData] = useState({
+    event_name: "",
+    event_date: "",
+    organizer_name: "",
+    total_prizepool: "",
+    application_file: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "application_file") {
+      setFormData((prev) => ({ ...prev, [name]: files[0] }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const form = new FormData();
+    form.append("event_name", formData.event_name);
+    form.append("event_date", formData.event_date);
+    form.append("organizer_name", formData.organizer_name);
+    form.append("total_prizepool", formData.total_prizepool);
+    form.append("application_file", formData.application_file);
+  
+    try {
+      // Menggunakan URL /api/v1/application karena rewrites sudah mengarahkan ke URL yang sesuai
+      const response = await axios.post('/api/v1/application', form, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+  
+
   return (
       <div className='bg-black h-[126vh]  lg:h-[100vh] xl:h-[100vh] lg:overflow-hidden text-white'>
     {/* Header */}
@@ -20,7 +63,7 @@ export default function Event() {
     {/* Hero */}
     <section className="flex h-screen px-5 my-1 xl:h-screen lg:px-0 flex-col min-h-[80vh] lg:grid lg:grid-cols-12 2xl:items-start sm:text-center bg-[url('/images/DSCF4041-3.png')] bg-cover sm:max-h-[90vh] xl:max-h-[80vh] 2xl:max-h-[85vh] bg-no-repeat bg-left sm:h-[70vh] lg:bg-none">
       <div className='col-span-6 2xl:grid 2xl:content-center xl:col-span-5 w-fit xl:w-full mx-auto h-screen lg:px-5 my-auto'>
-    <form className="max-w-lg xl:px-3 2xl:px-6 xl:max-w-xl 2xl:max-w-4xl w-screen lg:grid lg:justify-items-start grid-cols-1 sm:mx-auto my-5 lg:my-auto col-span-2">
+    <form method='POST' onSubmit={handleSubmit} className="max-w-lg xl:px-3 2xl:px-6 xl:max-w-xl 2xl:max-w-4xl w-screen lg:grid lg:justify-items-start grid-cols-1 sm:mx-auto my-5 lg:my-auto col-span-2">
         <h1 className='uppercase text-2xl lg:text-base 2xl:text-5xl font-bold 2xl:text-center my-2 2xl:my-10'>FORMULIR PENGAJUAN EVENT E-SPORT</h1>
         <h4 className='uppercase text-xs 2xl:text-xl font-semibold lg:hidden '>Formulir Pengajuan Event eSports: Bawa Kompetisi Anda ke Level Berikutnya!</h4>
       <div className='lg:grid lg:grid-cols-2 2xl:gap-5 w-full'>
@@ -31,6 +74,8 @@ export default function Event() {
     </svg>
     </div> */}
     <input type="text" id="email-address-icon" className="bg-white outline-none text-black text-sm rounded-md lg:rounded-sm 2xl:text-lg block w-full  p-2.5 xl:p-2.5  2xl:p-5" placeholder="Nama Event"
+    onChange={handleChange}
+    name='event_name'
     />
   </div>
   <div className="relative my-5 lg:my-0">
@@ -41,6 +86,8 @@ export default function Event() {
 </svg>
     </div> */}
     <input type="text" id="email-address-icon" className="bg-white outline-none text-black text-sm rounded-md 2xl:text-lg block w-full lg:ml-2 p-2.5  xl:p-2.5  2xl:p-5" placeholder="Nama Penyelenggara"
+    onChange={handleChange}
+    name='organizer_name'
     />
   </div>
   <div className="relative my-5 lg:my-3">
@@ -50,6 +97,8 @@ export default function Event() {
 </svg>
     </div> */}
     <input type="date" id="email-address-icon" className="bg-white outline-none text-black text-sm rounded-md 2xl:text-lg block w-full  p-2.5  xl:p-2.5  2xl:p-5" placeholder="Tanggal Event"
+    onChange={handleChange}
+    name="event_date"
     />
   </div>
   <div className="relative my-3">
@@ -59,17 +108,18 @@ export default function Event() {
 </svg>
     </div> */}
     <input type="text" id="email-address-icon" className="bg-white outline-none text-black  text-sm rounded-md 2xl:text-lg block w-full lg:ml-2  p-2.5  xl:p-2.5  2xl:p-5 uppercase" placeholder="Total PrizePool"
-     />
+    onChange={handleChange}
+    />
   </div>
   </div>
     <div className="grid w-fit items-center my-3 px-5 mx-auto gap-1.5 lg:hidden">
-      <Input id="picture" type="file" />
+      <Input id="picture" type="file" name='application_file' onChange={handleChange} />
     </div>
     <div className='hidden lg:flex w-full 2xl:my-4 2xl:max-w-full'>
     <DragAndDropInput />
     </div>
     <div className='bg-[#E8462D] text-center lg:my-2 xl:my-5 font-semibold 2xl:text-3xl my-5 mx-3 lg:mx-0 lg:rounded-sm lg:w-[40vh] p-2'>
-      <input type="submit" className='uppercase' value="Kirim Formulir" />
+      <input type="submit" className='uppercase cursor-pointer' value="Kirim Formulir" />
     </div>
 </form>
 </div>  

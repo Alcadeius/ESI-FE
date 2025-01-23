@@ -8,7 +8,7 @@ export default function landing() {
         <div className="w-full h-full md:flex flex-col md:justify-between relative grid grid-row-2">
           <header className="flex items-end pb-4 md:pb-0 md:items-center md:justify-between justify-center">
             <Logo className="md:h-fit md:w-fit h-32 w-32"/>
-            <Button variant={"destructive"} className="text-2xl px-16 py-6 hidden md:flex">Login</Button>
+            <Button variant={"destructive"} className="text-2xl px-16 py-6 hidden md:flex"><a href="/login">Login</a></Button>
           </header>
           <div className="space-y-4 pb-14">
             <div className="bg-destructive text-white px-8 py-2 rounded-sm w-fit md:m-0 mx-auto font-bold">ESPORT DENPASAR</div>

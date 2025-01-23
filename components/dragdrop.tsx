@@ -42,9 +42,20 @@ export default function DragAndDropInput() {
         onDrop={handleDrop}
       >
         {file ? (
-          <p className="text-center text-gray-700">
+          <div>
+          <p className="text-center text-gray-700 cursor-default">
             Selected File: <strong>{file.name}</strong>
           </p>
+          <p className="text-center text-gray-600">
+            Drag & drop your file here, or{" "}
+            <label
+              htmlFor="file-upload"
+              className="text-blue-500 underline cursor-pointer"
+              >
+              browse
+            </label>
+          </p>
+          </div>
         ) : (
 
         <div className="grid grid-cols-1 gap-3 items-center justify-items-center">
@@ -67,6 +78,7 @@ export default function DragAndDropInput() {
         <input
           id="file-upload"
           type="file"
+          name="application_file"
           className="hidden"
           onChange={handleFileChange}
         />

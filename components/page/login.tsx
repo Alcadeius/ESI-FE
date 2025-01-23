@@ -57,7 +57,7 @@ export default function Login() {
       </div>
     </div>
     <div className='bg-[#E8462D] text-center xl:my-5 font-extrabold 2xl:text-3xl my-5 mx-3 p-2'>
-      <input type="submit" value="Register" />
+      <input type="submit" value="Login" />
     </div>
     <div className='mx-3'>
       <p className='text-xs 2xl:text-lg font-light uppercase'>Belum Memiliki akun? <a href='/register' className='uppercase'>Klik Disini</a></p>

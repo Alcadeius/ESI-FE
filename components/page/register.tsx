@@ -47,8 +47,7 @@ export default function Register() {
       } else {
         setErrorMessage(response.data.message);
       }
-    } catch (e) {
-      
+    } catch (e) { 
       if (e.response && e.response.data && e.response.data.message) {
         setErrorMessage(e.response.data.message); 
       } else {
@@ -136,7 +135,7 @@ export default function Register() {
       </div>
     </div>
     <div className='bg-[#E8462D] text-center lg:my-1 xl:my-5 font-extrabold 2xl:text-3xl my-5 mx-3 p-2'>
-      <input type="submit" value="Register" />
+      <input type="submit" className='cursor-pointer' value="Register" />
     </div>
     <div className='mx-3'>
       <p className='text-xs 2xl:text-lg font-light uppercase'>Sudah Memiliki akun? <a href='/login' className='uppercase'>Klik Disini</a></p>

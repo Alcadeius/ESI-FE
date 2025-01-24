@@ -4,7 +4,7 @@ import Login from '@/components/page/login';
 
 export default function login() {
   return (
-    <main className="bg-black">
+    <main>
       <Login />
     </main>
   );

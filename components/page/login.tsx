@@ -10,11 +10,10 @@ export default function Login() {
   const [rememberToken, setRememberToken] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setErrorMessage(""); // Reset error message
+    setErrorMessage(""); 
 
     try {
       const response = await axios.post(
@@ -32,27 +31,26 @@ export default function Login() {
       );
 
       console.log("Login successful", response.data);
-
-      // Save token or handle successful login logic here
-    } catch (error) {
-      if (error.response) {
-        // Error from server (e.g., 400, 401, 500)
-        setErrorMessage(error.response.data.message || "Login failed");
-      } else if (error.request) {
-        // No response from server
+      const token = response.data.meta.token;
+      localStorage.setItem("authToken", token);
+      window.location.href = "/";
+      
+    } catch (err) {
+      if (err.response) {
+        setErrorMessage(err.response.data.message || "Login failed");
+      } else if (err.request) {
         setErrorMessage("No response from server. Please try again.");
       } else {
-        // Other errors
         setErrorMessage("An error occurred during login");
       }
-      console.error("Login error:", error);
+      console.error("Login error:", err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="h-screen w-screen bg-black text-white px-5 py-5 flex flex-col overflow-hidden lg:grid lg:grid-cols-12 lg:gap-3 bg-no-repeat bg-contain bg-center bg-[url('/images/logo(1).png')] lg:bg-none">
+    <div className="h-screen w-screen bg-black text-white px-5 py-5 lg:px-0 lg:py-0 flex flex-col overflow-hidden lg:grid lg:grid-cols-12 lg:gap-3 bg-no-repeat bg-contain bg-center bg-[url('/images/logo(1).png')] lg:bg-none">
       {/* Header */}
       <header className="flex justify-between h-fit lg:order-2 lg:col-span-8 lg:bg-[url('/images/DSCF4041-3.png')] lg:h-screen lg:bg-no-repeat lg:bg-cover">
         <div className="h-16 w-16 2xl:w-32 2xl:h-32 lg:order-1">
@@ -76,7 +74,7 @@ export default function Login() {
         </div>
       </header>
       {/* Main */}
-      <section className="h-screen lg:max-w-lg 2xl:max-w-full grid grid-cols-1 my-[-5vh] place-items-center lg:order-1 lg:col-span-4">
+      <section className="h-screen lg:max-w-lg 2xl:max-w-full grid grid-cols-1 my-[-5vh] lg:mx-3 lg:my-0 place-items-center lg:order-1 lg:col-span-4">
         <div className="sm:text-center">
           <h1 className="uppercase font-extrabold text-2xl 2xl:text-4xl">
             Halo, <br />

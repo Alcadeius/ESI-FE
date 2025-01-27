@@ -1,56 +1,56 @@
 "use client"
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 import Logo from "../logo";
 import { Button } from "../ui/button";
-import axios from "axios";
+// import axios from "axios";
 
 export default function Landing() {
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [userData, setUserData] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
 
-  // Mengambil data user berdasarkan token
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem("authToken");
-      if (!token) {
-        setError("Token tidak ditemukan, harap login terlebih dahulu.");
-        setLoading(false);
-        return;
-      }
+  // // Mengambil data user berdasarkan token
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     const token = localStorage.getItem("authToken");
+  //     if (!token) {
+  //       setError("Token tidak ditemukan, harap login terlebih dahulu.");
+  //       setLoading(false);
+  //       return;
+  //     }
 
-      try {
-        const response = await axios.get(
-          "https://esi.bagoesesport.com/api/v1/auth/user",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log("Server Response:", response);
-        if (response && response.data) {
-          setUserData(response.data);
-        } else {
-          setError("Data user tidak ditemukan.");
-        }
-      } catch (err) {
-        setError("Gagal mengambil data user.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //     try {
+  //       const response = await axios.get(
+  //         "https://esi.bagoesesport.com/api/v1/auth/user",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       console.log("Server Response:", response);
+  //       if (response && response.data) {
+  //         setUserData(response.data);
+  //       } else {
+  //         setError("Data user tidak ditemukan.");
+  //       }
+  //     } catch (err) {
+  //       setError("Gagal mengambil data user.");
+  //       console.error(err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchUserData();
-  }, []);
+  //   fetchUserData();
+  // }, []);
 
-  // Fungsi untuk logout
-  const handleLogout = () => {
-    localStorage.removeItem("authToken"); // Menghapus token dari localStorage
-    localStorage.removeItem("Data");
-    window.location.href = "/login"; // Redirect ke halaman login
-  };
+  // // Fungsi untuk logout
+  // const handleLogout = () => {
+  //   localStorage.removeItem("authToken"); // Menghapus token dari localStorage
+  //   localStorage.removeItem("Data");
+  //   window.location.href = "/login"; // Redirect ke halaman login
+  // };
 
   return (
     <div className="bg-[url('/images/backdrop_esi.png')] w-screen h-screen bg-cover bg-center flex items-center">
@@ -77,7 +77,7 @@ export default function Landing() {
             </a>
           </div>
 
-          {/* Menampilkan data user jika berhasil diambil */}
+          {/* Menampilkan data user jika berhasil diambil
           <div className="text-white text-center mt-10">
             {loading ? (
               <p>Loading user data...</p>
@@ -91,9 +91,9 @@ export default function Landing() {
                 </div>
               )
             )}
-          </div>
+          </div> */}
 
-          {/* Tombol Logout */}
+          {/* Tombol Logout
           {userData && (
             <div className="text-center mt-4">
               <button
@@ -103,7 +103,7 @@ export default function Landing() {
                 Logout
               </button>
             </div>
-          )}
+          )} */}
 
           <footer className="absolute bottom-0 right-0 left-0 md:left-1 text-center text-white">
             2025 @ GAR Developers Team

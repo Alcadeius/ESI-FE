@@ -33,7 +33,7 @@ export default function Login() {
       console.log("Login successful", response.data);
       const token = response.data.meta.token;
       localStorage.setItem("authToken", token);
-      window.location.href = "/";
+      window.location.href = "/main";
       
     } catch (err) {
       if (err.response) {

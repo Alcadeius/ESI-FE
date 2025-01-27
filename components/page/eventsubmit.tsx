@@ -37,7 +37,6 @@ export default function Event() {
     form.append("application_file", formData.application_file);
   
     try {
-      // Menggunakan URL /api/v1/application karena rewrites sudah mengarahkan ke URL yang sesuai
       const response = await axios.post('/api/v1/application', form, {
         headers: {
           'Content-Type': 'multipart/form-data',

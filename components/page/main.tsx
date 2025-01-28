@@ -6,6 +6,7 @@ import Slider from '../slider'
 import Games from '../games'
 import axios from "axios";
 import Pagin from '../ui/pagein'
+import Dropdown from '../dropdown'
 export default function main(){
     const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -46,16 +47,10 @@ const [error, setError] = useState<string | null>(null);
 
     fetchUserData();
   }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("authToken"); 
-    localStorage.removeItem("Data");
-    window.location.href = "/login"; 
-  };
     return(
         <div className="bg-[#111827] h-fit">
            {/* Header */}
-           <header className='flex w-full lg:px-10 lg:py-10 lg:grid lg:grid-cols-4 lg:shadow-none xl:text-4xl shadow-md shadow-gray-500/50 justify-between items-center content-center place-content-center lg:place-items-center px-3 py-5 text-white'>
+           <header className='flex w-full lg:px-10 lg:py-10 lg:grid lg:grid-cols-4 lg:shadow-none 2xl:text-4xl shadow-md shadow-gray-500/50 justify-between items-center content-center place-content-center lg:place-items-center px-3 py-5 text-white'>
             <div className='hidden lg:flex  place-content-start items-center col-span-3 w-full'>
             <div className="mx-3">
             <Logo className='h-10 w-10 md:h-20 md:w-20'/>
@@ -91,8 +86,8 @@ const [error, setError] = useState<string | null>(null);
                 </div>
               )
             )}
-            <div className="rounded-full p-3 bg-slate-400">
-                <p>AS</p>
+            <div className="rounded-full text-black">
+                <Dropdown/>
             </div>
             </div>
             <div>
@@ -115,11 +110,11 @@ const [error, setError] = useState<string | null>(null);
            </div>
            </section>
            {/* Hero */}
-           <div className="hidden lg:flex xl:text-4xl text-white px-5 my-3">
+           <div className="hidden lg:flex 2xl:text-4xl text-white px-5 my-3">
             <h1># Ayo Ikuti Keseruan Lainnya</h1>
             </div>
             <section className="bg-none lg:bg-[url('/images/DSCF4041-4.png')] lg:h-fit lg:bg-cover lg:bg-no-repeat">
-           <section className="text-white xl:text-4xl grid grid-cols-1 lg:grid-cols-3 place-content-center gap-4 lg:gap-7 px-5">
+           <section className="text-white 2xl:text-4xl grid grid-cols-1 lg:grid-cols-3 place-content-center gap-4 lg:gap-7 px-5">
             <div className="lg:hidden">
             <h1># Ayo Ikuti Keseruan Lainnya</h1>
             </div>
@@ -237,7 +232,7 @@ const [error, setError] = useState<string | null>(null);
             </div>
            {/* Games */}
            <section className='grid grid-cols-1 justify-items-center md:my-20 lg:my-12'>
-            <div className='bg-[#F9FAFB] text-[#DC2626] rounded-lg lg:my-24 my-10 p-4 text-2xl xl:text-4xl font-semibold w-1/2 h-fit text-center'>
+            <div className='bg-[#F9FAFB] text-[#DC2626] rounded-lg lg:my-24 my-10 p-4 text-2xl 2xl:text-4xl font-semibold w-1/2 h-fit text-center'>
                 <h1>#Games</h1>
             </div>
             <div className="lg:hidden">

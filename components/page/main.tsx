@@ -62,7 +62,7 @@ const [error, setError] = useState<string | null>(null);
             <a className=''>Papan Peringkat</a>
             </div>
             <div className="mx-3">
-            <a className=''>Keranjang</a>
+            <a href='/order' className=''>Keranjang</a>
             </div>
             <div className="mx-3">
             <a className=''>Bantuan</a>

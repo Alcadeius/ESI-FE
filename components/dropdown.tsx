@@ -35,7 +35,6 @@ import {
     const handleDelete = async () => {
         const token = localStorage.getItem("authToken");
         if (!token) {
-            setError("Token tidak ditemukan.");
             return;
         }
 
@@ -54,7 +53,6 @@ import {
             localStorage.removeItem("Data");
             window.location.href = "/login"; 
         } catch (err) {
-            setError("Gagal menghapus data user.");
             console.error(err);
         }
     };
@@ -74,7 +72,7 @@ import {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <CreditCard />
-              <a href="#">Keranjangku</a>
+              <a href="/order">Keranjangku</a>
               {/* <DropdownMenuShortcut>⌘B</DropdownMenuShortcut> */}
             </DropdownMenuItem>
           </DropdownMenuGroup>

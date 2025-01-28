@@ -8,6 +8,28 @@ body {
 html {
   background-color: #111827; 
 }
+/* Menentukan lebar scrollbar */
+::-webkit-scrollbar {
+  width: 2px; /* Lebar scrollbar, sesuaikan sesuai keinginan */
+  height: 2px; /* Lebar scrollbar untuk elemen horizontal, opsional */
+}
+
+/* Menentukan gaya track scrollbar */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Warna background track scrollbar */
+}
+
+/* Menentukan gaya thumb scrollbar (bagian yang dapat digeser) */
+::-webkit-scrollbar-thumb {
+  background: red; /* Warna merah tipis */
+  border-radius: 100000px; /* Membuat sudutnya sedikit melengkung */
+}
+
+/* Menentukan gaya thumb saat hover (ketika scrollbar disentuh) */
+::-webkit-scrollbar-thumb:hover {
+  background: darkred; /* Mengubah warna saat hover */
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

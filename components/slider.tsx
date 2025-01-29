@@ -50,7 +50,7 @@ export default function CarouselDemo() {
                     <h1 className="font-bold text-lg">Riot Esport Mobile</h1>
                     <p className="text-base">Esi Kota Denpasar</p>
                   </div>
-                  <div className="max-w-full w-full">
+                  <div className="hidden lg:flex max-w-full w-full">
                     <Image
                       alt=""
                       src="/images/image-2.png"

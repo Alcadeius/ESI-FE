@@ -51,7 +51,7 @@ const [error, setError] = useState<string | null>(null);
         <div className="bg-[#111827] h-fit">
            {/* Header */}
            <header className='flex w-full lg:px-10 lg:py-10 lg:grid lg:grid-cols-4 lg:shadow-none 2xl:text-4xl shadow-md shadow-gray-500/50 justify-between items-center content-center place-content-center lg:place-items-center px-3 py-5 text-white'>
-            <div className='hidden lg:flex  place-content-start items-center col-span-3 w-full'>
+            <div className='hidden lg:flex h-full place-content-start items-center col-span-3 w-full'>
             <div className="mx-3">
             <Logo className='h-10 w-10 md:h-20 md:w-20'/>
             </div>
@@ -90,8 +90,8 @@ const [error, setError] = useState<string | null>(null);
                 <Dropdown/>
             </div>
             </div>
-            <div>
-            <button><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="size-6 md:size-8 lg:hidden">
+            <div className="h-fit flex items-center">
+            <button><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="size-6 md:size-8 items-center my-auto align-middle lg:hidden">
             <path fillRule="evenodd" d="M3 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 5.25Zm0 4.5A.75.75 0 0 1 3.75 9h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 9.75Zm0 4.5a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Zm0 4.5a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
             </svg>
             </button>

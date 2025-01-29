@@ -51,7 +51,7 @@ const [error, setError] = useState<string | null>(null);
             <Logo className='h-10 w-10 md:h-20 md:w-20'/>
             </div>
             <div className="mx-3">
-            <a className='underline underline-offset-4 lg:no-underline'>Beranda</a>
+            <a href="/main" className='underline underline-offset-4 lg:no-underline'>Beranda</a>
             </div>
             <div className="mx-3">
             <a className=''>Papan Peringkat</a>

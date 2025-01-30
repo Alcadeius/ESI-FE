@@ -8,8 +8,7 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import Image from "next/image";
-import Autoplay from "embla-carousel-autoplay"
-import { useIsMobile } from '../admin-esi-denpasar/src/hooks/use-mobile'; 
+import Autoplay from "embla-carousel-autoplay" 
 
 const images = [
   '/images/Component-5.png',
@@ -20,8 +19,6 @@ const images = [
 ];
 
 export default function Gameslide() {
-  const isMobile = useIsMobile();
-
   return (
     <Carousel className="w-full max-w-full" 
     plugins={[
@@ -49,12 +46,9 @@ export default function Gameslide() {
           </CarouselItem>
         ))}
       </CarouselContent>
-      { !isMobile && ( 
-        <>
+      
           <CarouselPrevious className="hidden" />
           <CarouselNext className="hidden" />
-        </>
-      )}
     </Carousel>
   );
 }

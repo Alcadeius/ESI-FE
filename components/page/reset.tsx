@@ -1,7 +1,7 @@
-"use client";
-import { useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import axios from "axios";
+"use client"
+import { useState } from 'react';
+import { useRouter } from 'next/navigation'; 
+import axios from 'axios';
 import Logo from "../logo";
 import {
   Breadcrumb,
@@ -12,47 +12,57 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import AppSidebar from "../app-sidebar";
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberToken, setRememberToken] = useState(false);
+import AppSidebar from '../app-sidebar';
+export default function Reset() {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter();
+
+  
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
     setLoading(true);
-    setErrorMessage(""); 
+
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMessage('Password dan konfirmasi password tidak cocok.');
+      setLoading(false);
+      return;
+    }
 
     try {
-      const response = await axios.post(
-        "https://esi.bagoesesport.com/api/v1/login",
-        {
-          email,
-          password,
-          remember_token: rememberToken,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post("https://esi.bagoesesport.com/api/v1/reset-password", {
+        token: 'https://esi.bagoesesport.com/api/v1/reset-passwordtoken=fa89b7f38a5560078d68a1166f859bbd84c1d259d9629a67aa11eb54c1dfd99f&email=andresentanu3@gmail.com', 
+        email: formData.email,
+        password: formData.password, 
+        password_confirmation: formData.confirmPassword,
+      });
 
-      console.log("Login successful", response.data);
-      const token = response.data.meta.token;
-      localStorage.setItem("authToken", token);
-      window.location.href = "/main";
-      
-    } catch (err) {
-      if (err.response) {
-        setErrorMessage(err.response.data.message || "Login failed");
-      } else if (err.request) {
-        setErrorMessage("No response from server. Please try again.");
+      if (response.status === 200) {
+        router.push("/login");
       } else {
-        setErrorMessage("An error occurred during login");
+        setErrorMessage(response.data.message);
       }
-      console.error("Login error:", err);
+    } catch (e) {
+      if (e.response && e.response.data && e.response.data.message) {
+        setErrorMessage(e.response.data.message);
+      } else {
+        setErrorMessage('Terjadi kesalahan, coba lagi nanti!');
+      }
     } finally {
       setLoading(false);
     }
@@ -99,12 +109,10 @@ export default function Login() {
       <section className="h-screen lg:max-w-lg 2xl:max-w-full grid grid-cols-1 my-[-5vh] lg:mx-3 lg:my-0 place-items-center lg:order-1 lg:col-span-4">
         <div className="sm:text-center">
           <h1 className="uppercase font-extrabold text-2xl 2xl:text-4xl">
-            Halo, <br />
-            Nak Kodya!
+            Reset Password
           </h1>
           <p className="text-sm 2xl:text-xl 2xl:my-1">
-            Selamat datang para atlet dan komunitas! Selesaikan login atau
-            registrasi terlebih dahulu!
+            Silahkan Isi kembali Data Akun baru Anda
           </p>
           <form onSubmit={handleSubmit} className="sm:max-w-md 2xl:max-w-full mx-auto">
             <div className="relative my-5">
@@ -123,11 +131,12 @@ export default function Login() {
                 </svg>
               </div>
               <input
-                type="text"
+                type="email"
                 className="bg-white outline-none text-black text-sm rounded-lg 2xl:text-lg block w-full ps-10 2xl:ps-12 p-2.5 2xl:p-5"
-                placeholder="EMAIL OR USERNAME"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="EMAIL"
+                name='email'
+                value={formData.email}
+                onChange={handleChange}
               />
             </div>
             <div className="relative my-5">
@@ -146,47 +155,42 @@ export default function Login() {
                 type="password"
                 className="bg-white outline-none text-black text-sm rounded-lg 2xl:text-lg block w-full ps-10 2xl:ps-12 p-2.5 2xl:p-5 "
                 placeholder="PASSWORD"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name='password'
+                value={formData.password}
+                onChange={handleChange}
               />
             </div>
-            <div className="flex justify-between py-5">
-              <div className="flex">
-                <Checkbox
-                  checked={rememberToken}
-                  onCheckedChange={(checked) =>
-                    setRememberToken(checked === true)
-                  }
-                />
-                <span className="text-xs 2xl:text-xl mx-2">Remember Me</span>
-              </div>
-              <div className="flex">
-                <a
-                  href="/forgot"
-                  className="underline underline-offset-4 uppercase text-[0.6rem] sm:text-xs 2xl:text-lg"
+            <div className="relative my-5">
+              <div className="absolute inset-y-0 start-0 flex items-center ps-1.5 pointer-events-none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="gray"
+                  className="size-7"
                 >
-                  Forget Your Password?
-                </a>
+                  <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
+                  <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
+                </svg>
               </div>
+              <input
+                type="password"
+                className="bg-white outline-none text-black text-sm rounded-lg 2xl:text-lg block w-full ps-10 2xl:ps-12 p-2.5 2xl:p-5 "
+                placeholder="RE-PASSWORD"
+                name='confirmPassword'
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
             </div>
             <div className="bg-[#E8462D] text-center xl:my-5 font-extrabold 2xl:text-3xl my-5 mx-3 p-2">
               <input
                 type="submit"
-                value={loading ? "Logging in..." : "Login"}
+                value={loading ? "Resetting..." : "Reset"}
                 disabled={loading}
               />
             </div>
             {errorMessage && (
               <p className="text-red-500 text-xs text-center mt-2">{errorMessage}</p>
             )}
-            <div className="mx-3">
-              <p className="text-xs 2xl:text-lg font-light uppercase">
-                Belum Memiliki akun?{" "}
-                <a href="/register" className="uppercase">
-                  Klik Disini
-                </a>
-              </p>
-            </div>
           </form>
         </div>
       </section>

@@ -1,3 +1,4 @@
+"use client"
 import { useState } from "react";
 import Image from 'next/image';
 
@@ -30,7 +31,7 @@ export default function DragAndDropInput() {
   };
 
   return (
-    <div className="flex flex-col items-center h-32 my-10 w-full bg-transparent justify-center">
+    <div className="flex flex-col items-center relative z-20 h-32 my-10 w-full bg-transparent justify-center">
       <div
         className={`w-full max-w-md 2xl:max-w-full p-10 border-2 border-dashed rounded-lg transition-colors ${
           isDragging

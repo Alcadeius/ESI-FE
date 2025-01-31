@@ -29,6 +29,10 @@ const data = {
           title: "Landing Page",
           url: "/landing",
         },
+        {
+          title: "Event Submission",
+          url : "/event-submit",
+        },
       ],
     },
     {

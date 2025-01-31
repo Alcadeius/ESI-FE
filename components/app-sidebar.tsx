@@ -15,7 +15,6 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
-// This is sample data.
 const data = {
   navMain: [
     {
@@ -29,6 +28,20 @@ const data = {
         {
           title: "Landing Page",
           url: "/landing",
+        },
+      ],
+    },
+    {
+      title: "Account Page",
+      url: "#",
+      items: [
+        {
+          title: "Login",
+          url: "/login",
+        },
+        {
+          title: "Register",
+          url: "/register",
         },
       ],
     },
@@ -46,7 +59,7 @@ export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sid
               {data.navMain.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url} className="font-medium bg-transparent">
+                    <a href={item.url} className="font-medium">
                       {item.title}
                     </a>
                   </SidebarMenuButton>

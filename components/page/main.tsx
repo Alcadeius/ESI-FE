@@ -59,7 +59,7 @@ const [error, setError] = useState<string | null>(null);
             <a className='underline underline-offset-4 lg:no-underline'>Beranda</a>
             </div>
             <div className="mx-3">
-            <a className=''>Papan Peringkat</a>
+            <a href='/leaderboard' className=''>Papan Peringkat</a>
             </div>
             <div className="mx-3">
             <a href='/order' className=''>Keranjang</a>
@@ -274,7 +274,7 @@ const [error, setError] = useState<string | null>(null);
                                 <a href="/main" className="hover:underline">Beranda</a>
                             </li>
                             <li className="mb-4">
-                                <a href="" className="hover:underline">Papan Peringkat</a>
+                                <a href="/leaderboard" className="hover:underline">Papan Peringkat</a>
                             </li>
                             <li className="mb-4">
                                 <a href="" className="hover:underline">Riwayat Transaksi</a>

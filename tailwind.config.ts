@@ -59,7 +59,10 @@ const config: Config = {
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
-  			}
+  			},
+			boxShadow: {
+			'text': '3px 3px 10px rgba(255, 255, 255, 0.8)',
+			},
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

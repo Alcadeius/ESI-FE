@@ -23,7 +23,7 @@ export default function CarouselDemo() {
       opts={{
         loop: true, 
       }}
-      className="w-full max-w-72 md:max-w-80 lg:max-w-[80%] xl:max-w-[70%] lg:mx-10"
+      className="w-full max-w-72 md:max-w-80 lg:max-w-[80%] xl:max-w-[90%] lg:mx-5"
     >
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (

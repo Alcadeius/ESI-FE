@@ -27,7 +27,7 @@ export default function Landing() {
             <Logo className='h-10 w-10 md:h-20 md:w-20 lg:w-14 lg:h-14 2xl:w-32 2xl:h-32'/>
             </div>
             <div className="mx-3">
-            <a className='underline underline-offset-4 lg:no-underline'>Beranda</a>
+            <a href="/main" className='underline underline-offset-4 lg:no-underline'>Beranda</a>
             </div>
             <div className="mx-3">
             <a className=''>Papan Peringkat</a>

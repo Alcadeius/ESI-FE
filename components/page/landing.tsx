@@ -30,7 +30,7 @@ export default function Landing() {
             <a href="/main" className='underline underline-offset-4 lg:no-underline'>Beranda</a>
             </div>
             <div className="mx-3">
-            <a className=''>Papan Peringkat</a>
+            <a href="/leaderboard" className=''>Papan Peringkat</a>
             </div>
             <div className="mx-3">
             <a href='/order' className=''>Keranjang</a>

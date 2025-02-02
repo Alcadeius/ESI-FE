@@ -8,47 +8,49 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import Image from "next/image";
-import Autoplay from "embla-carousel-autoplay" 
+import Autoplay from "embla-carousel-autoplay"
 
-const images = [
-  '/images/Component-5.png',
-  '/images/Component-2.png',
-  '/images/Component-3.png',
-  '/images/Component-4.png',
-  '/images/Component-6.png'
-];
+interface GameProps {
+  name: string;
+  image: string;
+}
 
-export default function Gameslide() {
+export default function Gameslide({ games }: { games: GameProps[] }) {
   return (
-    <Carousel className="w-full max-w-full" 
-    plugins={[
-          Autoplay({
-            delay: 5000,
-          }),
-        ]}
-    opts={{
-      loop: true,
-    }}
+    <Carousel className="w-full max-w-full"
+      plugins={[
+        Autoplay({
+          delay: 2000,
+        }),
+      ]}
+      opts={{
+        loop: true,
+      }}
     >
       <CarouselContent>
-        {images.map((src, index) => (
+        {games.map((game, index) => (
           <CarouselItem key={index} className="flex justify-center">
-            <div className="p-0 w-full max-w-xs">
-              <Card className="bg-transparent border-none">
-                <CardContent className="flex justify-center aspect-auto overflow-visible p-0 m-0">
-                  <div className="max-w-60 relative z-20">
-                    <Image alt='' src={src} width={1000} height={1000} />
-                  </div>
-                  <p className="bg-[#DC2626] absolute h-48 w-full z-10 mt-[40vh] md:mt-[20vh]"></p>
-                </CardContent>
-              </Card>
+            <div className="relative w-[161px] h-[316px] overflow-hidden border-4 border-white transform skew-x-[-10deg]">
+              <div className="w-[14rem] h-full transform -translate-x-[2rem] skew-x-[10deg]">
+                <Image
+                  src={game.image}
+                  alt={game.name}
+                  layout="fill"
+                  objectFit="cover"
+                  className="absolute inset-0"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
+                  <h1 className="text-white text-xl font-bold uppercase text-center w-1/2">
+                    {game.name}
+                  </h1>
+                </div>
+              </div>
             </div>
           </CarouselItem>
         ))}
       </CarouselContent>
-      
-          <CarouselPrevious className="hidden" />
-          <CarouselNext className="hidden" />
+      <CarouselPrevious className="hidden" />
+      <CarouselNext className="hidden" />
     </Carousel>
   );
 }

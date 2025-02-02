@@ -1,12 +1,12 @@
 "use client";
 import Pagin from '../ui/pagein';
 import Image from "next/image";
-import NavigationBar from "../navbar";
+import NavigationBar from "../navigation-bar";
 
 export default function Leaderboard() {
     return (
         <div className="grid grid-cols-1 h-full bg-black">
-            <NavigationBar name={"leaderboard"}/>
+            <NavigationBar />
             <div className="hidden lg:flex h-screen justify-center before:absolute before:w-full before:bg-black/40 before:h-full before:content-['a'] bg-center bg-[url('/images/DSCF4041-2.png')] bg-cover bg-no-repeat">
                 <h1 className="[text-shadow:_0px_5px_16px_#838383] relative z-10 uppercase text-white my-auto font-extrabold text-center text-5xl 2xl:text-8xl">Hall Of Fame</h1>
             </div>

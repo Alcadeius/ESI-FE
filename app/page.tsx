@@ -4,8 +4,6 @@ import Landing from '@/components/page/landing';
 
 export default function Home() {
   return (
-    <main className="bg-black">
-      <Landing />
-    </main>
+    <Landing />
   );
 }

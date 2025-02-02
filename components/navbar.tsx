@@ -1,7 +1,6 @@
 "use client"
-
 import { useEffect, useState } from "react";
-import Logo from "./logo"
+import Logo from "./ui/logo-2"
 import Dropdown from './dropdown';
 import axios from "axios";
 
@@ -46,10 +45,10 @@ const NavigationBar = ({name}: {name: string}) => {
   }, []);
 
   return (
-    <header className='flex xl:px-16 xl:py-16 2xl:px-32 2xl:py-24 relative z-10 bg-black w-full lg:grid lg:grid-cols-4 lg:shadow-none 2xl:text-4xl shadow-md shadow-gray-500/50 justify-between items-center content-center place-content-center lg:place-items-center px-3 py-5 text-white'>
+    <header className='flex lg:px-[80px] lg:py-[56px] relative z-10 bg-black w-full lg:grid lg:grid-cols-4 lg:shadow-none shadow-md shadow-gray-500/50 justify-between items-center content-center place-content-center lg:place-items-center px-3 py-5 text-white'>
       <div className='hidden lg:flex h-full place-content-start items-center col-span-3 w-full'>
         <div className="mx-3">
-          <Logo className='h-10 w-10 md:h-20 md:w-20 lg:h-14 lg:w-14 2xl:w-24 2xl:h-24' />
+          <Logo className='h-10 w-10 md:h-20 md:w-20 lg:h-14 lg:w-14 ' />
         </div>
         <div className="mx-3">
           <a className='underline underline-offset-4 lg:no-underline'>Beranda</a>

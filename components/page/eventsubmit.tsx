@@ -1,10 +1,32 @@
 "use client";
 import { useState,useEffect } from 'react';
-import Logo from "../logo";
-import { useRouter } from 'next/navigation'; 
 import axios from 'axios';
+import NavigationBar from '../navbar';
+import { useRouter } from 'next/navigation';
 
-export default function Register() {
+export default function eventsubmit() {
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      setFile(droppedFile);
+    }
+  };
   const [formData, setFormData] = useState({
     event_name: '',
     event_date: '',
@@ -31,13 +53,6 @@ export default function Register() {
     });
   };
 
-  const handleFileChange = (e) => {
-    setFormData({
-      ...formData,
-      application_file: e.target.files[0],
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage(''); 
@@ -48,6 +63,9 @@ export default function Register() {
       Object.keys(formData).forEach((key) => {
         formDataToSend.append(key, formData[key]);
       });
+      if (file) {
+        formDataToSend.append('application_file', file);
+      }
 
       const response = await axios.post("https://esi.bagoesesport.com/api/v1/application", formDataToSend, {
         headers: {
@@ -71,111 +89,92 @@ export default function Register() {
         setLoading(false);
     }
   };
-
   return (
-    <div className="h-screen w-screen bg-black text-white px-5 py-5 lg:px-0 lg:py-0 flex flex-col overflow-hidden lg:grid lg:grid-cols-12 lg:gap-3 bg-no-repeat bg-cover bg-center bg-[url('/images/DSCF4041-4.png')] lg:bg-none">
-      {/* Header */}
-      <header className="flex justify-between h-fit lg:order-2 lg:col-span-6 lg:bg-[url('/images/DSCF4041-3.png')] lg:before:absolute lg:before:content-['*'] lg:before:bg-black lg:before:w-full lg:before:blur-3xl lg:before:opacity-55 lg:before:h-full lg:h-screen lg:bg-no-repeat lg:bg-cover">
-        <div className="h-16 w-16 2xl:w-32 2xl:h-32 lg:order-1">
-          <Logo />
-        </div>
-        <div className="h-auto my-auto">
-          <button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="white"
-              className="size-6 lg:hidden"
-            >
-              <path
-                fillRule="evenodd"
-                d="M3 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 5.25Zm0 4.5A.75.75 0 0 1 3.75 9h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 9.75Zm0 4.5a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Zm0 4.5a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-        </div>
-      </header>
-      {/* Main */}
-      <section className="h-screen lg:max-w-lg 2xl:max-w-full grid grid-cols-1 lg:grid-flow-col my-[-5vh] lg:mx-3 lg:my-0 place-items-center lg:order-1 lg:col-span-6">
-        <div className="sm:text-center">
-          <h1 className="uppercase font-extrabold text-lg 2xl:text-4xl">
-          FORMULIR PENGAJUAN EVENT E-SPORT
-          </h1>
-          <p className="text-sm 2xl:text-xl 2xl:my-1">
-          Formulir Pengajuan Event eSports: Bawa Kompetisi Anda ke Level Berikutnya!
-          </p>
-          <form onSubmit={handleSubmit} className="sm:max-w-md 2xl:max-w-full mx-auto">
-            <div className="relative my-5">
-              <div className="absolute inset-y-0 start-0 flex items-center ps-1.5 pointer-events-none">
-              </div>
-              <input
-                type="text"
-                className="bg-white outline-none text-black text-sm rounded-lg 2xl:text-lg block w-full 2xl:ps-12 p-2.5 2xl:p-5"
-                placeholder="Nama Event"
-                name='event_name'
-                value={formData.event_name}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="relative my-5">
-              <div className="absolute inset-y-0 start-0 flex items-center ps-1.5 pointer-events-none">
-              </div>
-              <input
-                type="text"
-                className="bg-white outline-none text-black text-sm rounded-lg 2xl:text-lg block w-full 2xl:ps-12 p-2.5 2xl:p-5"
-                placeholder="Nama Penyelenggara"
-                name='organizer_name'
-                value={formData.organizer_name}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="relative my-5">
-              <div className="absolute inset-y-0 start-0 flex items-center ps-1.5 pointer-events-none">
-              </div>
-              <input
-                type="date"
-                className="bg-white outline-none text-black text-sm rounded-lg 2xl:text-lg block w-full 2xl:ps-12 p-2.5 2xl:p-5 "
-                placeholder="Tanggal Event"
-                name='event_date'
-                value={formData.event_date}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="relative my-5">
-              <div className="absolute inset-y-0 start-0 flex items-center ps-1.5 pointer-events-none">
-              </div>
-              <input
-                type="text"
-                className="bg-white outline-none text-black text-sm rounded-lg 2xl:text-lg block w-full 2xl:ps-12 p-2.5 2xl:p-5 "
-                placeholder="Total Prizepool"
-                name='total_prizepool'
-                value={formData.total_prizepool}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="mx-3 md:mx-10">
-            <label className="block mb-2 text-sm font-medium text-gray-900 " htmlFor="file_input" />Upload file
-            <input className="block w-full text-sm text-white bg-black rounded-lg cursor-pointer" id="file_input" type="file" 
-            onChange={handleFileChange}/>
-            </div>
-            <div className="bg-[#E8462D] text-center xl:my-5 font-extrabold 2xl:text-3xl my-5 mx-3 p-2">
-              <input
-                type="submit"
-                value={loading ? "Submitting..." : "Submit"}
-                disabled={loading}
-              />
-            </div>
-            {errorMessage && (
+    <div className="bg-[url('/images/DSCF4041-3.png')] bg-center bg-cover h-full 2xl:h-screen before:top-0 before:left-0 w-full bg-no-repeat before:absolute before:z-0 before:content-['a'] before:h-full before:w-full before:bg-black/40">
+    <NavigationBar name='Event Submit'/>
+    <div className='px-3 md:px-14 md:py-10 lg:px-28 lg:max-w-4xl lg:mx-auto py-5 relative z-10'>
+    <div className='bg-[#F9FAFB] rounded-md'>
+    <div className='flex flex-col px-5 py-5 lg:justify-center'>
+    <div className='flex-col text-sm mb-5'>
+    <h1 className='text-[#3B82F6] uppercase lg:text-xl font-bold'>Form Pengajuan Event Organizer</h1>
+    <p className='text-xs'>Formulir Untuk melakukan pengajuan event</p>
+    </div>
+    <div className='lg:max-w-full'>
+    <form onSubmit={handleSubmit}>
+        <div className="grid gap-6 mb-6 md:grid-cols-2">
+        {errorMessage && (
               <p className="text-red-500 text-xs text-center mt-2">{errorMessage}</p>
             )}
-            
-          </form>
-        </div>
-      </section>
-      <footer className="hidden lg:inline order-last absolute left-1/2 translate-x-[-50%] 2xl:bottom-5 bottom-1 2xl:text-2xl uppercase">
-        <h1>2024@copyright gardevteam</h1>
-      </footer>
+            <div>
+                <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Event</label>
+                <input type="text" id="first_name" name='event_name' className="bg-gray-50 border outline-none text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="Nama Event" required 
+                value={formData.event_name}
+                onChange={handleChange}
+                />
+            </div>
+            <div>
+                <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Penyelenggara</label>
+                <input type="text" id="first_name" name='organizer_name' className="bg-gray-50 border outline-none  text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="Nama Penyelenggara" required 
+                value={formData.organizer_name}
+                onChange={handleChange}
+                />
+            </div>
+            <div>
+                <label  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Event</label>
+                <input type="date" name='event_date' className="bg-gray-50 border text-gray-900 outline-none text-sm rounded-lg block w-full p-2.5 "  
+                value={formData.event_date}
+                onChange={handleChange}
+                />
+            </div>  
+            <div>
+                <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Prizepool / Hadiah</label>
+                <input type="text" id="first_name" name='total_prizepool' className="bg-gray-50 border outline-none text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="Total Prizepool" required 
+                value={formData.total_prizepool}
+                onChange={handleChange}
+                />
+            </div>
+            <div className='lg:col-span-2'>
+            <label htmlFor="dropzone-file">Softcopy Dokumen Pengajauan</label>
+          <div
+            className="flex items-center justify-center w-full"
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+          >
+            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-600 border-dashed rounded-lg cursor-pointer bg-transparent">
+              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                <svg className="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                </svg>
+                <p className="mb-2 text-sm text-gray-500 2xl:text-2xl">
+                  <span className="font-semibold ">Click to upload</span> or drag and drop
+                </p>
+              </div>
+              <input
+                id="dropzone-file"
+                type="file"
+                className="hidden"
+                name='application_file'
+                value={formData.application_file}
+                onChange={handleFileChange}
+              />
+            </label>
+          </div>
+          <p className='text-gray-400 text-sm'>Salinan softcopy surat pengajuan dalam bentuk dokumen PDF</p>
+          </div>
+          {file && (
+            <div className="mt-2 text-sm text-gray-700">
+              File yang dipilih: {file.name}
+            </div>
+          )}
+          </div>
+          <div className='w-[25%] lg:float-right bg-[#ff0000] cursor-pointer p-2 text-white rounded-md text-center'>
+          <input type="submit" value="Submit"/>
+          </div>
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>
     </div>
   );
 }

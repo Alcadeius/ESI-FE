@@ -68,7 +68,8 @@ export default function Landing() {
       <p className="text-center">Selamat Datang</p>
     </div>
     <div className="hidden lg:col-span-6 xl:col-span-5 w-full lg:flex z-20 lg:w-full xl:h-screen justify-center relative flex-col mt-10 px-5">
-    <p className="text-center bg-[#FF0000] w-1/2 p-2   rounded-md mb-3">Selamat Datang</p>
+    <div className="flex flex-col justify-center text-2xl xl:h-full my-auto ">
+    <p className="text-center bg-[#FF0000] w-1/2 p-2  rounded-md mb-3">Selamat Datang</p>
     <div className="text-[#FF0000] text-4xl  font-bold">
     E-SPORT INDONESIA 
     </div>
@@ -80,6 +81,7 @@ export default function Landing() {
     </div>
     <div className="text-xs lg:text-sm xl:text-base">
       <p>ESI Kota Denpasar merupakan cabang organisasi resmi PBESI yang menaungi sumber daya manusia berbakat dalam kompetisi ajang e-sport dengan tujuan membantu mereka yang memiliki minat dan bakat untuk melanjutkan hobi yang dimiliki hingga ke tingkat yang lebih tinggi.</p>
+    </div>
     </div>
     </div>
     <div className="bg-[url('/images/DSCF4041-4.png')] relative z-10 float-right lg:col-span-6 xl:col-span-7  bg-cover bg-center bg-no-repeat h-full w-full">

@@ -29,6 +29,7 @@ const pageList = [
   },
   {
     name: 'Bantuan',
+    disabled: true
   }
 ]
 

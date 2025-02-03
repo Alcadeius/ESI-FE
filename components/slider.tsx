@@ -23,17 +23,19 @@ export default function CarouselDemo() {
       opts={{
         loop: true, 
       }}
-      className="w-full max-w-72 md:max-w-80 lg:max-w-[80%] xl:max-w-[90%] lg:mx-5"
+      className="w-full max-w-[21rem] md:max-w-80 lg:max-w-[80%] lg:mx-5"
     >
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (
           <CarouselItem key={index}>
             <div className="p-0">
               <Card className="border-none outline-none p-0 m-0">
-                <CardContent className="flex aspect-square lg:aspect-auto items-center flex-col justify-center w-full p-0 m-0">
-                  <div className="font-semibold w-full px-5 lg:hidden">
+                <CardContent className="flex items-center flex-col justify-center w-full p-0 m-0">
+                  <div className="font-medium -space-y-1 w-full px-5 pt-2 lg:hidden">
                     <p>
-                      Alaya Dharma Creative Center <br />
+                      Alaya Dharma Creative Center
+                    </p>
+                    <p className="font-semibold">
                       12 Oktober 2025
                     </p>
                   </div>
@@ -43,12 +45,12 @@ export default function CarouselDemo() {
                       src="/images/image-2.png"
                       width={1000}
                       height={1000}
-                      className="h-full w-auto"
+                      className="h-full w-full"
                     />
                   </div>
-                  <div className="uppercase w-full px-5 lg:hidden">
+                  <div className="w-full px-5 lg:hidden pb-3 -space-y-1">
                     <h1 className="font-bold text-lg">Riot Esport Mobile</h1>
-                    <p className="text-base">Esi Kota Denpasar</p>
+                    <p className="text-sm">Esi Kota Denpasar</p>
                   </div>
                   <div className="hidden lg:flex max-w-full w-full">
                     <Image

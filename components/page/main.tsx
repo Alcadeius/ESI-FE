@@ -129,18 +129,18 @@ export default function Main() {
   const bannerData = [
     {
       date: "12-17 Oktober",
-      name: "Pubg Tournament",
-      location: "Dharma Alaya Denpasar",
-      participants: 240,
-      banner: "/images/temp-banner/pubeg.jpg",
-      organizer: "Bagoes E-Sport"
-    },
-    {
-      date: "12-17 Oktober",
       name: "Free Fire Tournament",
       location: "Dharma Alaya Denpasar",
       participants: 240,
       banner: "/images/temp-banner/nyepnyep.png",
+      organizer: "Bagoes E-Sport"
+    },
+    {
+      date: "12-17 Oktober",
+      name: "Pubg Tournament",
+      location: "Dharma Alaya Denpasar",
+      participants: 160,
+      banner: "/images/temp-banner/pubeg.jpg",
       organizer: "Bagoes E-Sport"
     },
   ]
@@ -190,7 +190,7 @@ export default function Main() {
   }
 
   return (
-    <div className="bg-gray-900 pt-14 lg:pt-0">
+    <div className="bg-gray-900">
       <section className='lg:px-20 lg:pt-14'>
         {/* Header */}
         <NavigationBar />
@@ -247,10 +247,10 @@ export default function Main() {
 
       </section>
 
-      <section className="relative w-full mb-20 mt-20">
+      <section className="relative w-full mb-20 lg:mt-20">
         {/* Games */}
         <div className='grid grid-cols-1 justify-items-center'>
-          <div className='text-white bg-red-600 text-xl lg:text-2xl px-6 py-2 rounded-lg my-10 lg:my-5 font-bold h-fit text-center uppercase'>
+          <div className='text-white bg-red-600 text-xl lg:text-2xl lg:px-6 px-3 py-2 rounded-lg my-10 lg:my-5 font-bold h-fit text-center uppercase'>
             <h1># Trending E-SPORTS GAMES</h1>
           </div>
           <div className="lg:hidden z-20 overflow-hidden w-full">

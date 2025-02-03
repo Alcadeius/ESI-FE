@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 export default function Landing() {
 
   return (
-    <div className="text-white bg-gradient-to-b lg:px-20 lg:pt-14 bg-gray-900 h-screen px-4 flex items-center lg:block">
+    <div className="text-white bg-gradient-to-b lg:px-20 lg:pt-14 bg-gray-900 h-screen px-4 flex items-start lg:block">
 
       <div className={cn("bg-[url('/images/backdrop_1.png')]", "absolute lg:top-1/2 lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[707px] h-[471px] bg-contain z-0 bg-gray-900 bg-blend-lighten", "-top-20 right-0")}>
       </div>
@@ -14,7 +14,7 @@ export default function Landing() {
       <NavigationBar />
 
       {/* Content */}
-      <div className={cn("lg:absolute lg:top-1/2 lg:left-[5rem] lg:transform lg:-translate-y-1/2 z-10", "lg:w-1/2 lg:space-y-4 w-full", "relative pb-10 space-y-1")}>
+      <div className={cn("lg:absolute lg:top-1/2 lg:left-[5rem] lg:transform lg:-translate-y-1/2 z-10", "lg:w-1/2 lg:space-y-4 w-full", "relative pb-10 space-y-1 mt-7")}>
         <div className="lg:hidden w-full flex justify-center">
           <img src="/images/logo.png" alt="" width={150}/>
         </div>

@@ -14,78 +14,99 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
+import { ChevronRight, LayoutDashboard, User } from "lucide-react"
 
-const data = {
-  navMain: [
-    {
-      title: "Main Page",
-      url: "#",
-      items: [
-        {
-          title: "Beranda",
-          url: "/main",
-        },
-        {
-          title: "Landing Page",
-          url: "/landing",
-        },
-        {
-          title: "Event Submission",
-          url : "/event-submit",
-        },
-      ],
-    },
-    {
-      title: "Account Page",
-      url: "#",
-      items: [
-        {
-          title: "Login",
-          url: "/login",
-        },
-        {
-          title: "Register",
-          url: "/register",
-        },
-      ],
-    },
-  ]
-}
+const items = [
+  {
+    title: "Main Page",
+    url: "",
+    isActive: true,
+    icon: <LayoutDashboard/>,
+    items: [
+      {
+        title: "Beranda",
+        url: "/main",
+      },
+      {
+        title: "Landing Page",
+        url: "/",
+      },
+      {
+        title: "Event Submission",
+        url : "/event-submit",
+      },
+    ],
+  },
+  {
+    title: "Account Page",
+    url: "",
+    icon: <User/>,
+    isActive: true,
+    items: [
+      {
+        title: "Login",
+        url: "/login",
+      },
+      {
+        title: "Register",
+        url: "/register",
+      },
+    ],
+  },
+]
 
 export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Table of Contents</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {data.navMain.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url} className="font-medium">
-                      {item.title}
-                    </a>
+      <SidebarGroup>
+      <SidebarGroupLabel>ESI KOTA DENPASAR</SidebarGroupLabel>
+      <SidebarMenu>
+        {items.map((item) => (
+          <Collapsible
+            key={item.title}
+            asChild
+            defaultOpen={item.isActive}
+            className="group/collapsible"
+          >
+            <SidebarMenuItem>
+              <CollapsibleTrigger asChild>
+                {item.url ? (
+                  <a href={item.url}>
+                    <SidebarMenuButton tooltip={item.title}>
+                      {item.icon && item.icon}
+                      <span>{item.title}</span>
+                    </SidebarMenuButton>
+                  </a>
+                ) : (
+                  <SidebarMenuButton tooltip={item.title}>
+                    {item.icon && item.icon}
+                    <span>{item.title}</span>
+                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                   </SidebarMenuButton>
-                  {item.items?.length ? (
-                    <SidebarMenuSub>
-                      {item.items.map((item) => (
-                        <SidebarMenuSubItem key={item.title}>
-                          <SidebarMenuSubButton
-                            asChild
-                            // isActive={item.isActive}
-                          >
-                            <a href={item.url}>{item.title}</a>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                    </SidebarMenuSub>
-                  ) : null}
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+                )}
+              </CollapsibleTrigger>
+              {item.items && (
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    {item.items.map((subItem) => (
+                      <SidebarMenuSubItem key={subItem.title}>
+                        <SidebarMenuSubButton asChild aria-disabled={!subItem.url}>
+                          <a href={subItem.url}>
+                            <span>{subItem.title}</span>
+                          </a>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    ))}
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              )}
+            </SidebarMenuItem>
+          </Collapsible>
+        ))}
+      </SidebarMenu>
+    </SidebarGroup>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>

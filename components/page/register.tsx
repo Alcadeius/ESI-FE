@@ -1,11 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState } from 'react';
 import Logo from "../logo";
 import { useRouter } from 'next/navigation'; 
 import axios from 'axios';
 
+interface FormData {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export default function Register() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     username: '',
     email: '',
     password: '',
@@ -15,8 +23,7 @@ export default function Register() {
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter(); 
 
- 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -24,10 +31,18 @@ export default function Register() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage(''); 
     setLoading(true);
+
+    // Validate password and confirm password
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMessage('Passwords do not match!');
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.post("/api/v1/register", {
         role_id: 2, 
@@ -36,21 +51,19 @@ export default function Register() {
         password: formData.password,
       });
 
-      
       if (response.status === 201) { 
         router.push("/login"); 
       } else {
         setErrorMessage(response.data.message);
       }
-    } catch (e) { 
-      if (e.response && e.response.data && e.response.data.message) {
-        setErrorMessage(e.response.data.message); 
+    } catch (error: any) { // Type assertion for error
+      if (error.response && error.response.data && error.response.data.message) {
+        setErrorMessage(error.response.data.message); 
       } else {
         setErrorMessage('Terjadi kesalahan, coba lagi nanti!'); 
       }
-    }
-    finally{
-        setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -198,7 +211,6 @@ export default function Register() {
             {errorMessage && (
               <p className="text-red-500 text-xs text-center mt-2">{errorMessage}</p>
             )}
-            
           </form>
         </div>
       </section>

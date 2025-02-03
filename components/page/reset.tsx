@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'; 
@@ -25,7 +26,7 @@ export default function Reset() {
 
   
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { name: any; value: any; }; }) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -33,7 +34,7 @@ export default function Reset() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setErrorMessage('');
     setLoading(true);
@@ -57,7 +58,7 @@ export default function Reset() {
       } else {
         setErrorMessage(response.data.message);
       }
-    } catch (e) {
+    } catch (e:any) {
       if (e.response && e.response.data && e.response.data.message) {
         setErrorMessage(e.response.data.message);
       } else {

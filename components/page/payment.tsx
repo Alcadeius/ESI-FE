@@ -1,29 +1,29 @@
 "use client"
-import { useState } from "react";
+// import { useState } from "react";
 import NavigationBar from "../navigation-bar";
 export default function Payment() {
-  const [file, setFile] = useState(null);
+  // const [file, setFile] = useState(null);
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-    }
-  };
+  // const handleFileChange = (e) => {
+  //   const selectedFile = e.target.files[0];
+  //   if (selectedFile) {
+  //     setFile(selectedFile);
+  //   }
+  // };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
+  // const handleDragOver = (e) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  // };
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) {
-      setFile(droppedFile);
-    }
-  };
+  // const handleDrop = (e) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   const droppedFile = e.dataTransfer.files[0];
+  //   if (droppedFile) {
+  //     setFile(droppedFile);
+  //   }
+  // };
 
   return (
     <div className="h-screen lg:px-20 lg:pt-14 bg-[url('/images/DSCF4041-3.png')] bg-cover bg-no-repeat before:absolute before:w-full before:content-['a'] before:h-full before:bg-black/35 before:top-0 before:left-0 before:z-0">

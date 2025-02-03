@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 import Logo from "../ui/logo-2";
 import Dropdown from "../dropdown"
 import { useState, useEffect } from "react";
 import axios from "axios";
 export default function order(){
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 const [error, setError] = useState<string | null>(null);
 

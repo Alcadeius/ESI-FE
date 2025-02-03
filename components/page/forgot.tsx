@@ -8,38 +8,42 @@ export default function Forgot() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(""); 
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setErrorMessage("");
-      
-        try {
-          const response = await axios.post(
-            "https://esi.bagoesesport.com/api/v1/forgot-password",
-            { email },
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-      
-          console.log("Forgot Password Success:", response.data);
-          alert("Silakan cek email Anda untuk instruksi reset password.");
-      
-        } catch (err) {
-          if (err.response) {
-            setErrorMessage(err.response.data.message || "Permintaan reset gagal.");
-          } else if (err.request) {
-            setErrorMessage("Tidak ada respons dari server. Coba lagi.");
-          } else {
-            setErrorMessage("Terjadi kesalahan.");
-          }
-          console.error("Forgot Password Error:", err);
-        } finally {
-          setLoading(false);
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMessage("");
+
+    try {
+      const response = await axios.post(
+        "https://esi.bagoesesport.com/api/v1/forgot-password",
+        { email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      };
+      );
+
+      console.log("Forgot Password Success:", response.data);
+      alert("Silakan cek email Anda untuk instruksi reset password.");
+
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          setErrorMessage(err.response.data.message || "Permintaan reset gagal.");
+        } else if (err.request) {
+          setErrorMessage("Tidak ada respons dari server. Coba lagi.");
+        } else {
+          setErrorMessage("Terjadi kesalahan dalam permintaan.");
+        }
+      } else {
+        setErrorMessage("Terjadi kesalahan yang tidak terduga.");
+      }
+      console.error("Forgot Password Error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="h-screen w-screen bg-black text-white px-5 py-5 lg:px-0 lg:py-0 flex flex-col overflow-hidden lg:grid lg:grid-cols-12 lg:gap-3 bg-no-repeat bg-contain bg-center bg-[url('/images/logo(1).png')] lg:bg-none">
@@ -99,7 +103,6 @@ export default function Forgot() {
               />
             </div>
             
-      
             <div className="bg-[#E8462D] text-center xl:my-5 font-extrabold 2xl:text-3xl my-5 mx-3 p-2">
               <input
                 type="submit"

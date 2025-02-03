@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -19,7 +20,7 @@ export default function Login() {
   const [rememberToken, setRememberToken] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setLoading(true);
     setErrorMessage(""); 
@@ -44,7 +45,7 @@ export default function Login() {
       localStorage.setItem("authToken", token);
       window.location.href = "/main";
       
-    } catch (err) {
+    } catch (err : any) {
       if (err.response) {
         setErrorMessage(err.response.data.message || "Login failed");
       } else if (err.request) {

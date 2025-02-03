@@ -73,7 +73,7 @@ export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sid
                         <SidebarMenuSubItem key={item.title}>
                           <SidebarMenuSubButton
                             asChild
-                            isActive={item.isActive}
+                            // isActive={item.isActive}
                           >
                             <a href={item.url}>{item.title}</a>
                           </SidebarMenuSubButton>

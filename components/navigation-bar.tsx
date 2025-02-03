@@ -19,18 +19,22 @@ const pageList = [
     name: 'Beranda',
     link: '/main'
   },
+  // {
+  //   name: 'Papan Peringkat',
+  //   link: '/leaderboard'
+  // },
+  // {
+  //   name: 'Keranjang',
+  //   link: '/order'
+  // },
+  // {
+  //   name: 'Bantuan',
+  //   disabled: true
+  // }
   {
-    name: 'Papan Peringkat',
-    link: '/leaderboard'
+    name: 'Event Submission',
+    link: '/event-submit'
   },
-  {
-    name: 'Keranjang',
-    link: '/order'
-  },
-  {
-    name: 'Bantuan',
-    disabled: true
-  }
 ]
 
 const NavigationBar = () => {

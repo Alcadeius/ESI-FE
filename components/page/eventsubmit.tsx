@@ -104,9 +104,9 @@ export default function EventSubmit() {
   };
 
   return (
-    <div className="bg-[url('/images/DSCF4041-3.png')] bg-center bg-cover h-full 2xl:h-screen before:top-0 before:left-0 w-full bg-no-repeat before:absolute before:z-0 before:content-['a'] before:h-full before:w-full before:bg-black/40">
+    <div className="bg-[url('/images/DSCF4041-3.png')] bg-blend-lighten bg-gray-900 bg-center bg-cover h-full 2xl:h-screen before:top-0 before:left-0 w-full bg-no-repeat before:absolute before:z-0 before:content-['a'] before:h-full before:w-full px-20 py-16">
       <NavigationBar />
-      <div className='px-3 md:px-14 md:py-10 lg:px-28 lg:max-w-4xl lg:mx-auto py-5 relative z-10'>
+      <div className='px-3 md:px-14 md:py-10 lg:px-28 lg:max-w-4xl lg:mx-auto py-5 relative z-10 w-full'>
         <div className='bg-[#F9FAFB] rounded-md'>
           <div className='flex flex-col px-5 py-5 lg:justify-center'>
             <div className='flex-col text-sm mb-5'>

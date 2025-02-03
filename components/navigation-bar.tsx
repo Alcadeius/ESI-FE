@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { useEffect, useState } from "react";
@@ -74,7 +75,7 @@ const NavigationBar = () => {
       };
 
       fetchUserData();
-  }, []);
+  }, [token]);
 
   return (
     <header className='hidden relative z-10 w-full lg:grid lg:grid-cols-4 lg:shadow-none shadow-md shadow-gray-500/50 justify-between items-center content-center place-content-center lg:place-items-center text-white'>
@@ -88,33 +89,33 @@ const NavigationBar = () => {
         )
       })}
     </div>
-    {true ? (
-      <div className="hidden lg:flex justify-end w-full h-full text-center items-center">
-        <Button asChild className="bg-[#DC2626] mr-3 text-white p-3 rounded-md">
-          <a href="/register">Register</a>
-        </Button>
-        <Button asChild className="bg-white text-[#DC2626] p-3 rounded-md">
-          <a href="/login">Login</a>
-        </Button>
-      </div>
-    ) : (
-      <div className="hidden lg:flex justify-end w-full items-center">
-        {token ? (
-          <p>Loading user data...</p>
-        ) : error ? (
-          <p className="text-red-500">{error}</p>
-        ) : (
-          userData && (
-            <div>
-              <h2 className="mx-3">{userData?.data.email}</h2>
-            </div>
-          )
-        )}
-        <div className="rounded-full text-black">
-          <Dropdown />
+    {token ? (
+        <div className="hidden lg:flex justify-end w-full items-center">
+          {loading ? (
+            <p>Loading user data...</p>
+          ) : error ? (
+            <p className="text-red-500">{error}</p>
+          ) : (
+            userData && (
+              <div>
+                <h2 className="mx-3">{userData?.data.email}</h2> 
+              </div>
+            )
+          )}
+          <div className="rounded-full text-black">
+            <Dropdown /> 
+          </div>
         </div>
-      </div>
-    )}
+      ) : (
+        <div className="hidden lg:flex justify-end w-full h-full text-center items-center">
+          <Button asChild className="bg-[#DC2626] mr-3 text-white p-3 rounded-md">
+            <a href="/register">Register</a> 
+          </Button>
+          <Button asChild className="bg-white text-[#DC2626] p-3 rounded-md">
+            <a href="/login">Login</a> 
+          </Button>
+        </div>
+      )}
     <div className="h-fit flex items-center">
       <button><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="size-6 md:size-8 items-center my-auto align-middle lg:hidden">
         <path fillRule="evenodd" d="M3 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 5.25Zm0 4.5A.75.75 0 0 1 3.75 9h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 9.75Zm0 4.5a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Zm0 4.5a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />

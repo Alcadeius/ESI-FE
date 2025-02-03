@@ -45,7 +45,7 @@ export default function EventSubmit() {
     const droppedFile = e.dataTransfer.files[0];
     if (droppedFile) {
       setFile(droppedFile);
-      setFormData({ ...formData, application_file: droppedFile }); // Update formData with the dropped file
+      setFormData({ ...formData, application_file: droppedFile }); 
     }
   };
 
@@ -72,7 +72,7 @@ export default function EventSubmit() {
       const token = localStorage.getItem("authToken");
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
-        if (formData[key] !== null) { // Only append non-null values
+        if (formData[key] !== null) { 
           formDataToSend.append(key, formData[key] as string | Blob);
         }
       });
@@ -104,11 +104,11 @@ export default function EventSubmit() {
   };
 
   return (
-    <div className="bg-[url('/images/DSCF4041-3.png')] bg-blend-lighten bg-gray-900 bg-center bg-cover h-full 2xl:h-screen before:top-0 before:left-0 w-full bg-no-repeat before:absolute before:z-0 before:content-['a'] before:h-full before:w-full px-20 py-16">
+    <div className="bg-[url('/images/DSCF4041-3.png')] bg-blend-lighten bg-gray-900 bg-center bg-cover h-full 2xl:h-screen before:top-0 before:left-0 w-full bg-no-repeat before:absolute before:z-0 before:content-['a'] before:h-full before:w-full lg:px-20 lg:py-16">
       <NavigationBar />
-      <div className='px-3 md:px-14 md:py-10 lg:px-28 lg:max-w-4xl lg:mx-auto py-5 relative z-10 w-full'>
+      <div className='px-3 my-[14vh] lg:my-0 md:px-14 md:py-10 lg:px-28 lg:mx-auto py-5 relative z-10 w-full'>
         <div className='bg-[#F9FAFB] rounded-md'>
-          <div className='flex flex-col px-5 py-5 lg:justify-center'>
+          <div className='flex flex-col px-5 py-5 lg:px-20 lg:py-10 lg:justify-center w-full'>
             <div className='flex-col text-sm mb-5'>
               <h1 className='text-[#3B82F6] uppercase lg:text-xl font-bold'>Form Pengajuan Event Organizer</h1>
               <p className='text-xs'>Formulir Untuk melakukan pengajuan event</p>
@@ -147,7 +147,7 @@ export default function EventSubmit() {
                       onChange={handleChange}
                     />
                   </div>
-                  <div className='lg:col-span-2'>
+                  <div className='md:col-span-2'>
                     <label htmlFor="dropzone-file">Softcopy Dokumen Pengajauan</label>
                     <div
                       className="flex items-center justify-center w-full"
@@ -180,7 +180,7 @@ export default function EventSubmit() {
                     </div>
                   )}
                 </div>
-                <div className='w-[25%] lg:float-right bg-[#ff0000] cursor-pointer p-2 text-white rounded-md text-center'>
+                <div className='w-full lg:float-right bg-[#ff0000] cursor-pointer p-2 text-white rounded-md text-center'>
                   <input type="submit" value={loading ? "Submitting..." : "Submit"}/>
                 </div>
               </form>

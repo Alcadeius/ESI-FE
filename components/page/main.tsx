@@ -169,7 +169,7 @@ export default function Main() {
   const GameCard = ({ name, image }: { name: string, image: string }) => {
     return (
       <div className="flex items-center justify-center z-20">
-        <div className="relative w-56 h-[470px] overflow-hidden border-4 border-white transform skew-x-[-10deg]">
+        <div className="relative lg:w-36 xl:w-[11rem] h-[470px] overflow-hidden border-4 border-white transform skew-x-[-10deg]">
           <div className="w-[20rem] h-full transform -translate-x-[3rem] skew-x-[10deg]">
             <Image
               src={image}

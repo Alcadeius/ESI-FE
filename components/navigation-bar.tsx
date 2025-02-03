@@ -72,7 +72,7 @@ const NavigationBar = () => {
   }, []);
 
   return (
-    <header className='hidden w-full lg:grid lg:grid-cols-4 lg:shadow-none shadow-md shadow-gray-500/50 justify-between items-center content-center place-content-center lg:place-items-center text-white'>
+    <header className='hidden relative z-10 w-full lg:grid lg:grid-cols-4 lg:shadow-none shadow-md shadow-gray-500/50 justify-between items-center content-center place-content-center lg:place-items-center text-white'>
     <div className='hidden lg:flex h-full place-content-start items-center col-span-3 w-full gap-9 font-medium'>
       <div>
         <Logo className='h-10 w-10 md:h-20 md:w-20 lg:w-14 lg:h-14 ' />

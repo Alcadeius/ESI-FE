@@ -178,7 +178,7 @@ export default function Main() {
               objectFit="cover"
               className="absolute inset-0"
             />
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 transform -translate-x-7">
               <h1 className="text-white text-3xl font-bold uppercase text-center w-1/2 drop-shadow-2xl">
                 {name}
               </h1>
@@ -197,19 +197,19 @@ export default function Main() {
 
         {/* Backdrop */}
         <div className={cn("bg-[url('/images/backdrop_1.png')]",
-          "absolute lg:top-1/2 lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[707px] h-[471px] bg-contain z-0 bg-gray-900 bg-blend-lighten",
+          "absolute lg:top-[50vh] lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[707px] h-[471px] bg-contain z-0 bg-gray-900 bg-blend-lighten",
           "hidden lg:block")}>
         </div>
         <div className={cn("bg-[url('/images/backdrop_1.png')]",
-          "absolute lg:top-[100%] -scale-x-100 lg:left-0 lg:transform lg:-translate-y-1/2 w-full h-[471px] bg-contain z-0 bg-gray-900 bg-blend-lighten",
+          "absolute lg:top-[100vh] -scale-x-100 lg:left-0 lg:transform lg:-translate-y-1/2 w-full h-[471px] bg-contain z-0 bg-gray-900 bg-blend-lighten",
           "hidden lg:block")}>
         </div>
         <div className={cn("bg-[url('/images/backdrop_1.png')]",
-          "absolute lg:top-[150%] lg:right-0 lg:transform lg:-translate-y-1/2 w-full h-[471px] bg-contain z-0 bg-gray-900 bg-blend-lighten",
+          "absolute lg:top-[150vh] lg:right-0 lg:transform lg:-translate-y-1/2 w-full h-[471px] bg-contain z-0 bg-gray-900 bg-blend-lighten",
           "hidden lg:block")}>
         </div>
         <div className={cn("bg-[url('/images/backdrop_1.png')]",
-          "absolute lg:top-[200%] -scale-x-100 lg:left-0 lg:transform lg:-translate-y-1/2 w-full h-[471px] bg-contain -z-10 bg-gray-900 bg-blend-lighten",
+          "absolute lg:top-[200vh] -scale-x-100 lg:left-0 lg:transform lg:-translate-y-1/2 w-full h-[471px] bg-contain -z-10 bg-gray-900 bg-blend-lighten",
           "hidden lg:block")}>
         </div>
 
@@ -223,8 +223,8 @@ export default function Main() {
               <h1 className="font-extrabold text-7xl">HIGHLIGHT</h1>
               <p className="uppercase py-2 px-4 bg-white text-[#DC2626] rounded-lg font-extrabold text-2xl">Event yang dinantikan</p>
             </div>
-            <div className="hidden absolute lg:block -left-48 top-0 z-0">
-              <img src="/images/ruby+goblin.png" alt="" className="w-[20vw]" />
+            <div className="hidden absolute lg:block -left-56 top-0 z-0">
+              <Image src="/images/ruby+goblin.png" alt="" className="w-[20vw] h-auto" width={1000} height={1000} />
             </div>
           </div>
         </div>

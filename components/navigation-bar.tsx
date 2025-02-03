@@ -6,6 +6,8 @@ import Logo from "./logo"
 import Dropdown from './dropdown';
 import axios from "axios";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
+
 
 interface UserProps{
   email: string
@@ -43,6 +45,7 @@ const NavigationBar = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const token = localStorage.getItem("authToken");
+  const router = useRouter()
 
   useEffect(() => {
       const fetchUserData = async () => {
@@ -108,11 +111,11 @@ const NavigationBar = () => {
         </div>
       ) : (
         <div className="hidden lg:flex justify-end w-full h-full text-center items-center">
-          <Button asChild className="bg-[#DC2626] mr-3 text-white p-3 rounded-md">
-            <a href="/register">Register</a> 
+          <Button onClick={() => router.push('/register')} className="bg-[#DC2626] mr-3 text-white p-3 rounded-md">
+            Register
           </Button>
-          <Button asChild className="bg-white text-[#DC2626] p-3 rounded-md">
-            <a href="/login">Login</a> 
+          <Button onClick={() => router.push('/login')} className="bg-white text-[#DC2626] p-3 rounded-md">
+            Login
           </Button>
         </div>
       )}

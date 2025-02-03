@@ -110,7 +110,7 @@ export default function EventSubmit() {
         <div className='bg-[#F9FAFB] rounded-md'>
           <div className='flex flex-col px-5 py-5 lg:px-20 lg:py-10 lg:justify-center w-full'>
             <div className='flex-col text-sm mb-5'>
-              <h1 className='text-[#3B82F6] uppercase lg:text-xl font-bold'>Form Pengajuan Event Organizer</h1>
+              <h1 className='text-[#3B82F6] uppercase text-base lg:text-xl font-bold'>Form Pengajuan Event Organizer</h1>
               <p className='text-xs'>Formulir Untuk melakukan pengajuan event</p>
             </div>
             <div className='lg:max-w-full'>

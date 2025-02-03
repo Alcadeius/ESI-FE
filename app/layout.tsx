@@ -37,7 +37,7 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SidebarProvider open={false}>
-          <AppSidebar />
+          <AppSidebar className="lg:hidden" />
           <main className="bg-gray-900 w-full">
             <div className="text-white bg-gray lg:hidden w-full flex justify-between items-center p-4 bg-gray-900 z-50 shadow-md fixed">
               <Logo className="size-10" />

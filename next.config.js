@@ -1,3 +1,5 @@
+const { imageOptimizer } = require("next/dist/server/image-optimizer");
+
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "https://esi.bagoesesport.com";
 
@@ -10,6 +12,9 @@ const nextConfig = {
       },
     ];
   },
+  trailingSlash: true,
+  output: 'export',
+  images: { unoptimized: true }
 };
 
 module.exports = nextConfig;

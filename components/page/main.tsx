@@ -1,34 +1,29 @@
-/* eslint-disable react/jsx-key */
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 import Image from 'next/image';
 import { useState, useEffect } from "react";
-import Logo from '../ui/logo-2';
 import Slider from '../slider'
 import Games from '../games'
 import axios from "axios";
-import Pagin from '../ui/pagein'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import Dropdown from '../dropdown'
 import NavigationBar from '../navigation-bar';
 import { cn } from '@/lib/utils';
 import Footer from '../footer';
+import { ChevronsRight, User, User2 } from 'lucide-react';
+import PaginationDemo from '../ui/pagein';
 
 interface eventDataProps {
   date: string,
   name: string,
   location: string,
-  participants: number
+  participants: number,
+  banner: string
 }
 
-export default function main() {
+export default function Main() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem("authToken");
@@ -69,80 +64,103 @@ export default function main() {
       name: "RIOT E-Sport Event",
       location: "GARDEV Team Field",
       participants: 240,
+      banner: "/images/Rectangle-10.png"
     },
     {
       date: "12-17 Oktober",
       name: "RIOT E-Sport Event",
       location: "GARDEV Team Field",
       participants: 240,
+      banner: "/images/Rectangle-10.png"
     },
     {
       date: "12-17 Oktober",
       name: "RIOT E-Sport Event",
       location: "GARDEV Team Field",
       participants: 240,
+      banner: "/images/Rectangle-10.png"
     },
     {
       date: "12-17 Oktober",
       name: "RIOT E-Sport Event",
       location: "GARDEV Team Field",
       participants: 240,
+      banner: "/images/Rectangle-10.png"
     },
     {
       date: "12-17 Oktober",
       name: "RIOT E-Sport Event",
       location: "GARDEV Team Field",
       participants: 240,
+      banner: "/images/Rectangle-10.png"
     },
     {
       date: "12-17 Oktober",
       name: "RIOT E-Sport Event",
       location: "GARDEV Team Field",
       participants: 240,
+      banner: "/images/Rectangle-10.png"
     }
   ]
 
   const gamesData = [
     {
       name: "League of Legends",
-      image: "/images/example.jpg"
+      image: "/images/temp-game-card/lol.webp"
     },
     {
       name: "Valorant",
-      image: "/images/example.jpg"
+      image: "/images/temp-game-card/valo.webp"
     },
     {
       name: "Mobile Legends",
-      image: "/images/example.jpg"
+      image: "/images/temp-game-card/ml.jpg"
     },
     {
       name: "Free Fire",
-      image: "/images/example.jpg"
+      image: "/images/temp-game-card/ff.webp"
     },
     {
       name: "PUBG Mobile",
-      image: "/images/example.jpg"
+      image: "/images/temp-game-card/pubg.jpg"
     }
   ]
 
-  const EventCard = ({ event }: { event: eventDataProps }) => {
+  const bannerData = [
+    {
+      date: "12-17 Oktober",
+      name: "Pubg Tournament",
+      location: "Dharma Alaya Denpasar",
+      participants: 240,
+      banner: "/images/temp-banner/pubeg.jpg",
+      organizer: "Bagoes E-Sport"
+    },
+    {
+      date: "12-17 Oktober",
+      name: "Free Fire Tournament",
+      location: "Dharma Alaya Denpasar",
+      participants: 240,
+      banner: "/images/temp-banner/nyepnyep.png",
+      organizer: "Bagoes E-Sport"
+    },
+  ]
+
+  const EventCard = ({ event, index }: { event: eventDataProps, index: number }) => {
     return (
-      <div className="z-10 rounded-sm grid grid-rows-2 grid-flow-col gap-4 text-[#E2E2E2] bg-cover bg-no-repeat bg-[url('/images/Rectangle-10.png')] h-36 xl:h-64 w-auto bg-center lg:bg-top">
-        <div className="flex flex-col mx-3 my-3">
-          <h1 className='text-base'>{event.date}</h1>
-          <h1 className='text-lg font-bold'>{event.name}</h1>
-          <h1>{event.location}</h1>
+      <div key={index} className="bg-[#DC2626] rounded-sm p-5 w-full aspect-video z-20 relative bg-cover bg-center flex justify-between flex-col" style={{ backgroundImage: `url(${event?.banner})` }}>
+        <div className="flex justify-between items-start">
+          <div>
+            <div className="text-white font-bold text-2xl">{event?.date}</div>
+            <h1 className="text-white font-bold text-2xl">{event?.name}</h1>
+            <p className="text-white text-sm">{event?.location}</p>
+          </div>
+          <div>
+            <ChevronsRight size={35}/>
+          </div>
         </div>
-        <div className='grid grid-cols-1 place-items-start mx-3 content-end'>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-          </svg>
-          <h1>{event.participants}</h1>
-        </div>
-        <div className='grid justify-items-end mx-3'>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061A1.125 1.125 0 0 1 3 16.811V8.69ZM12.75 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061a1.125 1.125 0 0 1-1.683-.977V8.69Z" />
-          </svg>
+        <div className="flex items-end gap-2">
+          <User2 size={35} />
+          <p className="text-white text-xl">{event?.participants} Participants</p>
         </div>
       </div>
     )
@@ -161,7 +179,7 @@ export default function main() {
               className="absolute inset-0"
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
-              <h1 className="text-white text-3xl font-bold uppercase text-center w-1/2">
+              <h1 className="text-white text-3xl font-bold uppercase text-center w-1/2 drop-shadow-2xl">
                 {name}
               </h1>
             </div>
@@ -198,7 +216,7 @@ export default function main() {
         {/* Slider */}
         <div className='w-full grid lg:mb-10 justify-center lg:grid-cols-3 lg:place-content-center lg:place-items-center my-10 lg:my-0 lg:pt-14 pt-0'>
           <div className="lg:col-span-2 w-full z-10">
-            <Slider />
+            <Slider data={bannerData} />
           </div>
           <div className="relative w-full h-full justify-center self-center hidden lg:flex">
             <div className="hidden lg:flex flex-col items-center place-items-center justify-center h-full text-white z-10">
@@ -216,29 +234,29 @@ export default function main() {
           <h1 className='z-10'># Ayo Ikuti Keseruan Lainnya</h1>
         </div>
 
-        <div className="text-white lg:text-4xl grid grid-cols-1 lg:grid-cols-3 place-content-center gap-7 px-5">
+        <div className="text-white grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 place-content-center gap-7 px-5">
           {eventData.map((event, index) => {
             return (
-              <EventCard event={event} />
+              <EventCard key={index} event={event} index={index} />
             )
           })}
         </div>
         <div className="lg:grid hidden w-full items-center text-white my-5 place-content-center">
-          <Pagin />
+          <PaginationDemo />
         </div>
 
       </section>
 
-      <section className="relative w-full mb-20">
+      <section className="relative w-full mb-20 mt-20">
         {/* Games */}
         <div className='grid grid-cols-1 justify-items-center'>
-          <div className='text-white text-xl lg:text-4xl px-6 py-2 rounded-lg my-10 lg:my-5 font-bold h-fit text-center uppercase underline'>
+          <div className='text-white bg-red-600 text-xl lg:text-2xl px-6 py-2 rounded-lg my-10 lg:my-5 font-bold h-fit text-center uppercase'>
             <h1># Trending E-SPORTS GAMES</h1>
           </div>
           <div className="lg:hidden z-20 overflow-hidden w-full">
             <Games games={gamesData} />
           </div>
-          <div className='hidden lg:flex gap-10 mt-16 font-rocker'>
+          <div className='hidden lg:flex gap-10 mt-5 font-rocker'>
             {gamesData.map((game, index) => {
               return (
                 <GameCard key={index} name={game.name} image={game.image} />
@@ -248,7 +266,6 @@ export default function main() {
         </div>
         <div className="bg-[#DC2626] shadow-[inset_0_-33px_113px_rgba(0,0,0,0.25)] absolute h-[196px] lg:h-80 w-[100%] -bottom-10"></div>
       </section>
-
       {/* Footer */}
       <Footer />
     </div>

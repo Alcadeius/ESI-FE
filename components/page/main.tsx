@@ -238,7 +238,7 @@ export default function main() {
           <div className="lg:hidden z-20 overflow-hidden w-full">
             <Games games={gamesData} />
           </div>
-          <div className='hidden lg:flex gap-10 mt-16'>
+          <div className='hidden lg:flex gap-10 mt-16 font-rocker'>
             {gamesData.map((game, index) => {
               return (
                 <GameCard key={index} name={game.name} image={game.image} />

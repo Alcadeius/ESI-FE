@@ -1,11 +1,8 @@
+// app/layout.tsx (atau layout.js sesuai nama file Anda)
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-
-import {
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/app-sidebar";
 import Logo from "@/components/logo";
 
@@ -32,9 +29,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SidebarProvider open={false}>
           <AppSidebar />
           <main className="bg-gray-900 w-full">

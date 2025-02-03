@@ -11,8 +11,16 @@ import {
 } from "./ui/carousel";
 import Autoplay from "embla-carousel-autoplay"
 
+interface CarouselProps {
+  date: string,
+  name: string,
+  location: string,
+  participants: number,
+  banner: string,
+  organizer: string
+}
 
-export default function CarouselDemo() {
+export default function CarouselDemo({data}: {data: CarouselProps[]}) {
   return (
     <Carousel
     plugins={[
@@ -23,39 +31,39 @@ export default function CarouselDemo() {
       opts={{
         loop: true, 
       }}
-      className="w-full max-w-[21rem] md:max-w-80 lg:max-w-[80%] lg:mx-5"
+      className="w-full max-w-[21rem] md:max-w-80 lg:max-w-[80%] lg:mx-5 lg:bg-black"
     >
       <CarouselContent>
-        {Array.from({ length: 5 }).map((_, index) => (
+        {data.map((event, index) => (
           <CarouselItem key={index}>
             <div className="p-0">
               <Card className="border-none outline-none p-0 m-0">
                 <CardContent className="flex items-center flex-col justify-center w-full p-0 m-0">
                   <div className="font-medium -space-y-1 w-full px-5 pt-2 lg:hidden">
                     <p>
-                      Alaya Dharma Creative Center
+                      {event?.location}
                     </p>
                     <p className="font-semibold">
-                      12 Oktober 2025
+                      {event?.date}
                     </p>
                   </div>
                   <div className="w-full my-2 lg:hidden">
                     <Image
                       alt=""
-                      src="/images/image-2.png"
+                      src={event?.banner}
                       width={1000}
                       height={1000}
                       className="h-full w-full"
                     />
                   </div>
                   <div className="w-full px-5 lg:hidden pb-3 -space-y-1">
-                    <h1 className="font-bold text-lg">Riot Esport Mobile</h1>
-                    <p className="text-sm">Esi Kota Denpasar</p>
+                    <h1 className="font-bold text-lg">{event?.name}</h1>
+                    <p className="text-sm">{event?.organizer}</p>
                   </div>
                   <div className="hidden lg:flex max-w-full w-full">
                     <Image
                       alt=""
-                      src="/images/image-2.png"
+                      src={event?.banner}
                       width={1000}
                       height={1000}
                       className="h-full w-full"

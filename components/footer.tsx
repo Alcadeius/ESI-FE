@@ -2,7 +2,7 @@ export default function Footer() {
   return (
     <footer className="bg-white w-full 2xl:h-full lg:px-20 py-10 px-4 z-20">
       <div className="mx-auto w-full lg:h-1/2">
-        <div className="lg:flex lg:justify-between lg:place-items-center lg:h-full">
+        <div className="lg:flex lg:justify-between lg:place-items-start lg:h-full">
           <div className="mb-6 lg:mb-0 w-fit justify-center items-center">
             <a href="" className="flex items-center lg:justify-start">
               <img alt='' src="/images/logo.png" width={75} />

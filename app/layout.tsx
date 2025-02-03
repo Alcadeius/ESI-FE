@@ -38,7 +38,7 @@ export default function RootLayout({
         <SidebarProvider open={false}>
           <AppSidebar />
           <main className="bg-gray-900 w-full">
-            <div className="text-white bg-gray lg:hidden w-full flex justify-between items-center p-4 relative bg-gray-900 z-50 shadow-md">
+            <div className="text-white bg-gray lg:hidden w-full flex justify-between items-center p-4 bg-gray-900 z-50 shadow-md fixed">
               <Logo className="size-10" />
               <div className="font-medium text-base">ESI DENPASAR</div>
               <SidebarTrigger className="w-fit bg-gray-700 size-10"/>

@@ -7,6 +7,7 @@ import Dropdown from './dropdown';
 import axios from "axios";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { link } from "fs";
 
 
 interface UserProps {
@@ -26,16 +27,16 @@ const pageList = [
   //   name: 'Papan Peringkat',
   //   link: '/leaderboard'
   // },
-  // {
-  //   name: 'Keranjang',
-  //   link: '/order'
-  // },
-  // {
-  //   name: 'Bantuan',
-  //   disabled: true
-  // }
   {
-    name: 'Event Submission',
+    name: 'Keranjang',
+    link: '/order'
+  },
+  {
+    name: 'Riwayat',
+    link: '/history'
+  },
+  {
+    name: 'Formulir Pengajuan',
     link: '/event-submit'
   },
 ]

@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 import Image from 'next/image';
-import { useState, useEffect } from "react";
 import Slider from '../slider'
 import Games from '../games'
-import axios from "axios";
 import NavigationBar from '../navigation-bar';
 import { cn } from '@/lib/utils';
 import Footer from '../footer';
@@ -20,43 +18,6 @@ interface eventDataProps {
 }
 
 export default function Main() {
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem("authToken");
-      if (!token) {
-        setError("Token tidak ditemukan, harap login terlebih dahulu.");
-        setLoading(false);
-        return;
-      }
-      try {
-        const response = await axios.get(
-          "https://esi.bagoesesport.com/api/v1/auth/user",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log("Server Response:", response);
-        if (response && response.data) {
-          setUserData(response.data);
-        } else {
-          setError("Data user tidak ditemukan.");
-        }
-      } catch (err) {
-        setError("Gagal mengambil data user.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, []);
 
   const eventData = [
     {

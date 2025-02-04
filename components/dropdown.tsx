@@ -61,7 +61,7 @@ import {
         <DropdownMenuTrigger asChild>
           <Button className="rounded-full bg-[#E2E8F0] hover:bg-white text-black h-10 w-10 p-0 m-0">ESI</Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56 bg-black text-white">
+        <DropdownMenuContent className="w-56 bg-black text-white" align="end">
           <DropdownMenuLabel>Opsi Pengguna</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>

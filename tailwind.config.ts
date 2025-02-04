@@ -71,6 +71,7 @@ const config: Config = {
   		},
 		fontFamily: {
 			rocker: ['New Rocker', 'sans-serif'],
+			supertall: ['Supertalls', 'sans-serif'],
 		},
   	}
   },

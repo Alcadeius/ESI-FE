@@ -25,7 +25,7 @@ export default function CarouselDemo({data}: {data: CarouselProps[]}) {
     <Carousel
     plugins={[
       Autoplay({
-        delay: 5000,
+        delay: 2000,
       }),
     ]}
       opts={{

@@ -34,6 +34,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
           rel="stylesheet"
         />
+        <link href="https://fonts.cdnfonts.com/css/supertalls" rel="stylesheet"/>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SidebarProvider open={false}>
@@ -44,6 +45,7 @@ export default function RootLayout({
               <div className="font-medium text-base">ESI DENPASAR</div>
               <SidebarTrigger className="w-fit bg-gray-700 size-10"/>
             </div>
+            <div className="w-full h-[72px] lg:hidden"></div>
             {children}
           </main>
         </SidebarProvider>

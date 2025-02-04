@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { cn } from "@/lib/utils"
@@ -83,7 +84,7 @@ export function LoginForm({
       })
   }
   return (
-    <div className="w-full lg:px-16 dark z-10">
+    <div className="w-full lg:px-3 dark z-10">
       <Card className="bg-transparent border-0">
         <CardHeader className="text-center">
           <CardTitle className="text-5xl text-white text-left">HALO <br /> NAK KODYA!</CardTitle>

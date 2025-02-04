@@ -3,14 +3,16 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavigationBar from '../navigation-bar';
 import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2';
+
 
 interface FormData {
   event_name: string;
   event_date: string;
   organizer_name: string;
   total_prizepool: string;
-  application_file: File | null; // Allow application_file to be a File or null
-  [key: string]: string | File | null; // Allow indexing with string keys
+  application_file: File | null; 
+  [key: string]: string | File | null; 
 }
 
 export default function EventSubmit() {
@@ -30,7 +32,7 @@ export default function EventSubmit() {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
-      setFormData({ ...formData, application_file: selectedFile }); // Update formData with the selected file
+      setFormData({ ...formData, application_file: selectedFile }); 
     }
   };
 
@@ -87,9 +89,21 @@ export default function EventSubmit() {
         },
       });
 
-      if (response.status === 201) { 
-        router.push("/main"); 
+      if (response.status === 201) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Pengajuan Berhasil!',
+          text: 'Data event Anda telah berhasil diajukan.',
+          confirmButtonText: 'OK',
+        }).then(() => {
+          router.push("/main"); 
+        });
       } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Data Gagal Ditambahkan',
+          text: 'Terjadi Kesalahan Saat Melakukan Pengajuan',
+        })
         setErrorMessage(response.data.message);
       }
     } catch (e) { 
@@ -115,10 +129,10 @@ export default function EventSubmit() {
             </div>
             <div className='lg:max-w-full'>
               <form onSubmit={handleSubmit}>
-                <div className="grid gap-6 mb-6 md:grid-cols-2">
                   {errorMessage && (
                     <p className="text-red-500 text-xs text-center mt-2">{errorMessage}</p>
                   )}
+                <div className="grid gap-6 mb-6 md:grid-cols-2">
                   <div>
                     <label htmlFor="event_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Event</label>
                     <input type="text" id="event_name" name='event_name' className="bg-gray-50 border outline-none text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="Nama Event" required 

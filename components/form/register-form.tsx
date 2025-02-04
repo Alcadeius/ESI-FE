@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { cn } from "@/lib/utils"
@@ -79,7 +80,7 @@ export function RegisterForm({
       })
   }
   return (
-    <div className="w-full lg:px-16 dark z-10">
+    <div className="w-full lg:px-3 lg:col-span-2 xl:col-span-1 dark z-10">
       <Card className="bg-transparent border-0">
         <CardHeader className="text-center">
           <CardTitle className="text-5xl text-white text-left">HALO <br /> NAK KODYA!</CardTitle>
@@ -89,8 +90,8 @@ export function RegisterForm({
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="grid gap-6">
-                <div className="grid gap-2">
+              <div className="grid items-center gap-6">
+                <div className="grid xl:grid-cols-1 lg:grid-cols-2 gap-2">
                   <div className="grid gap-2">
                     <FormField
                       control={form.control}
@@ -155,8 +156,8 @@ export function RegisterForm({
                       )}
                     />
                   </div>
-                  <Button type="submit" className="w-full bg-red-600 text-white font-semibold hover:text-red-600 mt-4">
-                    Login {isLoading ? <LoadingSpinner className="size-4" /> : ""}
+                  <Button type="submit" className="w-full bg-red-600 text-white font-semibold lg:col-span-2 xl:col-span-1 hover:text-red-600 mt-4">
+                    Register {isLoading ? <LoadingSpinner className="size-4" /> : ""}
                   </Button>
                 </div>
                 <div className="text-center text-sm">

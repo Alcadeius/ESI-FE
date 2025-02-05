@@ -57,12 +57,6 @@ export function LoginForm({
       .then(function (response) {
         localStorage.setItem("authToken", response.data.meta.token);
         router.push('/main')
-        Swal.fire({
-          title: 'Berhasil!',
-          text: 'Anda berhasil masuk',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        })
       })
       .catch(function (error) {
         if (error.response.status === 401) {
@@ -139,7 +133,7 @@ export function LoginForm({
                     />
                   </div>
                   <Button type="submit" className="w-full bg-red-600 text-white font-semibold hover:text-red-600 mt-4">
-                    Login {isLoading ? <LoadingSpinner className="size-4" /> : ""}
+                    Login {isLoading ? <LoadingSpinner className="size-4 text-white" /> : ""}
                   </Button>
                 </div>
                 <div className="text-center text-sm">

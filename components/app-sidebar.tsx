@@ -4,7 +4,6 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
@@ -15,31 +14,31 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
-import { ChevronRight, LayoutDashboard, User } from "lucide-react"
+import { Box, ChevronRight, LayoutDashboard, Receipt, Slash, User } from "lucide-react"
 
 const items = [
   {
-    title: "Main Page",
-    url: "",
-    isActive: true,
-    icon: <LayoutDashboard/>,
-    items: [
-      {
-        title: "Beranda",
-        url: "/main",
-      },
-      {
-        title: "Landing Page",
-        url: "/",
-      },
-      {
-        title: "Event Submission",
-        url : "/event-submit",
-      },
-    ],
+    title: "Halaman Awal",
+    url: "/",
+    icon: <Slash/>,
   },
   {
-    title: "Account Page",
+    title: "Halaman Utama",
+    url: "/main",
+    icon: <LayoutDashboard/>,
+  },
+  {
+    title: "Keranjang",
+    url: "/main",
+    icon: <Box/>,
+  },
+  {
+    title: "Riwayat Transaksi",
+    url: "/main",
+    icon: <Receipt/>,
+  },
+  {
+    title: "Kelola Akun",
     url: "",
     icon: <User/>,
     isActive: true,

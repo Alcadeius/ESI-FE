@@ -1,10 +1,18 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import NavigationBar from "../navigation-bar";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 export default function Payment() {
   const [file, setFile] = useState<any>(null);
   const [copied, setCopied] = useState(false); 
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const router = useRouter(); 
   
    const handleCopy = () => {
     const input = document.getElementById("input-transfer") as HTMLInputElement; 
@@ -37,6 +45,60 @@ export default function Payment() {
       setFile(droppedFile);
     }
   };
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      router.push("/login");
+    }
+}, [router]);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setErrorMessage(''); 
+    setLoading(true);
+    if (!file) {
+      alert("Silakan unggah bukti transfer terlebih dahulu!");
+      return;
+    }
+
+    const formData = new FormData();
+    const token = localStorage.getItem("authToken");
+    formData.append("method", paymentMethod);
+    formData.append("proof_image", file);
+
+    try {
+      const response = await axios.post("https://esi.bagoesesport.com/api/v1/transaction", formData, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response.status === 201) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Pengajuan Berhasil!',
+          text: 'Data event Anda telah berhasil diajukan.',
+          confirmButtonText: 'OK',
+        }).then(() => {
+          router.push("/main"); 
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Data Gagal Ditambahkan',
+          text: 'Terjadi Kesalahan Saat Melakukan Pengajuan',
+        })
+        setErrorMessage(response.data.message);
+      }
+    } catch (e) { 
+      if (axios.isAxiosError(e) && e.response?.data?.message) {
+        setErrorMessage(e.response.data.message); 
+      } else {
+        setErrorMessage('Terjadi kesalahan, coba lagi nanti!'); 
+      }
+    } finally {
+        setLoading(false);
+    }
+  };
 
   return (
     <div className="h-screen lg:px-20 lg:pt-14 bg-[url('/images/DSCF4041-3.png')] bg-cover bg-no-repeat before:absolute before:w-full before:content-['a'] before:h-full before:bg-black/35 before:top-0 before:left-0 before:z-0">
@@ -63,9 +125,15 @@ export default function Payment() {
           <div className="flex flex-col lg:max-w-2xl lg:w-3/4 lg:rounded-br-md lg:rounded-tr-md bg-[#D9D9D9] py-3 px-5 lg:py-10 lg:px-10 xl:px-20 xl:py-14">
             <h1 className="text-lg text-blue-500 lg:text-2xl font-bold">Pembayaran</h1>
             <div>
-              <form className="max-w-sm mx-auto">
+              <form onSubmit={handleSubmit} className="max-w-sm mx-auto">
+              {errorMessage && (
+                    <p className="text-red-500 text-xs text-center mt-2">{errorMessage}</p>
+              )}
                 <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900">Select an option</label>
-                <select id="countries" className="bg-gray-50 border mb-3 outline-none border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                <select id="countries" className="bg-gray-50 border mb-3 outline-none border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                value={paymentMethod}
+                onChange={(e)=>setPaymentMethod(e.target.value)}
+                >
                   <option selected>Pilih Metode Pembayaran</option>
                   <option value="Q">Qris</option>
                   <option value="D">Dana</option>
@@ -112,7 +180,7 @@ export default function Payment() {
                   )}
                 </div>
                 <div className='w-full lg:float-right mt-5 bg-[#ff0000] cursor-pointer p-2 text-white rounded-md text-center'>
-                  <input type="submit" value="Submit"/>
+                  <input type="submit" disabled={loading} value={loading ? "Submitting..." : "Submit"}/>
                 </div>
               </form>
             </div>

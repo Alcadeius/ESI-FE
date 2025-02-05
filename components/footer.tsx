@@ -19,13 +19,13 @@ export default function Footer() {
                   <a href="/leaderboard" className="hover:underline">Papan Peringkat</a>
                 </li>
                 <li className="mb-4">
-                  <a href="" className="hover:underline">Riwayat Transaksi</a>
+                  <a href="/history" className="hover:underline">Riwayat Transaksi</a>
                 </li>
                 <li className="mb-4">
-                  <a href="" className="hover:underline">Keranjang</a>
+                  <a href="/payment" className="hover:underline">Keranjang</a>
                 </li>
                 <li>
-                  <a href="" className="hover:underline">Tentang Kami</a>
+                  <a href="#" className="hover:underline">Tentang Kami</a>
                 </li>
               </ul>
             </div>
@@ -44,7 +44,7 @@ export default function Footer() {
               <h2 className="mb-6 font-semibold text-gray-900">Layanan Lainnya</h2>
               <ul className="text-gray-600 dark:text-gray-400">
                 <li className="mb-4">
-                  <a href="#" className="hover:underline">Pengajuan Organizer</a>
+                  <a href="/event-submit" className="hover:underline">Pengajuan Organizer</a>
                 </li>
                 <li>
                   <a href="#" className="hover:underline">Panduan Pengajar</a>

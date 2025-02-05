@@ -2,9 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import NavigationBar from "../navigation-bar";
-import { Box, Filter, X } from "lucide-react";
+import { Box, X } from "lucide-react";
 import { Button } from "../ui/button";
-import QRCode from "react-qr-code";
 
 interface CardProps {
   date: string,
@@ -40,8 +39,8 @@ export default function Order() {
     return (
       <>
         {/* Desktop */}
-        <div className="w-full bg-white overflow-hidden rounded-sm shadow-md h-[100px] relative lg:block hidden">
-          <svg width="541" height="100" viewBox="0 0 541 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute top-0 left-0 z-0">
+        <div className="w-full lg:h-[30%] lg:bg-white bg-white overflow-hidden rounded-sm shadow-md h-[100px] relative lg:block hidden">
+          <svg width="541" height="200" viewBox="0 0 541 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute top-0 left-0 lg:-left-32 xl:-left-24 z-0">
             <g filter="url(#filter0_d_317_1317)">
               <rect x="308.095" y="-387" width="281.659" height="652.634" transform="rotate(43 308.095 -387)" fill="#FF0000" />
             </g>
@@ -61,13 +60,13 @@ export default function Order() {
           <div className="grid grid-cols-3 px-5 h-full z-10 relative">
             <section className="col-span-1 flex flex-col justify-center items-start text-sm font-medium -space-y-1">
               <p>Waktu: {data.date}</p>
-              <p className="text-xl uppercase font-semibold">{data.category}</p>
+              <p className="text-xl uppercase font-semibold lg:text-base">{data.category}</p>
               <p>Lokasi: {data.location}</p>
             </section>
             <section className="lg:col-span-2 flex justify-between items-center">
               <div className="flex flex-col justify-center items-start text-sm font-medium text-black pl-8 font-supertall">
-                <p className="text-[#FF0000] text-4xl">{data.name}</p>
-                <p className="pl-1">{data.category + ' - ' + data.description}</p>
+                <p className="text-[#FF0000] text-4xl lg:text-2xl">{data.name}</p>
+                <p className="pl-1 lg:sm">{data.category + ' - ' + data.description}</p>
               </div>
               <div className="font-semibold text-black text-xl flex justify-center items-center gap-2">
                 <p>{parseInt("20000").toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</p>
@@ -111,15 +110,15 @@ export default function Order() {
       <NavigationBar />
 
       {/* Content */}
-      <div className="w-full grid lg:mt-7 relative z-10 lg:grid-cols-3">
-        <section className="lg:col-span-2">
+      <div className="w-full grid lg:mt-7 relative z-10 lg:grid-cols-7">
+        <section className="lg:col-span-4">
           <div className="flex justify-between w-full">
             <div className="flex items-center gap-2">
               <Box className="size-6 lg:block hidden" />
               <h1 className="text-2xl font-semibold">Looting Box</h1>
             </div>
           </div>
-          <div className="space-y-3 mt-3">
+          <div className="space-y-3 mt-3 h-full">
             {cardData.map((data, index) => {
               return (
                 <Card key={index} data={data} />
@@ -127,7 +126,7 @@ export default function Order() {
             })}
           </div>
         </section>
-        <section className="w-full text-black lg:p-11 lg:py-0 py-3">
+        <section className="w-full text-black lg:p-11 lg:py-0 py-3 lg:col-span-3">
             <div className="w-full bg-white px-10 py-16 rounded-sm space-y-3">
               <div className="border-b border-black pb-4">
                 <p className="font-semibold text-2xl">Nota Transaksi</p>

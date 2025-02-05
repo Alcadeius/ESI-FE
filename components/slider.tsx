@@ -10,17 +10,10 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import Autoplay from "embla-carousel-autoplay"
+import { IEvent } from "./types/event";
+import FormatToRupiah from "@/lib/format-to-rupiah";
 
-interface CarouselProps {
-  date: string,
-  name: string,
-  location: string,
-  participants: number,
-  banner: string,
-  organizer: string
-}
-
-export default function CarouselDemo({data}: {data: CarouselProps[]}) {
+export default function CarouselDemo({data}: {data: IEvent[]}) {
   return (
     <Carousel
     plugins={[
@@ -38,32 +31,22 @@ export default function CarouselDemo({data}: {data: CarouselProps[]}) {
           <CarouselItem key={index}>
             <div className="p-0">
               <Card className="border-none outline-none p-0 m-0">
-                <CardContent className="flex items-center flex-col justify-center w-full p-0 m-0">
+                <CardContent className="flex items-center flex-col w-full p-0 m-0 min-h-[328px]">
                   <div className="font-medium -space-y-1 w-full px-5 pt-2 lg:hidden">
-                    <p>
-                      {event?.location}
-                    </p>
-                    <p className="font-semibold">
-                      {event?.date}
-                    </p>
+                    <div className="font-semibold">
+                      Event Tingkat {event?.category?.name}
+                    </div>
                   </div>
-                  <div className="w-full my-2 lg:hidden">
-                    <Image
-                      alt=""
-                      src={event?.banner}
-                      width={1000}
-                      height={1000}
-                      className="h-full w-full"
-                    />
+                  <div className="w-full my-2 lg:hidden min-h-[200px]" style={{backgroundImage: `url(${event?.event_banner})`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
                   </div>
                   <div className="w-full px-5 lg:hidden pb-3 -space-y-1">
-                    <h1 className="font-bold text-lg">{event?.name}</h1>
-                    <p className="text-sm">{event?.organizer}</p>
+                    <h1 className="font-bold">{event?.name.length > 40 ? `${event.name.slice(0, 40)}...` : event.name}</h1>
+                    <p className="text-sm font-medium">PrizePool: {FormatToRupiah(event.prizepool)}</p>
                   </div>
                   <div className="hidden lg:flex max-w-full w-full">
                     <Image
                       alt=""
-                      src={event?.banner}
+                      src={event?.event_banner}
                       width={1000}
                       height={1000}
                       className="h-full w-full"

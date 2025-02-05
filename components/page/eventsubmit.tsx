@@ -1,10 +1,9 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import NavigationBar from '../navigation-bar';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
-
 
 interface FormData {
   event_name: string;
@@ -50,13 +49,6 @@ export default function EventSubmit() {
       setFormData({ ...formData, application_file: droppedFile }); 
     }
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      router.push("/login");
-    }
-  }, [router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

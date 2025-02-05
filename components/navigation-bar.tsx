@@ -1,22 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
-import { useEffect, useRef, useState } from "react";
+import { IUser } from "./types/user";
 import Logo from "./logo"
 import Dropdown from './dropdown';
-import axios from "axios";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
-import { link } from "fs";
-
-
-interface UserProps {
-  email: string
-}
-
-interface NavigationBarProps {
-  data: UserProps
-}
+import { useUser } from "@/hooks/use-user";
+import { LoadingSpinner } from "./loading-spinner";
 
 const pageList = [
   {
@@ -42,51 +33,14 @@ const pageList = [
 ]
 
 const NavigationBar = () => {
-  const [userData, setUserData] = useState<NavigationBarProps | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { user, isLoading } = useUser()
   const router = useRouter()
-  const token = useRef<string | null>(null);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      token.current = localStorage.getItem("authToken");
-      if (!token.current) {
-        setError("Token tidak ditemukan, harap login terlebih dahulu.");
-        setLoading(false);
-        return;
-      } else {
-        try {
-          const response = await axios.get(
-            "https://esi.bagoesesport.com/api/v1/auth/user",
-            {
-              headers: {
-                Authorization: `Bearer ${token.current}`,
-              },
-            }
-          );
-          if (response && response.data) {
-            setUserData(response.data);
-          } else {
-            setError("Data user tidak ditemukan.");
-          }
-        } catch (err) {
-          setError("Gagal mengambil data user.");
-          console.error(err);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchUserData();
-  }, [token.current]);
 
   return (
     <header className='hidden relative z-10 w-full lg:grid lg:grid-cols-4 lg:shadow-none shadow-md shadow-gray-500/50 justify-between items-center content-center place-content-center lg:place-items-center text-white'>
       <div className='hidden lg:flex h-full place-content-start items-center col-span-3 w-full gap-9 font-medium'>
         <div>
-          <Logo className='h-10 w-10 md:h-20 md:w-20 lg:w-14 lg:h-14 ' />
+          <Logo className='h-10 w-10 md:h-20 md:w-20 lg:w-14 lg:h-14 cursor-pointer' onClick={() => router.push('/')} />
         </div>
         {pageList.map((page, index) => {
           return (
@@ -94,29 +48,21 @@ const NavigationBar = () => {
           )
         })}
       </div>
-      {token.current ? (
+      {((user as IUser) && !isLoading) ? (
         <div className="hidden lg:flex justify-end w-full items-center">
-          {loading ? (
-            <p>Loading user data...</p>
-          ) : error ? (
-            <p className="text-red-500">{error}</p>
-          ) : (
-            userData && (
-              <div>
-                <h2 className="mx-3">{userData?.data.email}</h2>
-              </div>
-            )
-          )}
+          <div>
+            <h2 className="mx-3">{user ? user?.email : ("Loading...")}</h2>
+          </div>
           <div className="rounded-full text-black">
-            <Dropdown />
+            {user ? <Dropdown /> : <LoadingSpinner className="size-4 text-white" />}
           </div>
         </div>
       ) : (
         <div className="hidden lg:flex justify-end w-full h-full text-center items-center">
-          <Button onClick={() => router.push('/register')} className="bg-[#DC2626] mr-3 text-white p-3 rounded-md">
+          <Button onClick={() => router.push('/register')} className="bg-[#DC2626] mr-3 text-white p-3 rounded-md hover:text-[#ff0000] border border-[#ff0000] hover:bg-transparent">
             Register
           </Button>
-          <Button onClick={() => router.push('/login')} className="bg-white text-[#DC2626] p-3 rounded-md">
+          <Button onClick={() => router.push('/login')} className="bg-white text-[#DC2626] p-3 rounded-md hover:text-[#ff0000] border border-transparent hover:border-[#ff0000] hover:bg-transparent">
             Login
           </Button>
         </div>

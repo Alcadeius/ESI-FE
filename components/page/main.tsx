@@ -1,183 +1,106 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
+
 import Image from 'next/image';
 import Slider from '../slider'
-import Games from '../games'
 import NavigationBar from '../navigation-bar';
 import { cn } from '@/lib/utils';
 import Footer from '../footer';
-import { ChevronsRight, User, User2 } from 'lucide-react';
+import { ChevronsRight, User2 } from 'lucide-react';
 import PaginationDemo from '../ui/pagein';
+import React from 'react';
+import axiosInstance from '@/lib/axios';
+import GameCard from '../gameCard';
+import useSWR from 'swr';
+import { IEvent } from '../types/event';
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '../ui/pagination';
+import LoadingScreen from '../loading-screen';
 
-interface eventDataProps {
-  date: string,
-  name: string,
-  location: string,
-  participants: number,
-  banner: string
+function fetchGames() {
+  const fetcher = (url: string) => axiosInstance(url).then((r) => r.data?.data)
+  const { data, isLoading } = useSWR(`/games`, fetcher)
+
+  return {
+    games: data,
+    isLoading
+  }
+}
+
+function fetchEvents() {
+  const fetcher = (url: string) => axiosInstance(url).then((r) => r.data?.data)
+  const { data, isLoading } = useSWR(`/events`, fetcher)
+
+  return {
+    events: data || [],
+    eventLoading: isLoading
+  }
+}
+
+function fetchSomeEvents() {
+  const fetcher = (url: string) => axiosInstance(url).then((r) => r.data?.data)
+  const { data, isLoading } = useSWR(`/events?category=National`, fetcher)
+
+  return {
+    someEvents: data,
+    someEventLoading: isLoading
+  }
 }
 
 export default function Main() {
+  const { games, isLoading } = fetchGames()
+  const { events, eventLoading } = fetchEvents()
+  const { someEvents, someEventLoading } = fetchSomeEvents()
 
-  const eventData = [
-    {
-      date: "12-17 Oktober",
-      name: "RIOT E-Sport Event",
-      location: "GARDEV Team Field",
-      participants: 240,
-      banner: "/images/Rectangle-10.png"
-    },
-    {
-      date: "12-17 Oktober",
-      name: "RIOT E-Sport Event",
-      location: "GARDEV Team Field",
-      participants: 240,
-      banner: "/images/Rectangle-10.png"
-    },
-    {
-      date: "12-17 Oktober",
-      name: "RIOT E-Sport Event",
-      location: "GARDEV Team Field",
-      participants: 240,
-      banner: "/images/Rectangle-10.png"
-    },
-    {
-      date: "12-17 Oktober",
-      name: "RIOT E-Sport Event",
-      location: "GARDEV Team Field",
-      participants: 240,
-      banner: "/images/Rectangle-10.png"
-    },
-    {
-      date: "12-17 Oktober",
-      name: "RIOT E-Sport Event",
-      location: "GARDEV Team Field",
-      participants: 240,
-      banner: "/images/Rectangle-10.png"
-    },
-    {
-      date: "12-17 Oktober",
-      name: "RIOT E-Sport Event",
-      location: "GARDEV Team Field",
-      participants: 240,
-      banner: "/images/Rectangle-10.png"
+  const itemsPerPage = 6;
+  const totalPages = events && events.length > 0 ? Math.ceil(events.length / itemsPerPage) : 1;
+
+
+  // Ensure the current page never goes out of bounds
+  const [currentPage, setCurrentPage] = React.useState(1);
+  React.useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
     }
-  ]
+  }, [totalPages]);
 
-  const gamesData = [
-    {
-      name: "League of Legends",
-      image: "/images/temp-game-card/lol.webp"
-    },
-    {
-      name: "Valorant",
-      image: "/images/temp-game-card/valo.webp"
-    },
-    {
-      name: "Mobile Legends",
-      image: "/images/temp-game-card/ml.jpg"
-    },
-    {
-      name: "Free Fire",
-      image: "/images/temp-game-card/ff.webp"
-    },
-    {
-      name: "PUBG Mobile",
-      image: "/images/temp-game-card/pubg.jpg"
-    }
-  ]
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const selectedEvents = events?.slice(startIndex, startIndex + itemsPerPage) || [];
 
-  const bannerData = [
-    {
-      date: "12-17 Oktober",
-      name: "Free Fire Tournament",
-      location: "Dharma Alaya Denpasar",
-      participants: 240,
-      banner: "/images/temp-banner/nyepnyep.png",
-      organizer: "Bagoes E-Sport"
-    },
-    {
-      date: "12-17 Oktober",
-      name: "Pubg Tournament",
-      location: "Dharma Alaya Denpasar",
-      participants: 160,
-      banner: "/images/temp-banner/pubeg.jpg",
-      organizer: "Bagoes E-Sport"
-    },
-  ]
 
-  const EventCard = ({ event, index }: { event: eventDataProps, index: number }) => {
+  const EventCard = ({ event, index }: { event: IEvent, index: number }) => {
     return (
-      <div key={index} className="bg-[#DC2626] rounded-sm p-5 w-full aspect-video z-20 relative bg-cover bg-center flex justify-between flex-col" style={{ backgroundImage: `url(${event?.banner})` }}>
+      <div key={index} className="bg-[#DC2626] rounded-sm p-5 w-full aspect-video z-20 relative bg-cover bg-center flex justify-between flex-col" style={{ backgroundImage: `url(${event?.event_banner})` }}>
         <div className="flex justify-between items-start">
           <div>
-            <div className="text-white font-bold text-2xl">{event?.date}</div>
+            <div className="text-white font-bold lg:text-2xl">{event?.event_logo}</div>
             <h1 className="text-white font-bold text-2xl">{event?.name}</h1>
-            <p className="text-white text-sm">{event?.location}</p>
+            <p className="text-white text-sm">{event?.category?.name}</p>
           </div>
           <div>
-            <ChevronsRight size={35}/>
+            <ChevronsRight size={35} />
           </div>
         </div>
         <div className="flex items-end gap-2">
-          <User2 size={35} />
-          <p className="text-white text-xl">{event?.participants} Participants</p>
+          <User2 className='size-6 lg:size-8' />
+          <p className="text-white lg:text-xl text-sm">- Participants</p>
         </div>
       </div>
     )
   }
 
-  const GameCard = ({ name, image }: { name: string, image: string }) => {
-    return (
-      <div className="flex items-center justify-center z-20">
-        <div className="relative lg:w-36 xl:w-[11rem] h-[470px] overflow-hidden border-4 border-white transform skew-x-[-10deg]">
-          <div className="w-[20rem] h-full transform -translate-x-[3rem] skew-x-[10deg]">
-            <Image
-              src={image}
-              alt={name}
-              layout="fill"
-              objectFit="cover"
-              className="absolute inset-0"
-            />
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 transform -translate-x-7">
-              <h1 className="text-white text-3xl font-bold uppercase text-center w-1/2 drop-shadow-2xl">
-                {name}
-              </h1>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+  if (isLoading) {
+    return <LoadingScreen />
   }
 
   return (
     <div className="bg-gray-900">
-      <section className='lg:px-20 lg:pt-14'>
+      <div className="lg:px-20 lg:pt-14">
         {/* Header */}
         <NavigationBar />
 
-        {/* Backdrop */}
-        <div className={cn("bg-[url('/images/backdrop_1.png')]",
-          "absolute lg:top-[50vh] lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[707px] h-[471px] bg-contain z-0 bg-gray-900 bg-blend-lighten",
-          "hidden lg:block")}>
-        </div>
-        <div className={cn("bg-[url('/images/backdrop_1.png')]",
-          "absolute lg:top-[100vh] -scale-x-100 lg:left-0 lg:transform lg:-translate-y-1/2 w-full h-[471px] bg-contain z-0 bg-gray-900 bg-blend-lighten",
-          "hidden lg:block")}>
-        </div>
-        <div className={cn("bg-[url('/images/backdrop_1.png')]",
-          "absolute lg:top-[150vh] lg:right-0 lg:transform lg:-translate-y-1/2 w-full h-[471px] bg-contain z-0 bg-gray-900 bg-blend-lighten",
-          "hidden lg:block")}>
-        </div>
-        <div className={cn("bg-[url('/images/backdrop_1.png')]",
-          "absolute lg:top-[200vh] -scale-x-100 lg:left-0 lg:transform lg:-translate-y-1/2 w-full h-[471px] bg-contain -z-10 bg-gray-900 bg-blend-lighten",
-          "hidden lg:block")}>
-        </div>
-
         {/* Slider */}
-        <div className='w-full grid lg:mb-10 justify-center lg:grid-cols-3 lg:place-content-center lg:place-items-center my-10 lg:my-0 lg:pt-14 pt-0'>
+        {/* <div className='w-full grid lg:mb-10 justify-center lg:grid-cols-3 lg:place-content-center lg:place-items-center my-10 lg:my-0 lg:pt-14 pt-0'>
           <div className="lg:col-span-2 w-full z-10">
-            <Slider data={bannerData} />
+            {!someEventLoading && <Slider data={someEvents} />}
           </div>
           <div className="relative w-full h-full justify-center self-center hidden lg:flex">
             <div className="hidden lg:flex flex-col items-center place-items-center justify-center h-full text-white z-10">
@@ -188,45 +111,85 @@ export default function Main() {
               <Image src="/images/ruby+goblin.png" alt="" className="w-[20vw] h-auto" width={1000} height={1000} />
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Hero */}
-        <div className="flex lg:text-2xl text-base font-medium uppercase text-white px-5 my-10">
-          <h1 className='z-10'># Ayo Ikuti Keseruan Lainnya</h1>
+        <div className="flex lg:text-2xl text-base font-supertall uppercase text-white px-5 mt-10 mb-5">
+          <h1 className='z-10'># EVENTS FOR THE WORTHY</h1>
         </div>
 
         <div className="text-white grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 place-content-center gap-7 px-5">
-          {eventData.map((event, index) => {
+          {!eventLoading && selectedEvents.map((event: IEvent, index: number) => {
             return (
               <EventCard key={index} event={event} index={index} />
             )
           })}
         </div>
-        <div className="lg:grid hidden w-full items-center text-white my-5 place-content-center">
-          <PaginationDemo />
-        </div>
 
-      </section>
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="w-full items-center text-white my-5 place-content-center flex">
+            {totalPages > 1 && (
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurrentPage((prev) => Math.max(prev - 1, 1));
+                      }}
+                      aria-disabled={currentPage === 1}
+                    />
+                  </PaginationItem>
 
-      <section className="relative w-full mb-20 lg:mt-20">
-        {/* Games */}
-        <div className='grid grid-cols-1 justify-items-center'>
-          <div className='text-white bg-red-600 text-xl lg:text-2xl lg:px-6 px-3 py-2 rounded-lg my-10 lg:my-5 font-bold h-fit text-center uppercase'>
-            <h1># Trending E-SPORTS GAMES</h1>
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink
+                        href="#"
+                        isActive={currentPage === i + 1}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage(i + 1);
+                        }}
+                      >
+                        {i + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+                      }}
+                      aria-disabled={currentPage === totalPages}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            )}
           </div>
-          <div className="lg:hidden z-20 overflow-hidden w-full">
-            <Games games={gamesData} />
+        )}
+      </div>
+
+      {!isLoading && (
+        <section className="relative w-full mb-20 lg:mt-20">
+          {/* Games */}
+          <div className='grid grid-cols-1 justify-items-center'>
+            <div className='text-white font-supertall bg-red-600 text-xl lg:text-2xl lg:px-6 px-3 py-2 rounded-lg mt-10 lg:mt-0 lg:mb-5 h-fit text-center uppercase'>
+              <h1># Trending E-SPORTS GAMES</h1>
+            </div>
+            <div className='flex gap-10 mt-5 font-rocker w-full'>
+              <GameCard slides={games} options={{ loop: true }} />
+            </div>
           </div>
-          <div className='hidden lg:flex gap-10 mt-5 font-rocker'>
-            {gamesData.map((game, index) => {
-              return (
-                <GameCard key={index} name={game.name} image={game.image} />
-              )
-            })}
-          </div>
-        </div>
-        <div className="bg-[#DC2626] shadow-[inset_0_-33px_113px_rgba(0,0,0,0.25)] absolute h-[196px] lg:h-80 w-[100%] -bottom-10"></div>
-      </section>
+          <div className="bg-[#DC2626] shadow-[inset_0_-33px_113px_rgba(0,0,0,0.25)] absolute h-[196px] lg:h-80 w-[100%] -bottom-10"></div>
+        </section>
+      )}
+
       {/* Footer */}
       <Footer />
     </div>

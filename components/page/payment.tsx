@@ -6,14 +6,13 @@ export default function Payment() {
   const [file, setFile] = useState<any>(null);
   const [copied, setCopied] = useState(false); 
   
-   // Fungsi untuk menyalin teks dari input
    const handleCopy = () => {
-    const input = document.getElementById("input-transfer") as HTMLInputElement; // Tipekan dengan HTMLInputElement
-    const inputValue = input.value; // Ambil nilai dari input
+    const input = document.getElementById("input-transfer") as HTMLInputElement; 
+    const inputValue = input.value; 
     
     navigator.clipboard.writeText(inputValue).then(() => {
-      setCopied(true); // Menampilkan status berhasil disalin
-      setTimeout(() => setCopied(false), 2000); // Reset status setelah 2 detik
+      setCopied(true); 
+      setTimeout(() => setCopied(false), 2000); 
     }).catch((err) => {
       console.error("Gagal menyalin: ", err);
     });

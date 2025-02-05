@@ -41,7 +41,7 @@ export default function History() {
       <>
         {/* Desktop */}
         <div className="w-full bg-white overflow-hidden rounded-sm shadow-md h-[100px] relative lg:block hidden">
-          <svg width="541" height="100" viewBox="0 0 541 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute top-0 left-0 z-0">
+          <svg width="541" height="100" viewBox="0 0 541 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute top-0 left-0 lg:-left-24 xl:-left-10 z-0">
             <g filter="url(#filter0_d_317_1317)">
               <rect x="308.095" y="-387" width="311.659" height="652.634" transform="rotate(43 308.095 -387)" fill="#FF0000" />
             </g>
@@ -77,22 +77,22 @@ export default function History() {
         </div>
 
         {/* Mobile */}
-        <div className="bg-white w-full aspect-video grid grid-cols-3 lg:hidden rounded-md overflow-hidden">
-          <section className="w-full h-full bg-[#FF0000] grid justify-start items-center p-2 -space-y-4">
+        <div className="bg-white w-full aspect-auto h-1/2 grid grid-cols-3 lg:hidden rounded-md overflow-hidden">
+          <section className="w-full h-full bg-[#FF0000] flex flex-col justify-center md:items-center items-start p-2">
             <p className="text-xs">{data.status}</p>
             <p className="font-semibold underline">{data.date}</p>
             <p className="font-supertall text-xl">{data.category}</p>
             <p className="font-supertall text-sm">{data.name}</p>
           </section>
           <section className="w-full h-full col-span-2 grid justify-center items-center">
-            <div className="w-full px-9 grid grid-cols-1">
+            <div className="w-full px-9 grid justify-items-center items-center grid-cols-1">
               <QRCode
                 size={256}
-                style={{ height: "auto", maxWidth: "100%", width: "100%", paddingTop:"8px" }}
+                style={{ height: "auto", maxWidth: "60%", width: "100%", paddingTop:"8px" }}
                 value={"unknown"}
                 viewBox={`0 0 256 256`}
               />
-              <p className="text-black w-full text-center">klik untuk perbesar</p>
+              <p className="text-black text-center">klik untuk perbesar</p>
             </div>
           </section>
         </div>

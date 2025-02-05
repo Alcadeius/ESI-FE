@@ -194,8 +194,8 @@ export default function EventSubmit() {
                     </div>
                   )}
                 </div>
-                <div className='w-full lg:float-right bg-[#ff0000] cursor-pointer p-2 text-white rounded-md text-center'>
-                  <input type="submit" value={loading ? "Submitting..." : "Submit"}/>
+                <div className='w-full lg:transition-all lg:hover:bg-black lg:float-right bg-[#ff0000] cursor-pointer p-2 text-white rounded-md text-center'>
+                  <input type="submit" className="cursor-pointer" value={loading ? "Submitting..." : "Submit"}/>
                 </div>
               </form>
             </div>

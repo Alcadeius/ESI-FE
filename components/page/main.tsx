@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 
-import Image from 'next/image';
-import Slider from '../slider'
+// import Image from 'next/image';
+// import Slider from '../slider'
 import NavigationBar from '../navigation-bar';
-import { cn } from '@/lib/utils';
+// import { cn } from '@/lib/utils';
 import Footer from '../footer';
 import { ChevronsRight, User2 } from 'lucide-react';
-import PaginationDemo from '../ui/pagein';
+// import PaginationDemo from '../ui/pagein';
 import React from 'react';
 import axiosInstance from '@/lib/axios';
 import GameCard from '../gameCard';

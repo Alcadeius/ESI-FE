@@ -18,18 +18,18 @@ export default function Leaderboard() {
                         <h1 className="[text-shadow:_0px_5px_16px_#838383] uppercase text-white font-extrabold text-center text-3xl lg:hidden">Hall Of Fame</h1>
                         <p className="p-2 bg-white text-[#ff0000] text-xl rounded-md  font-bold text-center w-fit relative z-10 lg:text-2xl"># Popular E-sport Games</p>
                     </div>
-                    <div className="grid w-full 2xl:h-[80vh] lg:grid-cols-2 px-5 gap-5">
-                        <div className="bg-[url('/images/ml1.png')] md:bg-center  w-full  h-full bg-cover grid place-items-center bg-no-repeat px-5 py-5 rounded-md overflow-hidden">
-                            <p className="text-center text-xl font-semibold text-white  before:w-full before:content-[''] 2xl:before:h-1/2 2xl:before:bg-black/50 2xl:before:blur-sm 2xl:before:mt-[-20vh] before:left-0 before:h-[20%] before:mt-[-7.5vh] before:rounded-md before:blur-3xl before:opacity-40 before:z-0 before:bg-black before:absolute uppercase my-5 lg:my-10"><span className="relative z-10">Mobile Legends: Bang Bang</span></p>
+                    <div className="grid w-full lg:grid-cols-2 lg:px-16 px-5 gap-5">
+                        <div className="bg-[url('/images/ml1.png')] md:bg-center  w-full h-full lg:h-[400px] lg:max-h-[200px]  bg-cover grid place-items-center bg-no-repeat px-5 py-5 rounded-md overflow-hidden">
+                            <p className="text-center text-xl font-semibold text-white  before:w-full before:content-['']  before:left-0 before:h-[20%] before:mt-[-7.5vh] before:rounded-md before:blur-3xl before:opacity-40 before:z-0 before:bg-black before:absolute uppercase my-5 lg:my-10"><span className="relative z-10">Mobile Legends: Bang Bang</span></p>
                         </div>
                         <div className="bg-[url('/images/ff-1.png')] w-full  h-full bg-cover grid place-items-center bg-no-repeat px-5 py-5 rounded-md overflow-hidden">
-                            <p className="text-center text-xl font-semibold text-white before:w-full before:content-[''] 2xl:before:h-full 2xl:before:bg-black/50 2xl:before:blur-sm 2xl:before:mt-[-20vh] before:left-0 before:h-[20%] before:mt-[-7.5vh] before:rounded-md before:blur-3xl before:opacity-40 before:z-0 before:bg-black before:absolute uppercase my-5 lg:my-10 "><span className="relative z-10">Free Fire</span></p>
+                            <p className="text-center text-xl font-semibold text-white before:w-full before:content-['']  before:left-0 before:h-[20%] before:mt-[-7.5vh] before:rounded-md before:blur-3xl before:opacity-40 before:z-0 before:bg-black before:absolute uppercase my-5 lg:my-10 "><span className="relative z-10">Free Fire</span></p>
                         </div>
-                        <div className="bg-[url('/images/lokapala.png')] w-full  h-full bg-cover grid place-items-center bg-no-repeat px-5 py-5 rounded-md overflow-hidden">
-                            <p className="text-center text-xl font-semibold text-white before:w-full before:content-[''] 2xl:before:h-full 2xl:before:bg-black/50 2xl:before:blur-sm 2xl:before:mt-[-20vh] before:left-0 before:h-[20%] before:mt-[-7.5vh] before:rounded-md before:blur-3xl before:opacity-40 before:z-0 before:bg-black before:absolute uppercase my-5 lg:my-10"><span className="relative z-10">Lokapala</span></p>
+                        <div className="bg-[url('/images/lokapala.png')] w-full  h-full bg-cover lg:h-[400px] lg:max-h-[180px] grid place-items-center bg-no-repeat px-5 py-5 rounded-md overflow-hidden">
+                            <p className="text-center text-xl font-semibold text-white before:w-full before:content-['']  before:left-0 before:h-[20%] before:mt-[-7.5vh] before:rounded-md before:blur-3xl before:opacity-40 before:z-0 before:bg-black before:absolute uppercase my-5 lg:my-10"><span className="relative z-10">Lokapala</span></p>
                         </div>
                         <div className="bg-[url('/images/hok.png')] w-full h-full bg-cover grid place-items-center bg-no-repeat px-5 py-5 rounded-md overflow-hidden">
-                            <p className="text-center text-xl font-semibold text-white before:w-full before:content-[''] 2xl:before:h-full 2xl:before:bg-black/50 2xl:before:blur-sm 2xl:before:mt-[-20vh] before:left-0 before:h-[20%] before:mt-[-7.5vh] before:rounded-md before:blur-3xl before:opacity-40 before:z-0 before:bg-black before:absolute uppercase my-5 lg:my-10"><span className="relative z-10">Honor Of King</span></p>
+                            <p className="text-center text-xl font-semibold text-white before:w-full before:content-['']  before:left-0 before:h-[20%] before:mt-[-7.5vh] before:rounded-md before:blur-3xl before:opacity-40 before:z-0 before:bg-black before:absolute uppercase my-5 lg:my-10"><span className="relative z-10">Honor Of King</span></p>
                         </div>
                     </div>
                 </div>
@@ -88,7 +88,7 @@ export default function Leaderboard() {
                 </div>
                 <div className="grid grid-cols-12 py-20 px-10  h-full my-auto">
                     <div className="flex flex-col gap-2 justify-center w-full col-span-4">
-                        <p className="text-2xl text-white">Games List</p>
+                        <p className="text-xl text-white">Games List</p>
                         <div className="flex text-white items-center ">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
@@ -133,13 +133,13 @@ export default function Leaderboard() {
                         </div>
                     </div>
                     <div className="flex flex-col justify-center col-span-8">
-                        <div className="text-2xl">
+                        <div className="text-xl">
                             Mobile Legends: Bang Bang
                         </div>
-                        <table className="uppercase">
-                            <th className="text-start">Rank</th>
-                            <th className="text-start">Nama Player</th>
-                            <th className="text-start">Points</th>
+                        <table className="uppercase font-extralight text-lg">
+                            <td className="text-start">Rank</td>
+                            <td className="text-start">Nama Player</td>
+                            <td className="text-start">Points</td>
                             <tr>
                                 <td>#1</td>
                                 <td>I Gede Reyna Febrian</td>

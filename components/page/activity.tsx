@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -8,14 +9,29 @@ import NavigationBar from "../navigation-bar";
 import { Wrench, Presentation, Sword, ScreenShare, CirclePlus } from "lucide-react";
 import { Event, Activity } from "../types/activty"; 
 import Image from "next/image";
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import Swal from "sweetalert2";
+import { useRouter } from 'next/navigation';
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 const baseUrl = "https://esi.bagoesesport.com";
 
-// Fetcher untuk SWR
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export default function ActivityComponent() {
+    const [ticketQuantity, setTicketQuantity] = useState(1);
     const searchParams = useSearchParams();
+    const router = useRouter(); 
     const eventIdFromUrl = searchParams.get("event");
     const [selectedEventId, setSelectedEventId] = useState<number | null>(
         eventIdFromUrl ? Number(eventIdFromUrl) : null
@@ -37,6 +53,56 @@ export default function ActivityComponent() {
     if (eventError) return <div>Error loading events</div>;
     if (activityError) return <div>Error loading activities</div>;
     if (!eventData) return <div>Loading events...</div>;
+    
+
+    const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTicketQuantity(Number(event.target.value));
+    };
+    
+    const handleBuyTicket = async () => {
+        try {
+            const token = localStorage.getItem("authToken"); 
+    
+            if (!token) {
+                alert("Anda harus login terlebih dahulu!");
+                return;
+            }
+    
+            const response = await axios.post(
+                `${baseUrl}/api/v1/buy-ticket`,
+                {
+                    ticket_sale_id: selectedEventId, 
+                    quantity: ticketQuantity
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+            if (response.status === 200) {
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Berhasil Ditambahkan!',
+                      text: 'Ticket anda sudah tersimpan di keranjang',
+                      confirmButtonText: 'OK',
+                    }).then(() => {
+                      router.push("/payment"); 
+                    });
+                  } else {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Gagal Menambahkan Ticket',
+                      text: 'Terjadi Kesalahan Saat Memasukan ticket',
+                    })
+                  }
+        } catch (error) {
+            console.error("Error saat membeli tiket:", error);
+            alert("Gagal membeli tiket!");
+        }
+    };
+    
 
     return (
         <div className="lg:py-[56px] lg:px-[80px] h-full w-full">
@@ -84,7 +150,38 @@ export default function ActivityComponent() {
                                     </div>
                                     </div>
                                     <div className="font-sans hidden lg:flex text-sm">
-                                    <button className="w-full text-white rounded-sm font-semibold bg-[#ff0000] justify-center items-center text-center p-2 transition-all hover:border-[#ff0000] hover:border hover:bg-transparent hover:text-black"> Tambahkan Ke Keranjang </button>    
+                                    <button className="w-full text-white rounded-sm font-semibold bg-[#ff0000] justify-center items-center text-center p-3 transition-all hover:border-[#ff0000] hover:border hover:bg-transparent hover:text-black"> 
+        <Dialog>
+      <DialogTrigger asChild>
+        <a className="bg-transparent p-2">Tambahkan Ke Keranjang</a>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Beli Tiket</DialogTitle>
+          <DialogDescription>
+            Masukan Jumlah Ticket yang ingin anda beli.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+      <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="quantity" className="text-right">
+          Jumlah
+        </Label>
+        <Input
+          id="quantity"
+          type="number"
+          min="1"
+          value={ticketQuantity}
+          onChange={handleQuantityChange}
+          className="col-span-3"
+        />
+      </div>
+      </div>
+        <DialogFooter>
+          <Button onClick={handleBuyTicket}>Beli Tiket</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog> </button>    
                                     </div>   
                                     <button className="w-full lg:hidden rounded-sm my-1 bg-[#ff0000] justify-center items-center text-center p-1"> <CirclePlus className="text-white w-full text-center"/> </button>
                                 </div>

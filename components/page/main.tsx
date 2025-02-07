@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 import NavigationBar from '../navigation-bar';
 import Footer from '../footer';
@@ -12,8 +10,9 @@ import useSWR from 'swr';
 import { IEvent } from '../types/event';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '../ui/pagination';
 import LoadingScreen from '../loading-screen';
+import { useRouter } from 'next/navigation';
 
-function fetchGames() {
+function FetchGames() {
   const fetcher = (url: string) => axiosInstance(url).then((r) => r.data?.data)
   const { data, isLoading } = useSWR(`/games`, fetcher)
 
@@ -23,7 +22,7 @@ function fetchGames() {
   }
 }
 
-function fetchEvents() {
+function FetchEvents() {
   const fetcher = (url: string) => axiosInstance(url).then((r) => r.data?.data)
   const { data, isLoading } = useSWR(`/events`, fetcher)
 
@@ -33,20 +32,10 @@ function fetchEvents() {
   }
 }
 
-function fetchSomeEvents() {
-  const fetcher = (url: string) => axiosInstance(url).then((r) => r.data?.data)
-  const { data, isLoading } = useSWR(`/events?category=National`, fetcher)
-
-  return {
-    someEvents: data,
-    someEventLoading: isLoading
-  }
-}
-
 export default function Main() {
-  const { games, isLoading } = fetchGames()
-  const { events, eventLoading } = fetchEvents()
-  const { someEvents, someEventLoading } = fetchSomeEvents()
+  const { games, isLoading } = FetchGames()
+  const { events, eventLoading } = FetchEvents()
+  const router = useRouter()
 
   const itemsPerPage = 6;
   const totalPages = events && events.length > 0 ? Math.ceil(events.length / itemsPerPage) : 1;
@@ -58,29 +47,34 @@ export default function Main() {
     if (currentPage > totalPages) {
       setCurrentPage(totalPages);
     }
-  }, [totalPages]);
+  }, [totalPages, currentPage]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const selectedEvents = events?.slice(startIndex, startIndex + itemsPerPage) || [];
 
+  // Handle event click, redirect to event activity page
+  const handleEventClick = (event: IEvent) => {
+    router.push(`/activity/?event=${event.id}`)
+  }
 
   const EventCard = ({ event, index }: { event: IEvent, index: number }) => {
     return (
-      <div key={index} className="bg-[#DC2626] rounded-sm p-5 w-full aspect-video z-20 relative bg-cover bg-center flex justify-between flex-col" style={{ backgroundImage: `url(${event?.event_banner})` }}>
-        <div className="flex justify-between items-start">
+      <div key={index} onClick={() => handleEventClick(event)} className="bg-gray-900 rounded-sm p-5 w-full aspect-video z-20 relative bg-cover bg-center flex justify-between flex-col select-none cursor-pointer group" style={{ backgroundImage: `url(${event?.event_banner})` }}>
+        <div className="flex justify-between items-start z-10">
           <div>
             <div className="text-white font-bold lg:text-2xl">{event?.event_logo}</div>
-            <h1 className="text-white font-bold text-2xl">{event?.name}</h1>
+            <h1 className="text-white font-bold text-2xl">{event?.name.length > 40 ? `${event.name.slice(0, 40)}...` : event.name}</h1>
             <p className="text-white text-sm">{event?.category?.name}</p>
           </div>
           <div>
-            <ChevronsRight size={35} />
+            <ChevronsRight size={35} className="group-hover:scale-125 transition-all"/>
           </div>
         </div>
-        <div className="flex items-end gap-2">
+        <div className="flex items-end gap-2 z-10">
           <User2 className='size-6 lg:size-8' />
           <p className="text-white lg:text-xl text-sm">- Participants</p>
         </div>
+        <div className='absolute left-0 top-0 w-full h-full bg-black opacity-50 group-hover:opacity-30 z-0'></div>
       </div>
     )
   }
@@ -95,21 +89,6 @@ export default function Main() {
         {/* Header */}
         <NavigationBar />
 
-        {/* Slider */}
-        {/* <div className='w-full grid lg:mb-10 justify-center lg:grid-cols-3 lg:place-content-center lg:place-items-center my-10 lg:my-0 lg:pt-14 pt-0'>
-          <div className="lg:col-span-2 w-full z-10">
-            {!someEventLoading && <Slider data={someEvents} />}
-          </div>
-          <div className="relative w-full h-full justify-center self-center hidden lg:flex">
-            <div className="hidden lg:flex flex-col items-center place-items-center justify-center h-full text-white z-10">
-              <h1 className="font-extrabold text-7xl">HIGHLIGHT</h1>
-              <p className="uppercase py-2 px-4 bg-white text-[#DC2626] rounded-lg font-extrabold text-2xl">Event yang dinantikan</p>
-            </div>
-            <div className="hidden absolute lg:block -left-56 top-0 z-0">
-              <Image src="/images/ruby+goblin.png" alt="" className="w-[20vw] h-auto" width={1000} height={1000} />
-            </div>
-          </div>
-        </div> */}
 
         {/* Hero */}
         <div className="flex lg:text-2xl text-base font-supertall uppercase text-white px-5 mt-10 mb-5">

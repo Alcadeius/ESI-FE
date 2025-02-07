@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image";
 import NavigationBar from "../navigation-bar";
 import { cn } from "@/lib/utils";
 export default function Landing() {
@@ -16,7 +17,7 @@ export default function Landing() {
       {/* Content */}
       <div className={cn("lg:absolute lg:top-1/2 lg:left-[5rem] lg:transform lg:-translate-y-1/2 z-10", "lg:w-1/2 lg:space-y-4 w-full", "relative pb-10 space-y-1 mt-7")}>
         <div className="lg:hidden w-full flex justify-center">
-          <img src="/images/logo.png" alt="" width={150}/>
+          <Image src="/images/logo.png" alt="" width={150} height={150}/>
         </div>
         <p className={cn("text-center bg-[#FF0000] lg:text-2xl font-medium lg:mx-0 w-fit px-10 py-[6px] rounded-sm lg:mb-0", "text-base mx-auto mb-6")}>Selamat Datang</p>
         <div className="lg:text-5xl font-extrabold text-2xl -space-y-2">

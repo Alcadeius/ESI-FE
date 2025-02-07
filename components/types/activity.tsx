@@ -1,0 +1,19 @@
+// type event sudah dibuat
+
+export interface IActivity {
+  id: number;
+  name: string;
+  start_at: string;
+  end_at: string;
+  location: string;
+  map_link: string;
+  created_at: string;
+  updated_at: string;
+  type: {
+    id: number;
+    name: string;
+    flow: string;
+    created_at: string;
+    updated_at: string;
+  }
+}

@@ -1,11 +1,32 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import NavigationBar from "../navigation-bar";
 import { Filter, StickyNote } from "lucide-react";
 import { Button } from "../ui/button";
 import QRCode from "react-qr-code";
+import useSWR from "swr";
+import axios from "axios";
+// import { Key } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
+const fetcher = (url: string) => {
+  const token = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+  return axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then(res => res.data);
+};
 interface CardProps {
   date: string,
   name: string,
@@ -16,25 +37,37 @@ interface CardProps {
 }
 
 export default function History() {
+  const [sortOrder, setSortOrder] = useState<"terbaru" | "terlama">("terbaru");
 
-  const cardData = [
-    {
-      date: "12/12/2021",
-      name: "Tournament 1",
-      status: "Lunas",
-      category: "Registrasi Lomba",
-      description: "Tournament Mobile Legends",
-      file: "file.pdf"
-    },
-    {
-      date: "12/12/2021",
-      name: "Seminar 1",
-      status: "Menunggu Konfirmasi",
-      category: "Tiket Seminar",
-      description: "Tournament Mobile Legends",
-      file: "file.pdf"
-    }
-  ]
+  // const cardData = [
+  //   {
+  //     date: "12/12/2021",
+  //     name: "Tournament 1",
+  //     status: "Lunas",
+  //     category: "Registrasi Lomba",
+  //     description: "Tournament Mobile Legends",
+  //     file: "file.pdf"
+  //   },
+  //   {
+  //     date: "12/12/2021",
+  //     name: "Seminar 1",
+  //     status: "Menunggu Konfirmasi",
+  //     category: "Tiket Seminar",
+  //     description: "Tournament Mobile Legends",
+  //     file: "file.pdf"
+  //   }
+  // ]
+  const { data, error } = useSWR("https://esi.bagoesesport.com/api/v1/transaction/history", fetcher);
+  console.log("Response dari SWR:", data);
+  if (error) return <p className="text-red-500">Gagal memuat data</p>;
+  if (!data) return <p className="text-white">Memuat...</p>;
+
+  const transactions = data?.details ?? [];
+  transactions.sort((a: any, b: any) => {
+    return sortOrder === "terbaru"
+      ? new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      : new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+  });
 
   const Card = ({ data }: { data: CardProps }) => {
     return (
@@ -69,30 +102,55 @@ export default function History() {
               <p className="pl-1">{data.category + ' - ' + data.description}</p>
             </section>
             <section className="w-full grid items-center justify-end col-span-1">
-              <Button onClick={() => { }} className="bg-[#FF0000] text-white font-semibold text-sm rounded-md px-14 py-1 hover:bg-white hover:text-[#FF0000] hover:border-[#FF0000] border-[#FF0000] border-2">
-                Unduh
-              </Button>
+            {data.file ? (
+            <a href={data.file} target="_blank" className="bg-[#FF0000] text-white font-semibold text-sm rounded-md px-14 py-1 hover:bg-white hover:text-[#FF0000] hover:border-[#FF0000] border-[#FF0000] border-2">
+              <p className="p-2"> Unduh </p>
+              </a>
+  ) : (
+    <p className="text-gray-500">File tidak tersedia</p>
+  )}
             </section>
           </div>
         </div>
 
         {/* Mobile */}
-        <div className="bg-white w-full aspect-auto h-1/2 grid grid-cols-3 lg:hidden rounded-md overflow-hidden">
+        <div className="bg-white w-full aspect-auto h-fit grid grid-cols-3 lg:hidden rounded-md overflow-hidden">
           <section className="w-full h-full bg-[#FF0000] flex flex-col justify-center md:items-center items-start p-2">
             <p className="text-xs">{data.status}</p>
             <p className="font-semibold underline">{data.date}</p>
             <p className="font-supertall text-xl">{data.category}</p>
             <p className="font-supertall text-sm">{data.name}</p>
           </section>
-          <section className="w-full h-full col-span-2 grid justify-center items-center">
+          <section className="w-full h-fit col-span-2 grid justify-center items-center">
             <div className="w-full px-9 grid justify-items-center items-center grid-cols-1">
               <QRCode
                 size={256}
                 style={{ height: "auto", maxWidth: "60%", width: "100%", paddingTop:"8px" }}
-                value={"unknown"}
+                value={data.file ? data.file : "https://example.com/not-found"}
                 viewBox={`0 0 256 256`}
               />
-              <p className="text-black text-center">klik untuk perbesar</p>
+              <Dialog>
+                                  <DialogTrigger asChild>
+                                    <a className="text-black p-2 text-center cursor-pointer">Klik Untuk Perbesar</a>
+                                  </DialogTrigger>
+                                  <DialogContent className="sm:max-w-[425px]">
+                                    <DialogHeader>
+                                      <DialogTitle></DialogTitle>
+                                      <DialogDescription>
+                                        
+                                      </DialogDescription>
+                                    </DialogHeader>
+                                    
+                                    <QRCode
+                size={256}
+                style={{ height: "auto", maxWidth: "100%", width: "100%", paddingTop:"8px" }}
+                value={data.file ? data.file : "https://example.com/not-found"}
+                viewBox={`0 0 256 256`}
+              />
+                                    <DialogFooter>
+                                    </DialogFooter>
+                                  </DialogContent>
+                                </Dialog>
             </div>
           </section>
         </div>
@@ -105,10 +163,8 @@ export default function History() {
       <div className={cn("bg-[url('/images/backdrop_1.png')]", "absolute lg:top-1/2 lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[707px] h-[471px] bg-contain z-10 bg-gray-900 bg-blend-lighten", "-top-20 right-0")}>
       </div>
 
-      {/* Navbar */}
       <NavigationBar />
 
-      {/* Content */}
       <div className="w-full grid lg:mt-7 relative">
         <section className="flex justify-between w-full z-10">
           <div className="flex items-center gap-2">
@@ -116,21 +172,34 @@ export default function History() {
             <h1 className="text-2xl font-semibold">Riwayat Transaksi</h1>
           </div>
           <div>
-            <Button asChild onClick={() => { }} className="text-base font-semibold text-white cursor-pointer select-none bg-transparent" variant={"default"}>
-              <div>
-                <Filter className="size-6" />
-                <p className="hidden lg:block">Urutkan Riwayat</p>
-              </div>
-            </Button>
+          <Button
+            className="text-base font-semibold text-white cursor-pointer bg-transparent"
+            onClick={() => setSortOrder(sortOrder === "terbaru" ? "terlama" : "terbaru")}
+          >
+            <Filter className="size-6" />
+            <p className="hidden lg:block">
+              {sortOrder === "terbaru" ? "Urutkan: Terlama" : "Urutkan: Terbaru"}
+            </p>
+          </Button>
           </div>
         </section>
         <section className="z-10 space-y-3 mt-3">
-          {cardData.map((data, index) => {
-            return (
-              <Card key={index} data={data} />
-            )
-          })}
-        </section>
+        {transactions.map((transaction: { [x: string]: any[]; created_at: any; status: any; archice_pdf: any; }, index: any) => (
+  transaction["detail items"].map((item: { activity_type: any; order_type: any; order_number: any; }, idx: any) => (
+    <Card
+      key={`${index}-${idx}`}
+      data={{
+        date: transaction.created_at,
+        name: item.activity_type,
+        status: transaction.status,
+        category: item.order_type,
+        description: item.order_number,
+        file: transaction.archice_pdf,
+      }}
+    />
+  ))
+))}
+    </section>
       </div>
 
     </div>

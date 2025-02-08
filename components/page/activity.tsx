@@ -21,8 +21,6 @@ import {
 } from "@/components/ui/dialog"
 import Swal from "sweetalert2";
 import { useRouter } from 'next/navigation';
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { IEvent } from "../types/event";
 import { ITicket } from "../types/ticket";
 import axiosInstance from "@/lib/axios";
@@ -103,9 +101,17 @@ export default function ActivityComponent() {
 
 
   const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTicketQuantity(Number(event.target.value));
+    let value = Number(event.target.value);
+    if (value > 10) value = 10;
+    setTicketQuantity(value);
   };
-
+  const incrementQuantity = () => {
+    setTicketQuantity((prev) => (prev < 10 ? prev + 1 : 10));
+  };
+  
+  const decrementQuantity = () => {
+    setTicketQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+  };
   const handleBuyTicket = async () => {
     try {
       const token = localStorage.getItem("authToken");
@@ -114,9 +120,15 @@ export default function ActivityComponent() {
         alert("Anda harus login terlebih dahulu!");
         return;
       }
-
+      if (ticketQuantity > 10) {
+        Swal.fire({
+          icon: "error",
+          title: "Maksimum tiket yang bisa dibeli adalah 10!",
+        });
+        return;
+      }
       const response = await axios.post(
-        `/buy-ticket`,
+        `https://esi.bagoesesport.com/api/v1/buy-ticket`,
         {
           ticket_sale_id: selectedEventId,
           quantity: ticketQuantity
@@ -240,21 +252,42 @@ export default function ActivityComponent() {
                                         Masukan Jumlah Ticket yang ingin anda beli.
                                       </DialogDescription>
                                     </DialogHeader>
-                                    <div className="grid gap-4 py-4">
-                                      <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="quantity" className="text-right">
-                                          Jumlah
-                                        </Label>
-                                        <Input
-                                          id="quantity"
-                                          type="number"
-                                          min="1"
-                                          value={ticketQuantity}
-                                          onChange={handleQuantityChange}
-                                          className="col-span-3"
+                                    
+                                    <form className="w-full">
+                                    <div className="relative flex items-center">
+                                        <button
+                                        type="button"
+                                        id="decrement-button"
+                                        className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11"
+                                        onClick={decrementQuantity}
+                                        >
+                                        <svg className="w-3 h-3 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
+                                        </svg>
+                                        </button>
+
+                                        <input
+                                        type="text"
+                                        id="quantity-input"
+                                        className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm w-full py-2.5"
+                                        min="1"
+                                        max="10"
+                                        value={ticketQuantity}
+                                        onChange={handleQuantityChange}
                                         />
-                                      </div>
+
+                                        <button
+                                        type="button"
+                                        id="increment-button"
+                                        className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11"
+                                        onClick={incrementQuantity}
+                                        >
+                                        <svg className="w-3 h-3 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
+                                        </svg>
+                                        </button>
                                     </div>
+                                    </form>
                                     <DialogFooter>
                                       <Button onClick={handleBuyTicket}>Beli Tiket</Button>
                                     </DialogFooter>

@@ -1,20 +1,29 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
-import { useState,useEffect } from "react";
+"use client";
+import { useState, useEffect } from "react";
 import NavigationBar from "../navigation-bar";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+
 export default function Payment() {
   const [file, setFile] = useState<any>(null);
-  const [copied, setCopied] = useState(false); 
+  const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
-  const router = useRouter(); 
-  
-   const handleCopy = () => {
+  const [totalPrice, setTotalPrice] = useState<number | null>(null);
+  const [tickets, setTickets] = useState<{ activity_name: string; total_price: string }[]>([]);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      router.push("/login");
+    }
+  }, [router]);
+  const handleCopy = () => {
     const input = document.getElementById("input-transfer") as HTMLInputElement; 
     const inputValue = input.value; 
     
@@ -45,15 +54,39 @@ export default function Payment() {
       setFile(droppedFile);
     }
   };
+
+
+  // Pemanggilan API untuk mengambil data cart
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      router.push("/login");
-    }
-}, [router]);
+    const fetchCartItems = async () => {
+      const token = localStorage.getItem("authToken");
+      if (!token) return;
+
+      try {
+        const response = await axios.get("https://esi.bagoesesport.com/api/v1/cart/items", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 200) {
+          setTotalPrice(response.data.total_price);
+          setTickets(response.data.details.tickets.map((ticket: any) => ({
+            activity_name: ticket.activity_name,
+            total_price: ticket.total_price,
+          })));
+        }
+      } catch (error) {
+        console.error("Gagal mengambil data cart:", error);
+      }
+    };
+
+    fetchCartItems();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrorMessage(''); 
+    setErrorMessage("");
     setLoading(true);
     if (!file) {
       alert("Silakan unggah bukti transfer terlebih dahulu!");
@@ -68,35 +101,35 @@ export default function Payment() {
     try {
       const response = await axios.post("https://esi.bagoesesport.com/api/v1/transaction", formData, {
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
       if (response.status === 201) {
         Swal.fire({
-          icon: 'success',
-          title: 'Pengajuan Berhasil!',
-          text: 'Data event Anda telah berhasil diajukan.',
-          confirmButtonText: 'OK',
+          icon: "success",
+          title: "Pengajuan Berhasil!",
+          text: "Data event Anda telah berhasil diajukan.",
+          confirmButtonText: "OK",
         }).then(() => {
-          router.push("/main"); 
+          router.push("/main");
         });
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Data Gagal Ditambahkan',
-          text: 'Terjadi Kesalahan Saat Melakukan Pengajuan',
-        })
+          icon: "error",
+          title: "Data Gagal Ditambahkan",
+          text: "Terjadi Kesalahan Saat Melakukan Pengajuan",
+        });
         setErrorMessage(response.data.message);
       }
-    } catch (e) { 
+    } catch (e) {
       if (axios.isAxiosError(e) && e.response?.data?.message) {
-        setErrorMessage(e.response.data.message); 
+        setErrorMessage(e.response.data.message);
       } else {
-        setErrorMessage('Terjadi kesalahan, coba lagi nanti!'); 
+        setErrorMessage("Terjadi kesalahan, coba lagi nanti!");
       }
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -104,24 +137,41 @@ export default function Payment() {
     <div className="h-screen lg:px-20 lg:pt-14 bg-[url('/images/DSCF4041-3.png')] bg-cover bg-no-repeat before:absolute before:w-full before:content-['a'] before:h-full before:bg-black/35 before:top-0 before:left-0 before:z-0">
       <NavigationBar />
       <section className="px-5 relative grid grid-cols-1 2xl:place-content-center lg:flex z-10 py-[15vh] lg:w-full lg:py-5">
-        <div className="flex flex-col lg:rounded-bl-md lg:rounded-tl-md lg:w-full xl:max-w-4xl lg:max-w-lg py-3 bg-white px-5 lg:py-10 lg:px-10 xl:px-20 xl:py-14">
-          <div className="text-black flex flex-col  mb-5">
-            <h1 className="text-lg text-blue-500 font-bold lg:text-2xl">Detail Belanja</h1>
-            <p className="text-xs lg:text-base">Pastikan kembali pesanan anda sebelum mengirimkan formulir ini</p>
-          </div>
-          <div className="flex text-xs md:text-base font-bold justify-between mb-2 h-40 lg:h-full">
-            <h1>Tiket Seminar - Glory Of School</h1>
-            <h4>Rp. 160.000</h4>
-          </div>
-          <hr className="bg-black  p-[0.5px]" />
-          <div className="flex text-sm lg:text-lg font-bold justify-between">
-            <h1>Total</h1>
-            <h4>Rp. 160.000</h4>
-          </div>
-          <div className="text-xs">
-            Catatan: setelah formulir ini dikirimkan, harap menunggu konfirmasi pembayaran selambat-lambatnya 96 jam hari kerja (Senin-Sabtu)
-          </div>
+      <div className="flex flex-col lg:rounded-bl-md lg:rounded-tl-md lg:w-full xl:max-w-4xl lg:max-w-lg py-3 bg-white px-5 lg:py-10 lg:px-10 xl:px-20 xl:py-14">
+  <div className="text-black flex flex-col mb-5">
+    <h1 className="text-lg text-blue-500 font-bold lg:text-2xl">Detail Belanja</h1>
+    <p className="text-xs lg:text-base">Pastikan kembali pesanan anda sebelum mengirimkan formulir ini</p>
+  </div>
+
+  {/* Menampilkan daftar tiket */}
+  {tickets.length > 0 && (
+    <div className="mb-2">
+      {tickets.map((ticket, index) => (
+        <div key={index} className="flex text-xs md:text-base font-bold justify-between mb-2">
+          <h1>{ticket.activity_name}</h1>
+          <h4>Rp. {parseFloat(ticket.total_price).toLocaleString("id-ID")}</h4>
         </div>
+      ))}
+    </div>
+  )}
+
+  {/* Garis pemisah */}
+  <hr className="bg-black p-[0.5px]" />
+
+  {/* Menampilkan total harga */}
+  {totalPrice !== null && (
+    <div className="flex text-sm lg:text-lg font-bold justify-between mt-2">
+      <h1>Total</h1>
+      <h4>Rp. {totalPrice.toLocaleString("id-ID")}</h4>
+    </div>
+  )}
+
+  {/* Catatan tambahan */}
+  <div className="text-xs">
+    Catatan: setelah formulir ini dikirimkan, harap menunggu konfirmasi pembayaran selambat-lambatnya 96 jam hari kerja (Senin-Sabtu)
+  </div>
+</div>
+
           <div className="flex flex-col lg:max-w-2xl lg:w-3/4 lg:rounded-br-md lg:rounded-tr-md bg-[#D9D9D9] py-3 px-5 lg:py-10 lg:px-10 xl:px-20 xl:py-14">
             <h1 className="text-lg text-blue-500 lg:text-2xl font-bold">Pembayaran</h1>
             <div>
@@ -135,8 +185,8 @@ export default function Payment() {
                 onChange={(e)=>setPaymentMethod(e.target.value)}
                 >
                   <option selected>Pilih Metode Pembayaran</option>
-                  <option value="Q">Qris</option>
-                  <option value="D">Dana</option>
+                  <option value="Qris">Qris</option>
+                  <option value="Dana">Dana</option>
                 </select>
                 <div>
                   <label htmlFor="input-group-1" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tujuan Transfer</label>

@@ -142,13 +142,19 @@ export default function ActivityComponent() {
       );
       if (response.status === 200) {
         Swal.fire({
-          icon: 'success',
-          title: 'Berhasil Ditambahkan!',
-          text: 'Ticket anda sudah tersimpan di keranjang',
-          confirmButtonText: 'OK',
-        }).then(() => {
-          router.push("/payment");
-        });
+          title: "Ticket Berhasil Dipesan",
+          text: "Apakah kamu mau melakukan pembayaran?",
+          icon: "success",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText:"Tidak,Saya ingin melanjutkan pembelian",
+          confirmButtonText: "Ya, Arahkan Saya ke Pembayaran"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push("/order");
+          }
+        })
       } else {
         Swal.fire({
           icon: 'error',

@@ -1,41 +1,74 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { cn } from "@/lib/utils";
 import NavigationBar from "../navigation-bar";
 import { Box, X } from "lucide-react";
 import { Button } from "../ui/button";
+import axios from "axios";
+import useSWR from "swr";
+// interface CardProps {
+//   date: string,
+//   name: string,
+//   location: string,
+//   category: string,
+//   description: string,
+//   price: string
+// }
 
-interface CardProps {
-  date: string,
-  name: string,
-  location: string,
-  category: string,
-  description: string,
-  price: string
-}
-
-export default function Order() {
-
-  const cardData = [
-    {
-      date: "12/12/2021",
-      name: "Tournament 1",
-      location: "Dharma Alaya Center",
-      category: "Registrasi Lomba",
-      description: "Tournament Mobile Legends",
-      price: "40000"
+const fetcher = (url: string) =>
+  axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
     },
-    {
-      date: "12/12/2021",
-      name: "Seminar 1",
-      location: "Dharma Alaya Center",
-      category: "Tiket Seminar",
-      description: "Tournament Mobile Legends",
-      price: "40000"
-    }
-  ]
+  }).then(res => res.data);
 
-  const Card = ({ data }: { data: CardProps }) => {
+  interface CartAPIResponse {
+    message: string;
+    total_price: number;
+    total_item: number;
+    details: {
+      registrations: any[]; 
+      tickets: Ticket[];
+    };
+  }
+  
+  interface Ticket {
+    order_number: string;
+    activity_name: string;
+    total_item: number;
+    item_price: number;
+    total_price: string; 
+  }
+export default function Order() {
+  const { data: cartData, error } = useSWR<CartAPIResponse>(
+    "https://esi.bagoesesport.com/api/v1/cart/items",
+    fetcher
+  );
+   const handleDelete = async (orderNumber: string) => {
+    try {
+      await axios.delete(`https://esi.bagoesesport.com/api/v1/cart/${orderNumber}/delete`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+
+      // mutate();
+    } catch (err) {
+      console.error("Gagal menghapus order:", err);
+    }
+  };
+  if (error) return <div className="text-white">Gagal memuat data...</div>;
+  if (!cartData) return <div className="text-white">Memuat data...</div>;
+  
+  const items: Ticket[] = Array.isArray(cartData?.details?.tickets)
+  ? cartData.details.tickets
+  : [];
+  const subtotal = items.length > 0 
+    ? items.reduce((acc, item) => acc + parseFloat(item.total_price), 0)
+    : 0;
+
+const Card = ({ data }: { data: Ticket }) => {
     return (
       <>
         {/* Desktop */}
@@ -59,18 +92,18 @@ export default function Order() {
           </svg>
           <div className="grid grid-cols-3 px-5 h-full z-10 relative">
             <section className="col-span-1 flex flex-col justify-center items-start text-sm font-medium -space-y-1">
-              <p>Waktu: {data.date}</p>
-              <p className="text-xl uppercase font-semibold lg:text-base">{data.category}</p>
-              <p>Lokasi: {data.location}</p>
+              <p>Order No: {data.order_number}</p>
+              <p className="text-xl uppercase font-semibold lg:text-base">{data.activity_name}</p>
+              <p>Jumlah Pesanan: {data.total_item}</p>
             </section>
             <section className="lg:col-span-2 flex justify-between items-center">
               <div className="flex flex-col justify-center items-start text-sm font-medium text-black pl-8 font-supertall">
-                <p className="text-[#FF0000] text-4xl lg:text-2xl">{data.name}</p>
-                <p className="pl-1 lg:sm">{data.category + ' - ' + data.description}</p>
+                <p className="text-[#FF0000] text-4xl lg:text-2xl">{data.activity_name}</p>
+              <p className="pl-1 lg:sm">Harga per item: {data.item_price.toLocaleString("id-ID", { style: "currency", currency: "IDR" })}</p>
+                {/* <p className="pl-1 lg:sm">{data.category + ' - ' + data.description}</p> */}
               </div>
               <div className="font-semibold text-black text-xl flex justify-center items-center gap-2">
-                <p>{parseInt("20000").toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</p>
-                <Button className="bg-[#FF0000] text-white border hover:border-[#FF0000] hover:text-[#FF0000] hover:bg-transparent">
+                <Button onClick={() => handleDelete(data.order_number)} className="bg-[#FF0000] text-white border hover:border-[#FF0000] hover:text-[#FF0000] hover:bg-transparent">
                   <X size={24} />
                 </Button>
               </div>
@@ -79,22 +112,21 @@ export default function Order() {
         </div>
 
         {/* Mobile */}
-        <div className="bg-white w-full grid grid-cols-3 lg:hidden rounded-md overflow-hidden">
-          <section className="col-span-2 w-full h-full bg-[#FF0000] flex gap-1">
+        <div className="bg-white w-full grid grid-cols-5 lg:hidden rounded-md overflow-hidden">
+          <section className="col-span-3 w-full h-full bg-[#FF0000] flex gap-1">
             <div className="">
-              <Button className="text-white h-full bg-transparent">
+              <Button onClick={() => handleDelete(data.order_number)} className="text-white h-full bg-transparent">
                 <X size={24} />
               </Button>
             </div>
             <div className="py-2 flex flex-col justify-center items-start">
-              <p className="font-supertall text-sm">{data.name}</p>
-              <p className="font-supertall text-xl">{data.category}</p>
-              <p className="text-xs">{data.location}</p>
-              <p className="font-semibold">{data.date}</p>
+              <p className="font-supertall text-sm">{data.activity_name}</p>
+              <p className="font-supertall text-lg">{data.order_number}</p>
+              <p className="font-semibold">Total Beli:{data.total_item}</p>
             </div>
           </section>
-          <section className="w-full h-full col-span-1 grid justify-center items-center text-black font-semibold">
-            <p>{parseInt("20000").toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</p>
+          <section className="w-full h-full col-span-2 grid justify-center items-center text-black font-semibold">
+          <p>{parseFloat(data.total_price).toLocaleString("id-ID", { style: "currency", currency: "IDR" })}</p>
           </section>
         </div>
       </>
@@ -119,11 +151,11 @@ export default function Order() {
             </div>
           </div>
           <div className="space-y-3 mt-3 h-full">
-            {cardData.map((data, index) => {
-              return (
-                <Card key={index} data={data} />
-              )
-            })}
+          {items.length === 0 ? (
+              <p className="text-white">Tidak ada item dalam keranjang.</p>
+            ) : (
+              items.map((data, index) => <Card key={index} data={data} />)
+            )}
           </div>
         </section>
         <section className="w-full text-black lg:p-11 lg:py-0 py-3 lg:col-span-3">
@@ -133,22 +165,23 @@ export default function Order() {
                 <p>Periksa kembali pesanan anda.</p>
               </div>
               <div >
-                {cardData.map((data, index) => {
-                  return (
-                    <div key={index} className="flex justify-between">
-                      <p>{data.category} - {data.name}</p>
-                      <p>{parseInt("10000").toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</p>
-                    </div>
-                  )
-                })}
+              {items.map((data, index) => (
+                <div key={index} className="flex justify-between">
+                  <p>{data.activity_name}</p>
+                  <p>{parseFloat(data.total_price).toLocaleString("id-ID", { style: "currency", currency: "IDR" })}</p>
+                </div>
+              ))}
               </div>
               <div className="border-t border-black pt-4">
                 <div className="w-full flex justify-between">
                   <p>Subtotal</p>
-                  <p>{parseInt("20000").toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</p>
+                  {subtotal.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                  })}
                 </div>
                 <p>*Catatan: Harga belum termasuk ppn</p>
-                <Button className="w-full bg-[#FF0000] text-white hover:text-[#FF0000] hover:bg-transparent hover:border-[#FF0000] border">Bayar</Button>
+                <Button  className="w-full bg-[#FF0000] text-white hover:text-[#FF0000] hover:bg-transparent hover:border-[#FF0000] border"><a className="w-full" href="/payment">Bayar</a></Button>
               </div>
             </div>
         </section>

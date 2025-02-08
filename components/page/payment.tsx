@@ -143,9 +143,8 @@ export default function Payment() {
     <p className="text-xs lg:text-base">Pastikan kembali pesanan anda sebelum mengirimkan formulir ini</p>
   </div>
 
-  {/* Menampilkan daftar tiket */}
   {tickets.length > 0 && (
-    <div className="mb-2">
+    <div className="mb-2 lg:h-full">
       {tickets.map((ticket, index) => (
         <div key={index} className="flex text-xs md:text-base font-bold justify-between mb-2">
           <h1>{ticket.activity_name}</h1>
@@ -155,10 +154,8 @@ export default function Payment() {
     </div>
   )}
 
-  {/* Garis pemisah */}
-  <hr className="bg-black p-[0.5px]" />
+  <hr className="bg-black p-[0.5px] " />
 
-  {/* Menampilkan total harga */}
   {totalPrice !== null && (
     <div className="flex text-sm lg:text-lg font-bold justify-between mt-2">
       <h1>Total</h1>

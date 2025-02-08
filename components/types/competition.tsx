@@ -1,16 +1,15 @@
-import { IActivity } from "./activity";
+import { IGame } from "./game"
 
-export interface ITicket {
+export interface ICompetition {
   id: number
   start_at: string
   end_at: string
   price: number
   quantity: number
-  name: string
   status?: {
     is_open: boolean
     message: string
-    ticket_sales: {
+    competition_sales: {
       in_cart: number
       in_transaction: {
         pending: number
@@ -21,5 +20,5 @@ export interface ITicket {
   }
   created_at: string
   updated_at: string
-  activity: IActivity
+  game: IGame
 }

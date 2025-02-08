@@ -1,93 +1,51 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import useSWR from "swr";
-import axios from "axios";
 import { cn } from "@/lib/utils";
 import NavigationBar from "../navigation-bar";
-import { Wrench, Presentation, ScreenShare, CirclePlus, Gamepad } from "lucide-react";
+import { Wrench, Presentation, ScreenShare, Gamepad } from "lucide-react";
 import { IActivity } from "../types/activity";
 import Image from "next/image";
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import Swal from "sweetalert2";
-import { useRouter } from 'next/navigation';
 import { IEvent } from "../types/event";
 import { ITicket } from "../types/ticket";
 import axiosInstance from "@/lib/axios";
 import FormatToRupiah from "@/lib/format-to-rupiah";
+import { ICompetition } from "../types/competition";
+import { TicketForm } from "../form/ticket-form";
+import { Button } from "../ui/button";
 
 const fetcher = (url: string) => axiosInstance.get(url).then((res) => res.data);
 
-function GetTicketSales(id: number) {
-  return axiosInstance.get(`/ticket-sales/${id}`).then((res) => res.data.data)
+interface ActivityProps extends IActivity {
+  ticketSales?: ITicket[];
+  competitions?: ICompetition[];
 }
 
-interface ActivitiesProps extends IActivity {
-  ticketSale: ITicket[] | null;
+interface DetailProps {
+  event: IEvent;
+  activities: ActivityProps[];
 }
 
 export default function ActivityComponent() {
-  const [ticketQuantity, setTicketQuantity] = useState(1);
   const searchParams = useSearchParams();
-  const router = useRouter();
   const eventIdFromUrl = searchParams.get("event");
   const [selectedEventId, setSelectedEventId] = useState<number | null>(
     eventIdFromUrl ? Number(eventIdFromUrl) : null
   );
+  const router = useRouter();
 
-  // simpan activities yang digabung
-  const [activities, setActivities] = useState<ActivitiesProps[]>([]);
+  const isTicket = (data: ITicket | ICompetition): data is ITicket => {
+    return "name" in data;
+  };
 
   const { data: eventData, error: eventError } = useSWR<{ data: IEvent }>(`/event/${eventIdFromUrl}`, fetcher);
 
-  const { data: activityData, error: activityError } = useSWR<{ data: IActivity[] }>(
-    selectedEventId ? `/activities/${selectedEventId}` : null,
+  const { data: activitiesData, error: activityError } = useSWR<{ data: DetailProps }>(
+    selectedEventId ? `/event/${selectedEventId}/detail` : null,
     fetcher
   );
-
-
-  useEffect(() => {
-    if (activityData?.data) {
-      const fetchTicketSales = async () => {
-        try {
-          const updatedActivities = await Promise.all(
-            activityData.data.map(async (activity) => {
-              try {
-                const ticketSale = await GetTicketSales(activity.id);
-                return { ...activity, ticketSale };
-              } catch (error) {
-                if (axios.isAxiosError(error) && error.response?.status === 404) {
-                  console.warn(`No ticket sales for activity ID ${activity.id}`);
-                  return { ...activity, ticketSale: null };
-                }
-                throw error;
-              }
-            })
-          );
-
-          console.log("Updated activities:", updatedActivities);
-
-          setActivities(updatedActivities);
-        } catch (error) {
-          console.error("Error fetching ticket sales:", error);
-        }
-      };
-
-      fetchTicketSales();
-    }
-  }, [activityData]);
-
-
 
   useEffect(() => {
     if (eventIdFromUrl) {
@@ -95,79 +53,53 @@ export default function ActivityComponent() {
     }
   }, [eventIdFromUrl]);
 
-  if (eventError) return <div>Error loading events</div>;
-  if (activityError) return <div>Error loading activities</div>;
-  if (!eventData) return <div>Loading events...</div>;
+  if (eventError) return <div className="text-white">Error loading events</div>;
+  if (activityError) return <div className="text-white">Error loading activities</div>;
+  if (!eventData) return <div className="text-white">Loading events...</div>;
 
-
-  const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let value = Number(event.target.value);
-    if (value > 10) value = 10;
-    setTicketQuantity(value);
-  };
-  const incrementQuantity = () => {
-    setTicketQuantity((prev) => (prev < 10 ? prev + 1 : 10));
-  };
-  
-  const decrementQuantity = () => {
-    setTicketQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-  };
-  const handleBuyTicket = async () => {
-    try {
-      const token = localStorage.getItem("authToken");
-
-      if (!token) {
-        alert("Anda harus login terlebih dahulu!");
-        return;
-      }
-      if (ticketQuantity > 10) {
-        Swal.fire({
-          icon: "error",
-          title: "Maksimum tiket yang bisa dibeli adalah 10!",
-        });
-        return;
-      }
-      const response = await axios.post(
-        `https://esi.bagoesesport.com/api/v1/buy-ticket`,
-        {
-          ticket_sale_id: selectedEventId,
-          quantity: ticketQuantity
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
-        }
-      );
-      if (response.status === 200) {
-        Swal.fire({
-          title: "Ticket Berhasil Dipesan",
-          text: "Apakah kamu mau melakukan pembayaran?",
-          icon: "success",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          cancelButtonText:"Tidak,Saya ingin melanjutkan pembelian",
-          confirmButtonText: "Ya, Arahkan Saya ke Pembayaran"
-        }).then((result) => {
-          if (result.isConfirmed) {
-            router.push("/order");
-          }
-        })
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal Menambahkan Ticket',
-          text: 'Terjadi Kesalahan Saat Memasukan ticket',
-        })
-      }
-    } catch (error) {
-      console.error("Error saat membeli tiket:", error);
-      alert("Gagal membeli tiket!");
-    }
-  };
-
+  const Card = ({ data, activity }: { data: ITicket | ICompetition, activity: IActivity }) => {
+    return (
+      <div className="w-full lg:pl-14">
+        <div className="grid grid-cols-2 lg:grid-cols-3 items-center rounded-sm overflow-hidden">
+          <div className="flex lg:flex-row col-span-1 px-2 lg:px-5 py-2 lg:items-center justify-center lg:justify-between lg:text-end text-start h-full flex-col gap-2 bg-[#ff0000]">
+            <div>
+              <div className="flex items-center justify-center flex-col p-1 w-full relative border-4 border-white min-w-[4.8rem]">
+                <div className="flex-shrink-0">
+                  {getIcon(activity.type.id)}
+                </div>
+                <div className="flex-1 text-white text-center uppercase font-supertall text-sm">
+                  {activity.type.name}
+                </div>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm text-white">Mulai {activity.start_at}</p>
+              <p className="text-sm text-white max-w-64">Lokasi di {activity.location}</p>
+            </div>
+          </div>
+          <div className="bg-white flex px-2 py-2 lg:py-0 flex-col lg:px-5 lg:justify-between lg:flex-row h-full justify-between lg:items-center gap-3 lg:gap-0 lg:col-span-2 lg:p-2 font-supertall text-xl">
+            <div className="flex flex-col lg:py-3">
+              <p className="font-medium text-lg lg:text-2xl text-[#ff0000]">{'name' in data ? `${data.name}` : `${(data as ICompetition).game.name}`}</p>
+              <div className="flex flex-col lg:flex-row">
+                <p className="text-sm lg:text-base font-sans capitalize font-semibold">{activity.type.name} | {activity.type.flow}</p>
+                <p className="hidden lg:flex font-sans text-base px-1 font-semibold">{" - "}</p>
+                <p className="text-sm lg:text-base text-black font-sans font-semibold">{FormatToRupiah(data.price)}/pcs</p>
+              </div>
+            </div>
+            <div className="font-sans flex text-sm">
+              { isTicket(data) ? (
+                <TicketForm data={data} selectedEventId={selectedEventId} />
+              ) : (
+                <Button onClick={() => router.push(`/competition/register?id=${data.id}`)} className="w-full text-white rounded-sm font-semibold hover:text-[#ff0000] bg-[#ff0000] justify-center items-center text-center p-3 transition-all hover:border-[#ff0000] border-transparent border hover:bg-transparent disabled:bg-red-700" disabled={!data.status?.is_open}>
+                  {(data?.status?.is_open) ? `Daftar Sekarang` : `Segera Hadir`}
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="lg:py-[56px] lg:px-[80px] h-full w-full">
@@ -180,30 +112,15 @@ export default function ActivityComponent() {
       />
       <NavigationBar />
       <div className="text-black px-5 py-5 relative z-20 lg:pt-14">
-        {/* ini seharusnya eventData */}
-        {/* <div className="flex items-center">
-                    <Image alt="" src="/images/bordered_logo-1.png" width={30} height={30} />
-                    <p className="uppercase text-sm text-white">Glory Of School - Detail Event</p>
-                </div> */}
-        {/* sesuai yang ku jelasin. ini adalah activities */}
-        {/* <div className="flex justify-between items-center px-2 py-5 relative z-20">
-                    <div className="text-sm text-black w-full md:w-fit rounded-sm bg-white text-center font-supertall">
-                        {eventData.data.name.length > 45 ? `${eventData.data.name.slice(0, 40)}...` : eventData.data.name}
-                    </div>
-                    <div className="w-full hidden md:inline">
-                        <hr className="p-[1px] text-white bg-white mx-3" />
-                    </div>
-                </div> */}
-        {/* dan setelahnya yaitu card, (sudah ku comment di figma), seharusnya ticketsale */}
 
         <div className="flex items-center gap-2 font-supertall">
           <Image alt="" src={eventData.data.event_banner} width={50} height={50} className="p-0.5 bg-white rounded-sm" />
           <p className="uppercase text-white lg:text-2xl">{eventData.data.name.length > 50 ? `${eventData.data.name.slice(0, 50)}...` : eventData.data.name}</p>
         </div>
 
-        {selectedEventId && activities && (
-          activities.map((activity, index) => (
-            activity.ticketSale && (
+        {selectedEventId && activitiesData && (
+          activitiesData.data.activities.map((activity, index) => (
+            (activity.ticketSales || activity.competitions) && (
               <div key={index} className="pb-5">
                 <div className="flex justify-between items-center relative z-20 py-5">
                   <span className="text-base text-black w-full md:w-fit py-1 px-3 rounded-sm bg-white text-center font-supertall">
@@ -213,97 +130,14 @@ export default function ActivityComponent() {
                   </span>
                 </div>
                 <div className="mt-2 space-y-4 w-full h-full relative z-20">
-                  {activity.ticketSale && (
-                    activity.ticketSale.map((ticketSale) => (
-                      <div key={ticketSale.id} className="w-full lg:pl-14">
-                        <div className="grid grid-cols-2 lg:grid-cols-3 items-center rounded-sm overflow-hidden">
-                          <div className="flex lg:flex-row col-span-1 px-2 lg:px-5 py-2 lg:items-center justify-center lg:justify-between lg:text-end text-start h-full flex-col gap-2 bg-[#ff0000]">
-                            <div>
-                              <div className="flex items-center justify-center flex-col p-1 w-full relative border-4 border-white min-w-[4.8rem]">
-                                {/* Logo (Fixed Size) */}
-                                <div className="flex-shrink-0">
-                                  {getIcon(activity.type.id)}
-                                </div>
-
-                                {/* Adaptive Text */}
-                                <div className="flex-1 text-white text-center uppercase font-supertall text-sm">
-                                  {activity.type.name}
-                                </div>
-                              </div>
-                            </div>
-                            <div>
-                              <p className="text-sm text-white">Mulai {activity.start_at}</p>
-                              <p className="text-sm text-white max-w-64">Lokasi di {activity.location}</p>
-                            </div>
-                          </div>
-                          <div className="bg-white flex px-2 py-2 lg:py-0 flex-col lg:px-5 lg:justify-between lg:flex-row h-full justify-between lg:items-center gap-3 lg:gap-0 lg:col-span-2 lg:p-2 font-supertall text-xl">
-                            <div className="flex flex-col lg:py-3">
-                              <p className="font-medium text-lg lg:text-2xl text-[#ff0000]">{ticketSale.name}</p>
-                              <div className="flex flex-col lg:flex-row">
-                                <p className="text-sm lg:text-base font-sans capitalize font-semibold">{activity.type.name} | {activity.type.flow}</p>
-                                <p className="hidden lg:flex font-sans text-base px-1 font-semibold">{" - "}</p>
-                                <p className="text-sm lg:text-base text-black font-sans font-semibold">{FormatToRupiah(ticketSale.price)}/pcs</p>
-                              </div>
-                            </div>
-                            <div className="font-sans hidden lg:flex text-sm">
-                              <button className="w-full text-white rounded-sm font-semibold hover:text-[#ff0000] bg-[#ff0000] justify-center items-center text-center p-3 transition-all hover:border-[#ff0000] border-transparent border hover:bg-transparent">
-                                <Dialog>
-                                  <DialogTrigger asChild>
-                                    <a className="bg-transparent p-2">Tambahkan Ke Keranjang</a>
-                                  </DialogTrigger>
-                                  <DialogContent className="sm:max-w-[425px]">
-                                    <DialogHeader>
-                                      <DialogTitle>Beli Tiket</DialogTitle>
-                                      <DialogDescription>
-                                        Masukan Jumlah Ticket yang ingin anda beli.
-                                      </DialogDescription>
-                                    </DialogHeader>
-                                    
-                                    <form className="w-full">
-                                    <div className="relative flex items-center">
-                                        <button
-                                        type="button"
-                                        id="decrement-button"
-                                        className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11"
-                                        onClick={decrementQuantity}
-                                        >
-                                        <svg className="w-3 h-3 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
-                                        </svg>
-                                        </button>
-
-                                        <input
-                                        type="text"
-                                        id="quantity-input"
-                                        className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm w-full py-2.5"
-                                        min="1"
-                                        max="10"
-                                        value={ticketQuantity}
-                                        onChange={handleQuantityChange}
-                                        />
-
-                                        <button
-                                        type="button"
-                                        id="increment-button"
-                                        className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11"
-                                        onClick={incrementQuantity}
-                                        >
-                                        <svg className="w-3 h-3 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                                        </svg>
-                                        </button>
-                                    </div>
-                                    </form>
-                                    <DialogFooter>
-                                      <Button onClick={handleBuyTicket}>Beli Tiket</Button>
-                                    </DialogFooter>
-                                  </DialogContent>
-                                </Dialog> </button>
-                            </div>
-                            <button className="w-full lg:hidden rounded-sm my-1 bg-[#ff0000] justify-center items-center text-center p-1"> <CirclePlus className="text-white w-full text-center" /> </button>
-                          </div>
-                        </div>
-                      </div>
+                  {activity.ticketSales && (
+                    activity.ticketSales.map((ticket) => (
+                      <Card key={ticket.id} data={ticket} activity={activity} />
+                    ))
+                  )}
+                  {activity.competitions && (
+                    activity.competitions.map((competition) => (
+                      <Card key={competition.id} data={competition} activity={activity} />
                     ))
                   )}
                 </div>

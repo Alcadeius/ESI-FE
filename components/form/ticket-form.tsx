@@ -18,11 +18,11 @@ import {
 import { ITicket } from "../types/ticket";
 
 interface TicketFormProps {
-  selectedEventId: number | null;
+  ticketID: number | null;
   data: ITicket
 }
 
-export function TicketForm({ selectedEventId, data }: TicketFormProps) {
+export function TicketForm({ ticketID, data }: TicketFormProps) {
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const router = useRouter();
 
@@ -57,7 +57,7 @@ export function TicketForm({ selectedEventId, data }: TicketFormProps) {
       const response = await axios.post(
         `https://esi.bagoesesport.com/api/v1/buy-ticket`,
         {
-          ticket_sale_id: selectedEventId,
+          ticket_sale_id: ticketID,
           quantity: ticketQuantity
         },
         {
@@ -66,8 +66,9 @@ export function TicketForm({ selectedEventId, data }: TicketFormProps) {
             "Content-Type": "application/json"
           }
         }
-      );
-      if (response.status === 200) {
+      )
+      console.log(response)
+      if (response.status === 201) {
         Swal.fire({
           title: "Ticket Berhasil Dipesan",
           text: "Apakah kamu mau melakukan pembayaran?",

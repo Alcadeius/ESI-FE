@@ -8,14 +8,6 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import useSWR, { mutate }  from "swr";
 import Swal from "sweetalert2";
-// interface CardProps {
-//   date: string,
-//   name: string,
-//   location: string,
-//   category: string,
-//   description: string,
-//   price: string
-// }
 
 const fetcher = (url: string) =>
   axios.get(url, {
@@ -196,16 +188,16 @@ const Card = ({ data }: { data: Ticket }) => {
               </filter>
             </defs>
           </svg>
-          <div className="grid grid-cols-3 px-5 h-full z-10 relative">
+          <div className="grid grid-cols-3 px-5 h-full z-10 py-6 relative">
             <section className="col-span-1 flex flex-col justify-center items-start text-sm font-medium -space-y-1">
-              <p>Order No: {data.order_number}</p>
+              <p className="lg:text-xs font-semibold">Order: {data.order_number}</p>
               <p className="text-xl uppercase font-semibold lg:text-base">{data.activity_name}</p>
               {/* <p>Jumlah Pesanan: {data.total_item}</p> */}
             </section>
             <section className="lg:col-span-2 flex justify-between items-center">
               <div className="flex flex-col justify-center items-start text-sm font-medium text-black pl-8 font-supertall">
                 <p className="text-[#FF0000] text-4xl lg:text-2xl">{data.game_name}</p>
-              <p className="pl-1 lg:sm">{data.activity_name}</p>
+              <p className="lg:sm">{data.activity_name}</p>
                 {/* <p className="pl-1 lg:sm">{data.category + ' - ' + data.description}</p> */}
               </div>
               <div className="font-semibold text-black text-xl flex justify-center items-center gap-2">
@@ -231,14 +223,14 @@ const Card = ({ data }: { data: Ticket }) => {
 
       {/* Content */}
       <div className="w-full grid lg:mt-7 relative z-10 lg:grid-cols-7">
-        <section className="lg:col-span-4">
+        <section className="lg:col-span-4 h-[20vh]">
           <div className="flex justify-between w-full">
             <div className="flex items-center gap-2">
               <Box className="size-6 lg:block hidden" />
               <h1 className="text-2xl font-semibold">Looting Box</h1>
             </div>
           </div>
-          <div className="space-y-3 mt-3 h-full lg:h-[70%] lg:overflow-y-auto [&::-webkit-scrollbar]:w-1
+          <div className="space-y-3 mt-3 h-full lg:h-fit lg:overflow-y-auto [&::-webkit-scrollbar]:w-1
   [&::-webkit-scrollbar-track]:bg-black
   [&::-webkit-scrollbar-thumb]:bg-[#ff0000]">
           {tickets.length === 0 && registrations.length === 0 ? (
@@ -254,7 +246,7 @@ const Card = ({ data }: { data: Ticket }) => {
         <section className="w-full text-black lg:p-11 lg:py-0 py-3 lg:col-span-3">
             <div className="w-full bg-white px-10 py-16 rounded-sm space-y-3">
               <div className="border-b border-black pb-4">
-                <p className="font-semibold text-2xl">Nota Transaksi</p>
+                <p className="font-semibold text-2xl">Detail Transaksi</p>
                 <p>Periksa kembali pesanan anda.</p>
               </div>
               <div className="lg:h-32 lg:overflow-auto [&::-webkit-scrollbar]:w-1

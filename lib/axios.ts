@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-const getAuthorization = async () => {
+export const getAuthorization = async () => {
     const token = localStorage.getItem("authToken");
     if(token){
         return `Bearer ${token}`;

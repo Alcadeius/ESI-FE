@@ -88,7 +88,7 @@ export default function ActivityComponent() {
             </div>
             <div className="font-sans flex text-sm">
               { isTicket(data) ? (
-                <TicketForm data={data} selectedEventId={selectedEventId} />
+                <TicketForm data={data} ticketID={data.id} />
               ) : (
                 <Button onClick={() => router.push(`/competition/register?id=${data.id}`)} className="w-full text-white rounded-sm font-semibold hover:text-[#ff0000] bg-[#ff0000] justify-center items-center text-center p-3 transition-all hover:border-[#ff0000] border-transparent border hover:bg-transparent disabled:bg-red-700" disabled={!data.status?.is_open}>
                   {(data?.status?.is_open) ? `Daftar Sekarang` : `Segera Hadir`}

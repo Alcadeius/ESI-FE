@@ -56,7 +56,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
           title: "Registration Success",
           text: res.data.message,
         });
-        router.push('/order')
+        router.push('/cart')
       }).catch(() => {throw new Error("Registration Failed")});
     } catch {
       Swal.fire({
@@ -117,9 +117,9 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
           </Card>
         ))}
 
-        {/* <Button onClick={() => append({ name: "", id_game: "", nickname: "", position: "player" })}>
+        <Button onClick={() => append({ name: "", id_game: "", nickname: "", position: "player" })} className="hidden">
           Add Player
-        </Button> */}
+        </Button>
         <Button type="submit" className="w-full text-white rounded-sm font-semibold hover:text-[#ff0000] bg-[#ff0000] justify-center items-center text-center p-3 transition-all hover:border-[#ff0000] border-transparent border hover:bg-transparent disabled:bg-red-700" disabled={!data.status?.is_open}>
           Lanjutkan
         </Button>

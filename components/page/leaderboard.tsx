@@ -4,6 +4,16 @@ import Image from "next/image";
 import NavigationBar from "../navigation-bar";
 
 export default function Leaderboard() {
+    const games = [
+        "Mobile Legend",
+        "Honor Of King",
+        "Loka Pala",
+        "Free Fire",
+        "Valorant",
+        "PUBG:Mobile",
+        "Call of Duty Mobile",
+      ];
+      
     return (
         <div className="grid grid-cols-1 h-full bg-black">
             <div className='lg:px-20 lg:pt-14'>
@@ -86,83 +96,43 @@ export default function Leaderboard() {
                 <div className="flex justify-center w-full ">
                     <p className="text-3xl p-2 uppercase bg-white rounded-md text-[#ff0000]"># ESI DENPASAR TOP E-SPORT PLAYER</p>
                 </div>
-                <div className="grid grid-cols-12 py-20 px-10  h-full my-auto">
-                    <div className="flex flex-col gap-2 justify-center w-full col-span-4">
-                        <p className="text-xl text-white">Games List</p>
-                        <div className="flex text-white items-center ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                            </svg>
-                            <p className="text-xs uppercase  md:text-base justify-center ">Mobile Legend</p>
-                        </div>
-                        <div className="flex text-white items-center ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                            </svg>
-                            <p className="text-xs uppercase  md:text-base justify-center ">Honor Of King</p>
-                        </div>
-                        <div className="flex text-white items-center ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                            </svg>
-                            <p className="text-xs uppercase  md:text-base justify-center ">Loka Pala</p>
-                        </div>
-                        <div className="flex text-white items-center ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                            </svg>
-                            <p className="text-xs uppercase  md:text-base justify-center ">Free Fire</p>
-                        </div>
-                        <div className="flex text-white items-center ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                            </svg>
-                            <p className="text-xs uppercase  md:text-base justify-center ">Valorant</p>
-                        </div>
-                        <div className="flex text-white items-center ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                            </svg>
-                            <p className="text-xs uppercase  md:text-base justify-center ">PUBG:Mobile</p>
-                        </div>
-                        <div className="flex text-white items-center ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                            </svg>
-                            <p className="text-xs uppercase  md:text-base justify-center ">Call of duty Mobile</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col justify-center col-span-8">
-                        <div className="text-xl">
-                            Mobile Legends: Bang Bang
-                        </div>
-                        <table className="uppercase font-extralight text-lg">
-                            <td className="text-start">Rank</td>
-                            <td className="text-start">Nama Player</td>
-                            <td className="text-start">Points</td>
-                            <tr>
-                                <td>#1</td>
-                                <td>I Gede Reyna Febrian</td>
-                                <td>1000 PTS</td>
-                            </tr>
-                            <tr>
-                                <td>#2</td>
-                                <td>I Gede Reyna Febrian</td>
-                                <td>1000 PTS</td>
-                            </tr>
-                            <tr>
-                                <td>#1</td>
-                                <td>I Gede Reyna Febrian</td>
-                                <td>1000 PTS</td>
-                            </tr>
-                            <tr>
-                                <td>#2</td>
-                                <td>I Gede Reyna Febrian</td>
-                                <td>1000 PTS</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
+                <div className="grid grid-cols-12 py-20 px-10 h-full my-auto">
+      {/* Game List Section */}
+      <div className="flex flex-col gap-2 justify-center w-full col-span-4">
+        <p className="text-xl text-white">Games List</p>
+        {games.map((game, index) => (
+          <div key={index} className="flex text-white items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
+            </svg>
+            <p className="text-xs uppercase md:text-base justify-center">{game}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Leaderboard Section */}
+      <div className="flex flex-col justify-center col-span-8">
+        <div className="text-xl">Mobile Legends: Bang Bang</div>
+        <table className="uppercase font-extralight text-lg">
+          <thead>
+            <tr>
+              <th className="text-start">Rank</th>
+              <th className="text-start">Nama Player</th>
+              <th className="text-start">Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[1, 2, 1, 2].map((rank, index) => (
+              <tr key={index}>
+                <td>#{rank}</td>
+                <td>I Gede Reyna Febrian</td>
+                <td>1000 PTS</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
                 <Pagin />
             </div>
             <footer className="p-4 bg-white sm:p-6 w-full overflow-hidden lg:p-5 relative bottom-0 left-0 ">

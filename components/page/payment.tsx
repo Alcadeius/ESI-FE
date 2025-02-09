@@ -163,7 +163,6 @@ export default function Payment() {
     </div>
   )}
 
-  {/* Catatan tambahan */}
   <div className="text-xs">
     Catatan: setelah formulir ini dikirimkan, harap menunggu konfirmasi pembayaran selambat-lambatnya 96 jam hari kerja (Senin-Sabtu)
   </div>

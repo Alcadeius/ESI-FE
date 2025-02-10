@@ -43,7 +43,7 @@ export default function RootLayout({
           <AppSidebar className="lg:hidden" />
           <main className="bg-gray-900 w-full">
             <div className="text-white bg-gray lg:hidden w-full flex justify-between items-center p-4 bg-gray-900 z-50 shadow-md fixed">
-              <Logo className="size-10" />
+              <a href="/main"><Logo className="size-10"/></a>
               <div className="font-medium text-base">ESI DENPASAR</div>
               <SidebarTrigger className="w-fit bg-gray-700 size-10" />
             </div>

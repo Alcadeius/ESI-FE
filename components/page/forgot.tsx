@@ -23,8 +23,6 @@ export default function Forgot() {
           },
         }
       );
-
-      console.log("Forgot Password Success:", response.data);
       alert("Silakan cek email Anda untuk instruksi reset password.");
 
     } catch (err) {

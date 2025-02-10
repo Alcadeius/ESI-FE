@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import { cn } from "@/lib/utils";
 import NavigationBar from "../navigation-bar";
@@ -15,6 +15,8 @@ import FormatToRupiah from "@/lib/format-to-rupiah";
 import { ICompetition } from "../types/competition";
 import { TicketForm } from "../form/ticket-form";
 import { Button } from "../ui/button";
+import LoadingScreen from "../loading-screen";
+import { useParams } from "next/navigation";
 
 const fetcher = (url: string) => axiosInstance.get(url).then((res) => res.data);
 
@@ -29,8 +31,8 @@ interface DetailProps {
 }
 
 export default function ActivityComponent() {
-  const searchParams = useSearchParams();
-  const eventIdFromUrl = searchParams.get("event");
+  const params = useParams();
+  const eventIdFromUrl = params.eventId ? Number(params.eventId) : null;
   const [selectedEventId, setSelectedEventId] = useState<number | null>(
     eventIdFromUrl ? Number(eventIdFromUrl) : null
   );
@@ -55,13 +57,13 @@ export default function ActivityComponent() {
 
   if (eventError) return <div className="text-white">Error loading events</div>;
   if (activityError) return <div className="text-white">Error loading activities</div>;
-  if (!eventData) return <div className="text-white">Loading events...</div>;
+  if (!eventData) return <LoadingScreen />;
 
   const Card = ({ data, activity }: { data: ITicket | ICompetition, activity: IActivity }) => {
     return (
       <div className="w-full lg:pl-14">
         <div className="grid grid-cols-2 lg:grid-cols-3 items-center rounded-sm overflow-hidden">
-          <div className="flex lg:flex-row col-span-1 px-2 lg:px-5 py-2 lg:items-center justify-center lg:justify-between lg:text-end text-start h-full flex-col gap-2 bg-[#ff0000]">
+          <div className="flex lg:flex-row col-span-1 px-2 lg:px-5 py-2 lg:items-center justify-center lg:justify-between min-h-[104px] lg:text-end text-start flex-col gap-2 bg-[#ff0000]">
             <div>
               <div className="flex items-center justify-center flex-col p-1 w-full relative border-4 border-white min-w-[4.8rem]">
                 <div className="flex-shrink-0">
@@ -105,7 +107,7 @@ export default function ActivityComponent() {
     <div className="lg:py-[56px] lg:px-[80px] h-full w-full">
       <div
         className={cn(
-          "bg-[url('/images/backdrop_1.png')]",
+          "bg-[url('/images/optimized/backdrop_1.png')]",
           "absolute lg:top-1/2 lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[400px] bg-no-repeat lg:w-[707px] h-[471px] bg-contain z-0 bg-gray-900 bg-blend-lighten",
           "top-[30%] lg:top-1/2 right-0"
         )}
@@ -114,7 +116,7 @@ export default function ActivityComponent() {
       <div className="text-black px-5 py-5 relative z-20 lg:pt-14">
 
         <div className="flex items-center gap-2 font-supertall">
-          <Image alt="" src={eventData.data.event_banner} width={50} height={50} className="p-0.5 bg-white rounded-sm" />
+          <Image alt="" src={eventData.data.event_logo ?? "/images/logo.png"} width={50} height={50} className="p-0.5 bg-white rounded-sm" />
           <p className="uppercase text-white lg:text-2xl">{eventData.data.name.length > 50 ? `${eventData.data.name.slice(0, 50)}...` : eventData.data.name}</p>
         </div>
 

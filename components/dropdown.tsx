@@ -30,8 +30,6 @@ import {
                     },
                 }
             );
-            console.log("Delete Response:", response);
-          
             localStorage.removeItem("authToken");
             localStorage.removeItem("Data");
             window.location.href = "/login"; 

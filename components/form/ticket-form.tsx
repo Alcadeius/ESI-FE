@@ -69,7 +69,6 @@ export function TicketForm({ ticketID, data }: TicketFormProps) {
           }
         }
       )
-      console.log(response)
       if (response.status === 201) {
         setOpenDialog(false);
         Swal.fire({
@@ -104,7 +103,7 @@ export function TicketForm({ ticketID, data }: TicketFormProps) {
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
         <Button onClick={() => setOpenDialog(true)} className="w-full text-white rounded-sm font-semibold hover:text-[#ff0000] bg-[#ff0000] justify-center items-center text-center p-3 transition-all hover:border-[#ff0000] border-transparent border hover:bg-transparent disabled:bg-red-700" disabled={!data.status?.is_open}>
-          {(data.status?.is_open) ? `Tambahkan ke Keranjang` : `Segera Hadir`}
+          {(data.status?.is_open) ? `Beli` : `Segera Hadir`}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -151,7 +150,7 @@ export function TicketForm({ ticketID, data }: TicketFormProps) {
             onClick={handleBuyTicket}
             className="bg-[#ff0000] text-white font-semibold text-base w-full rounded-sm py-2 hover:bg-white hover:text-[#ff0000] hover:border-[#ff0000] border-[#ff0000] border"
           >
-            Selesai
+            Beli
           </button>
         </DialogFooter>
       </DialogContent>

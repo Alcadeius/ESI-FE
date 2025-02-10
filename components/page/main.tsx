@@ -1,25 +1,15 @@
 "use client"
 import NavigationBar from '../navigation-bar';
 import Footer from '../footer';
-import { ChevronsRight, User2 } from 'lucide-react';
+import { ChevronsRight, Globe, User2 } from 'lucide-react';
 import React from 'react';
 import axiosInstance from '@/lib/axios';
-import GameCard from '../gameCard';
 import useSWR from 'swr';
 import { IEvent } from '../types/event';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '../ui/pagination';
-import LoadingScreen from '../loading-screen';
 import { useRouter } from 'next/navigation';
-
-function FetchGames() {
-  const fetcher = (url: string) => axiosInstance(url).then((r) => r.data?.data)
-  const { data, isLoading } = useSWR(`/games`, fetcher)
-
-  return {
-    games: data,
-    isLoading
-  }
-}
+import { Skeleton } from '../ui/skeleton';
+import Image from 'next/image';
 
 function FetchEvents() {
   const fetcher = (url: string) => axiosInstance(url).then((r) => r.data?.data)
@@ -32,7 +22,6 @@ function FetchEvents() {
 }
 
 export default function Main() {
-  const { games, isLoading } = FetchGames()
   const { events, eventLoading } = FetchEvents()
   const router = useRouter()
 
@@ -63,43 +52,50 @@ export default function Main() {
           <div>
             <div className="text-white font-bold lg:text-2xl">{event?.event_logo}</div>
             <h1 className="text-white font-bold text-2xl">{event?.name.length > 40 ? `${event.name.slice(0, 40)}...` : event.name}</h1>
-            <p className="text-white text-sm">{event?.category?.name}</p>
+            <p className="text-white text-sm"></p>
           </div>
           <div>
             <ChevronsRight size={35} className="group-hover:scale-125 transition-all" />
           </div>
         </div>
-        <div className="flex items-end gap-2 z-10">
-          <User2 className='size-6 lg:size-8' />
-          <p className="text-white lg:text-xl text-sm">- Participants</p>
+        <div className='flex justify-between items-end z-10'>
+          <div className="flex items-end gap-2 z-10">
+            <Globe className='size-6 lg:size-8' />
+            <p className="text-white lg:text-xl text-sm font-medium font-sans">{event?.category?.name} Event</p>
+          </div>
+          <div>
+            <Image alt="" src={event.event_logo ?? "/images/logo.png"} width={50} height={50} className="p-0.5 bg-white rounded-sm" />
+          </div>
         </div>
         <div className='absolute left-0 top-0 w-full h-full bg-black opacity-50 group-hover:opacity-30 z-0'></div>
       </div>
     )
   }
 
-  if (isLoading) {
-    return <LoadingScreen />
-  }
-
   return (
     <div className="bg-gray-900">
-      <div className="lg:px-20 lg:pt-14">
+      <div className="lg:px-20 lg:pt-14 min-h-screen">
         {/* Header */}
         <NavigationBar />
 
 
         {/* Hero */}
-        <div className="flex lg:text-2xl text-base font-supertall uppercase text-white px-5 mt-10 mb-5">
-          <h1 className='z-10'># EVENTS FOR THE WORTHY</h1>
+        <div className="flex lg:text-2xl text-base font-supertall uppercase text-white px-5 lg:mt-10 mt-5 mb-5">
+          <h1 className='z-10'># Highlighted Events</h1>
         </div>
 
         <div className="text-white grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 place-content-center gap-7 px-5">
-          {!eventLoading && selectedEvents.map((event: IEvent, index: number) => {
-            return (
-              <EventCard key={index} event={event} index={index} />
-            )
-          })}
+          {eventLoading ? (
+            Array.from({ length: 6 }).map((_, index) => (
+              <Skeleton className="lg:h-[238px] lg:w-[423px] w-full h-[188px]" key={index} />
+            ))
+          ) :
+            selectedEvents.map((event: IEvent, index: number) => {
+              return (
+                <EventCard key={index} event={event} index={index} />
+              )
+            })
+          }
         </div>
 
         {/* Pagination */}
@@ -195,22 +191,7 @@ export default function Main() {
           </div>
         )}
       </div>
-
-      {!isLoading && (
-        <section className="relative w-full mb-20 lg:mt-20">
-          {/* Games */}
-          <div className='grid grid-cols-1 justify-items-center'>
-            <div className='text-white font-supertall bg-red-600 text-xl lg:text-2xl lg:px-6 px-3 py-2 rounded-lg mt-10 lg:mt-0 lg:mb-5 h-fit text-center uppercase'>
-              <h1># Trending E-SPORTS GAMES</h1>
-            </div>
-            <div className='flex gap-10 mt-5 font-rocker w-full'>
-              <GameCard slides={games} options={{ loop: true }} />
-            </div>
-          </div>
-          <div className="bg-[#DC2626] shadow-[inset_0_-33px_113px_rgba(0,0,0,0.25)] absolute h-[196px] lg:h-80 w-[100%] -bottom-10"></div>
-        </section>
-      )}
-
+      
       {/* Footer */}
       <Footer />
     </div>

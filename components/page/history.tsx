@@ -37,7 +37,6 @@ interface TransactionDetail {
 }
 
 const DownloadReceipt = (data: TransactionDetail, token: string) => {
-  console.error("Download receipt", data.archive_pdf, token);
   axios.get(data.archive_pdf, {
     responseType: "blob", headers: {
       Authorization: token,
@@ -69,7 +68,6 @@ export default function History() {
   }, [])
 
   const { data, error } = useSWR("https://esi.bagoesesport.com/api/v1/transaction/history", fetcher);
-  console.log("Response dari SWR:", data);
   if (error) return <p className="text-red-500">Gagal memuat data</p>;
   if (!data) return <p className="text-white">Memuat...</p>;
 
@@ -127,21 +125,20 @@ export default function History() {
         {/* Mobile */}
         <div className="bg-white w-full aspect-auto h-fit grid grid-cols-3 lg:hidden rounded-md overflow-hidden">
           <section className="w-full h-full bg-[#FF0000] gap-2 flex flex-col justify-center md:items-center items-start p-2">
-            <div className="flex items-center border-white border-[5px] flex-col">
-            <p>{getIcon(transaksi.status)}</p>
-            <p className="text-sm uppercase font-extrabold">{transaksi.status}</p>
+            <div className="flex items-center border-white border-4 w-full h-full justify-center flex-col gap-1">
+              <p>{getIcon(transaksi.status)}</p>
+              <p className="text-base uppercase font-supertall">{transaksi.status}</p>
             </div>
-            <p className="text-xs font-semibold underline">{data.order_number.length > 10 ? `${data.order_number.slice(0, 10)}...` : data.order_number}</p>
-            <p className="font-supertall text-xl">{data.order_type}</p>
             {/* <p className="font-supertall text-xs">{data.event_name}</p> */}
           </section>
-          <section className="w-full h-full col-span-2 font-supertall grid justify-center items-center">
-            <div className="w-full h-full grid justify-items-center items-center grid-cols-1">
-            <p className="font-semibold text-lg text-[#ff0000]">{data.activity_name}</p>
-            <p className="font-semibold text-black">{transaksi.created_at}</p>
-            {data.archive_pdf ? (
+          <section className="w-full h-full col-span-2 font-supertall grid px-4 py-2 items-center">
+            <div className="w-full h-full grid items-center grid-cols-1">
+              <p className="text-lg text-[#ff0000]">{data.activity_name}</p>
+              <p className="font-semibold text-black font-sans">{transaksi.created_at}</p>
+              <p className="font-semibold text-black font-sans pb-2">Metode : {transaksi.method}</p>
+              {data.archive_pdf ? (
                 <Button onClick={() => DownloadReceipt(data, token)} className="bg-[#FF0000] text-white font-semibold text-sm rounded-md px-14 py-1 hover:bg-white hover:text-[#FF0000] hover:border-[#FF0000] border-[#FF0000] border-2">
-                  <p className="p-2"> Unduh </p>
+                  <p className="p-2 font-sans font-bold"> Unduh Detail </p>
                 </Button>
               ) : (
                 <p className="text-gray-500">File tidak tersedia</p>
@@ -153,16 +150,16 @@ export default function History() {
     )
   }
   return (
-    <div className="text-white bg-gradient-to-b lg:px-20 lg:py-14 lg:overflow-hidden bg-gray-900 h-screen px-4 flex items-start lg:grid relative">
+    <div className="text-white bg-gradient-to-b lg:px-20 lg:py-14 lg:overflow-hidden bg-gray-900 h-screen px-4 flex items-start lg:flex lg:flex-col relative">
 
-      <div className={cn("bg-[url('/images/backdrop_1.png')]", "absolute lg:top-1/2 lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[707px] h-[471px] bg-contain z-10 bg-gray-900 bg-blend-lighten", "-top-20 right-0")}>
+      <div className={cn("bg-[url('/images/optimized/backdrop_1.png')]", "absolute lg:top-1/2 lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[707px] h-[471px] bg-contain z-10 bg-gray-900 bg-blend-lighten", "-top-20 right-0")}>
       </div>
 
       <NavigationBar />
 
-      <div className="w-full grid lg:mt-7 relative h-full lg:overflow-y-hidden">
-        <section className="flex justify-between w-full z-10">
-          <div className="flex items-center gap-2">
+      <div className="w-full flex flex-col lg:mt-7 relative h-full lg:overflow-y-hidden">
+        <section className="flex justify-between w-full z-10 h-fit">
+          <div className="flex items-center gap-2 h-fit">
             <StickyNote className="size-6 lg:block hidden" />
             <h1 className="text-2xl font-semibold">Riwayat Transaksi</h1>
           </div>
@@ -178,7 +175,7 @@ export default function History() {
             </Button>
           </div>
         </section>
-        <section className="z-10 relative h-full lg:overflow-y-auto pr-4">
+        <section className="z-10 relative lg:overflow-y-auto lg:pr-4">
           {transactions.map((transaction, index) => (
             <div key={index} className="w-full space-y-4">
               <div className="bg-gray-900 flex justify-between items-center relative z-20 lg:py-4 lg:sticky lg:top-0">

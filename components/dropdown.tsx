@@ -1,18 +1,6 @@
 import {
-    // Cloud,
     CreditCard,
-    // Github,
-    // Keyboard,
-    // LifeBuoy,
     LogOut,
-    // Mail,
-    // MessageSquare,
-    // Plus,
-    // PlusCircle,
-    // Settings,
-    User,
-    // UserPlus,
-    // Users,
   } from "lucide-react"
   
   import { Button } from "@/components/ui/button"
@@ -22,12 +10,7 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
-    // DropdownMenuPortal,
     DropdownMenuSeparator,
-    // DropdownMenuShortcut,
-    // DropdownMenuSub,
-    // DropdownMenuSubContent,
-    // DropdownMenuSubTrigger,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
   import axios from "axios";
@@ -65,12 +48,7 @@ import {
           <DropdownMenuLabel>Opsi Pengguna</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem disabled>
-              <User />
-              <a href="#" >Akunku</a>
-              {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
-            </DropdownMenuItem>
-            <DropdownMenuItem disabled>
+            <DropdownMenuItem>
               <CreditCard />
               <a href="/order">Keranjangku</a>
               {/* <DropdownMenuShortcut>⌘B</DropdownMenuShortcut> */}

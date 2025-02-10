@@ -1,19 +1,31 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import Pagin from '../ui/pagein';
 import Image from "next/image";
 import NavigationBar from "../navigation-bar";
+import useSWR from 'swr';
+import axios from 'axios';
+import { useState } from 'react';
+
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export default function Leaderboard() {
-    const games = [
-        "Mobile Legend",
-        "Honor Of King",
-        "Loka Pala",
-        "Free Fire",
-        "Valorant",
-        "PUBG:Mobile",
-        "Call of Duty Mobile",
-      ];
-      
+    const { data, error } = useSWR('https://esi.bagoesesport.com/api/v1/leaderboard', fetcher);
+    const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
+
+    if (error) return <div>Gagal memuat data</div>;
+    if (!data) return <div>Memuat...</div>;
+  
+    const leaderboardData = data.data;
+    const games = Object.values(leaderboardData).map((game: any) => ({
+      id: game.game_id,
+      name: game.game_name,
+    }));
+  
+     // Game yang dipilih (default ke game pertama jika belum ada pilihan)
+    const selectedGame = leaderboardData[selectedGameId!] || leaderboardData[Object.keys(leaderboardData)[0]];
+    const players = selectedGame ? Object.values(selectedGame.leaderboard) : [];
+
+    
     return (
         <div className="grid grid-cols-1 h-full bg-black">
             <div className='lg:px-20 lg:pt-14'>
@@ -49,46 +61,53 @@ export default function Leaderboard() {
             {/* Tampilan Mobile - Tablet */}
             <div className="grid grid-cols-1 font-supertall lg:hidden relative z-10 px-5 py-5">
                 <p className="p-2 rounded-md text-[#ff0000] bg-white lg:w-fit lg:h-fit lg:text-2xl font-bold text-center"># Esi Denpasar Top E-Sport Player</p>
-                <p className="text-white text-lg py-5 font-semibold md:text-xl">Games List</p>
+                <p className="text-white text-lg py-5 font-semibold">Games List</p>
                 <div className="grid grid-cols-2 gap-1">
-                    <div className="flex text-white items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                        </svg>
-                        <p className="text-xs uppercase font-semibold  md:text-base">Mobile Legend</p>
-                    </div>
-                    <div className="flex text-white items-center md:justify-end ">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                        </svg>
-                        <p className="  text-xs uppercase font-semibold md:text-base">Mobile Legend</p>
-                    </div>
-                    <div className="flex text-white items-center ">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                        </svg>
-                        <p className="text-xs uppercase font-semibold md:text-base">Mobile Legend</p>
-                    </div>
-                    <div className="flex text-white md:justify-end items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                        </svg>
-                        <p className="text-xs uppercase font-semibold md:text-base md:text-end">Mobile Legend</p>
-                    </div>
+                {games.map((game) => (
+          <div
+            key={game.id}
+            className={`flex text-white items-center cursor-pointer ${
+              selectedGameId === game.id ? ' text-red-600' : ''
+            }`}
+            onClick={() => setSelectedGameId(game.id)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="white"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
+            </svg>
+            <p className="text-xs uppercase md:text-base justify-center">{game.name}</p>
+          </div>
+        ))}
                 </div>
                 <div className="grid grid-cols-1 bg-black text-white font-semibold mt-5">
-                    <p className="uppercase md:text-xl">Mobile Legends: Bang Bang</p>
-                    <div className="flex flex-col items-center h-40 overflow-hidden">
-                        <div className="flex justify-between w-full text-sm">
-                            <p className="md:text-lg">#1</p>
-                            <p className="md:text-lg">I Gede Reyna Febrian</p>
-                            <p className="md:text-lg">1000 PTS</p>
-                        </div>
-                    </div>
-                    <div className="px-5">
-                        <Pagin />
-                    </div>
-                </div>
+                <div className="text-lg">{selectedGame?.game_name || 'Pilih Game'}</div>
+        <table className="uppercase font-extralight ">
+          <thead>
+            <tr>
+              <th className="text-start text-sm md:text-base font-light">Rank</th>
+              <th className="text-start text-sm md:text-base font-light">Nama Player</th>
+              <th className="text-start text-sm md:text-base font-light">Points</th>
+            </tr>
+          </thead>
+          <tbody className="text-sm md:text-base">
+            {players
+              .sort((a: any, b: any) => b.point - a.point)
+              .map((player: any, index: number) => (
+                <tr key={player.id_game}>
+                  <td>#{index + 1}</td>
+                  <td>{player.name}</td>
+                  <td>{player.point} PTS</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
             </div>
 
             {/* Tampilan Destkop */}
@@ -100,19 +119,32 @@ export default function Leaderboard() {
       {/* Game List Section */}
       <div className="flex flex-col gap-2 justify-center w-full col-span-4">
         <p className="text-xl text-white">Games List</p>
-        {games.map((game, index) => (
-          <div key={index} className="flex text-white items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+        {games.map((game) => (
+          <div
+            key={game.id}
+            className={`flex text-white items-center cursor-pointer ${
+              selectedGameId === game.id ? ' text-red-600' : ''
+            }`}
+            onClick={() => setSelectedGameId(game.id)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="white"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
             </svg>
-            <p className="text-xs uppercase md:text-base justify-center">{game}</p>
+            <p className="text-xs uppercase md:text-base justify-center">{game.name}</p>
           </div>
         ))}
       </div>
 
       {/* Leaderboard Section */}
       <div className="flex flex-col justify-center col-span-8">
-        <div className="text-xl">Mobile Legends: Bang Bang</div>
+      <div className="text-xl">{selectedGame?.game_name || 'Pilih Game'}</div>
         <table className="uppercase font-extralight text-lg">
           <thead>
             <tr>
@@ -122,18 +154,19 @@ export default function Leaderboard() {
             </tr>
           </thead>
           <tbody>
-            {[1, 2, 1, 2].map((rank, index) => (
-              <tr key={index}>
-                <td>#{rank}</td>
-                <td>I Gede Reyna Febrian</td>
-                <td>1000 PTS</td>
-              </tr>
-            ))}
+            {players
+              .sort((a: any, b: any) => b.point - a.point)
+              .map((player: any, index: number) => (
+                <tr key={player.id_game}>
+                  <td>#{index + 1}</td>
+                  <td>{player.name}</td>
+                  <td>{player.point} PTS</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
     </div>
-                <Pagin />
             </div>
             <footer className="p-4 bg-white sm:p-6 w-full overflow-hidden lg:p-5 relative bottom-0 left-0 ">
                 <div className="mx-auto w-full">

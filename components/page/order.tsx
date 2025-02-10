@@ -194,7 +194,7 @@ const Card = ({ data }: { data: Ticket }) => {
               <p className="text-xl uppercase font-semibold lg:text-base">{data.activity_name}</p>
               {/* <p>Jumlah Pesanan: {data.total_item}</p> */}
             </section>
-            <section className="lg:col-span-2 flex justify-between items-center">
+            <section className="lg:col-span-2 lg:px-4 flex justify-between items-center">
               <div className="flex flex-col justify-center items-start text-sm font-medium text-black pl-8 font-supertall">
                 <p className="text-[#FF0000] text-4xl lg:text-2xl">{data.game_name}</p>
               <p className="lg:sm">{data.activity_name}</p>
@@ -231,8 +231,8 @@ const Card = ({ data }: { data: Ticket }) => {
             </div>
           </div>
           <div className="space-y-3 mt-3 h-full lg:h-fit lg:overflow-y-auto [&::-webkit-scrollbar]:w-1
-  [&::-webkit-scrollbar-track]:bg-black
-  [&::-webkit-scrollbar-thumb]:bg-[#ff0000]">
+        [&::-webkit-scrollbar-track]:bg-black
+        [&::-webkit-scrollbar-thumb]:bg-[#ff0000]">
           {tickets.length === 0 && registrations.length === 0 ? (
               <p className="text-white">Tidak ada item dalam keranjang.</p>
             ) : (

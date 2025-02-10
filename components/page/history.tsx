@@ -47,65 +47,6 @@ interface TransactionDetail {
   archive_pdf: string;
 }
 
-// {
-//   "transaction_id": "TRX-bc9a4e80-8129-48b5-b794-5ed0fa49c9a8",
-//   "total_price": 2604624,
-//   "method": "Qris",
-//   "status": "pending",
-//   "created_at": "2025/02/09 23:58:49",
-//   "archive_pdf": "https://esi.bagoesesport.com/api/v1/transaction/TRX-bc9a4e80-8129-48b5-b794-5ed0fa49c9a8/download",
-//   "detail_items": [
-//       {
-//           "order_number": "REGISTRATION-U4WVGOCC",
-//           "order_type": "Registrasi",
-//           "activity_type": "Lomba",
-//           "event_name": "Nostrum aut accusantium ducimus voluptatum modi natus consequatur.",
-//           "activity_name": "Lomba omnis",
-//           "archive_pdf": "https://esi.bagoesesport.com/api/v1/order/REGISTRATION-U4WVGOCC/download"
-//       },
-//       {
-//           "order_number": "REGISTRATION-BU8B114I",
-//           "order_type": "Registrasi",
-//           "activity_type": "Lomba",
-//           "event_name": "Nostrum aut accusantium ducimus voluptatum modi natus consequatur.",
-//           "activity_name": "Lomba omnis",
-//           "archive_pdf": "https://esi.bagoesesport.com/api/v1/order/REGISTRATION-BU8B114I/download"
-//       },
-//       {
-//           "order_number": "REGISTRATION-LXVWM2XF",
-//           "order_type": "Registrasi",
-//           "activity_type": "Lomba",
-//           "event_name": "Nostrum aut accusantium ducimus voluptatum modi natus consequatur.",
-//           "activity_name": "Lomba omnis",
-//           "archive_pdf": "https://esi.bagoesesport.com/api/v1/order/REGISTRATION-LXVWM2XF/download"
-//       },
-//       {
-//           "order_number": "REGISTRATION-8FEZUNZL",
-//           "order_type": "Registrasi",
-//           "activity_type": "Lomba",
-//           "event_name": "Nostrum aut accusantium ducimus voluptatum modi natus consequatur.",
-//           "activity_name": "Lomba omnis",
-//           "archive_pdf": "https://esi.bagoesesport.com/api/v1/order/REGISTRATION-8FEZUNZL/download"
-//       },
-//       {
-//           "order_number": "REGISTRATION-WYOAWP92",
-//           "order_type": "Registrasi",
-//           "activity_type": "Lomba",
-//           "event_name": "Nostrum aut accusantium ducimus voluptatum modi natus consequatur.",
-//           "activity_name": "Lomba omnis",
-//           "archive_pdf": "https://esi.bagoesesport.com/api/v1/order/REGISTRATION-WYOAWP92/download"
-//       },
-//       {
-//           "order_number": "REGISTRATION-RWHX3WI3",
-//           "order_type": "Registrasi",
-//           "activity_type": "Lomba",
-//           "event_name": "Nostrum aut accusantium ducimus voluptatum modi natus consequatur.",
-//           "activity_name": "Lomba omnis",
-//           "archive_pdf": "https://esi.bagoesesport.com/api/v1/order/REGISTRATION-RWHX3WI3/download"
-//       }
-//   ]
-// }
-
 const DownloadReceipt = (data: TransactionDetail, token: string) => {
   console.error("Download receipt", data.archive_pdf, token);
   axios.get(data.archive_pdf, {
@@ -150,7 +91,7 @@ export default function History() {
       : new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
   });
 
-  const Card = ({ data }: { data: TransactionDetail }) => {
+  const Card = ({ data,transaksi }: { data: TransactionDetail,transaksi:Transaction }) => {
     return (
       <>
         {/* Desktop */}
@@ -174,13 +115,13 @@ export default function History() {
           </svg>
           <div className="grid grid-cols-4 px-5 h-full z-10 relative">
             <section className="col-span-1 flex flex-col justify-center items-start text-sm font-medium -space-y-1">
-              <p>{'date'}</p>
-              <p className="text-xl uppercase font-semibold">{'data.category'}</p>
-              <p>Status - {'data.status'}</p>
+              <p>{transaksi.created_at}</p>
+              <p className="text-xl uppercase font-semibold">{transaksi.method}</p>
+              <p>Status - {transaksi.status}</p>
             </section>
             <section className="col-span-2 flex flex-col justify-center items-start text-sm font-medium text-black pl-8 font-supertall">
-              <p className="text-[#FF0000] text-4xl">{'data.name'}</p>
-              <p className="pl-1">{'data.category' + ' - ' + 'data.description'}</p>
+              <p className="text-[#FF0000] text-4xl">{data.event_name}</p>
+              <p className="pl-1">{data.activity_name + ' - ' + data.activity_type}</p>
             </section>
             <section className="w-full grid items-center justify-end col-span-1">
               {data.archive_pdf ? (
@@ -197,10 +138,10 @@ export default function History() {
         {/* Mobile */}
         <div className="bg-white w-full aspect-auto h-fit grid grid-cols-3 lg:hidden rounded-md overflow-hidden">
           <section className="w-full h-full bg-[#FF0000] flex flex-col justify-center md:items-center items-start p-2">
-            <p className="text-xs">{'data.status'}</p>
-            <p className="font-semibold underline">{'data.date'}</p>
-            <p className="font-supertall text-xl">{'data.category'}</p>
-            <p className="font-supertall text-sm">{'data.name'}</p>
+            <p className="text-xs">{transaksi.status}</p>
+            <p className="font-semibold underline">{transaksi.created_at}</p>
+            <p className="font-supertall text-xl">{transaksi.method}</p>
+            <p className="font-supertall text-xs">{data.event_name}</p>
           </section>
           <section className="w-full h-fit col-span-2 grid justify-center items-center">
             <div className="w-full px-9 grid justify-items-center items-center grid-cols-1">
@@ -266,10 +207,16 @@ export default function History() {
         </section>
         <section className="z-10 space-y-3 mt-3">
           {transactions.map((transaction, index) => (
-            <div key={index} className="w-full space-y-4 mb-16">
-              <div>Buat grouping mirip seperti yang di detail event. kasih transaction Number {index}</div>
+            <div key={index} className="w-full space-y-4">
+              <div className="flex justify-between items-center relative z-20 py-2">
+                  <span className="text-base lg:text-sm text-black w-full md:w-fit py-1 px-3 rounded-sm bg-white text-center font-supertall">
+                  {transaction.transaction_id.length > 20 ? `${transaction.transaction_id.slice(0, 20)}...` : transaction.transaction_id}
+                  </span>
+                  <span className="flex-grow h-0.5 bg-white rounded-lg ml-3 hidden lg:block">
+                  </span>
+                </div>
               { transaction.detail_items.map((detail, index) => (
-                <Card key={index} data={detail} />
+                <Card key={index} data={detail} transaksi={transaction} />
               ))}
             </div>
           ))}

@@ -56,7 +56,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
           title: "Registration Success",
           text: res.data.message,
         });
-        router.push('/cart')
+        router.push('/order')
       }).catch(() => {throw new Error("Registration Failed")});
     } catch {
       Swal.fire({

@@ -12,11 +12,12 @@ import { ICompetition } from "../types/competition";
 import axiosInstance from "@/lib/axios";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import { FormMessage } from "../ui/form";
 
 const TeamSchema = z.object({
   competition_id: z.number(),
   team_name: z.string().min(1, "Team name is required"),
-  no_hp: z.string().min(10, "Phone number is required"),
+  no_hp: z.string().min(1, "Phone number is required"),
   team_members: z.array(
     z.object({
       name: z.string().min(1, "Player name is required"),
@@ -24,7 +25,7 @@ const TeamSchema = z.object({
       nickname: z.string().min(1, "Nickname is required"),
       position: z.enum(["leader", "player"]),
     })
-  ).min(1, "A team must have at least 5 members"),
+  ).min(1, "A team must have at least 2 members").max(5, "A team can only have 5 members"),
 });
 
 type TeamFormType = z.infer<typeof TeamSchema>;
@@ -39,6 +40,10 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
       no_hp: "",
       team_members: [
         { name: "", id_game: "", nickname: "", position: "leader" },
+        { name: "", id_game: "", nickname: "", position: "player" },
+        { name: "", id_game: "", nickname: "", position: "player" },
+        { name: "", id_game: "", nickname: "", position: "player" },
+        { name: "", id_game: "", nickname: "", position: "player" },
       ],
     },
   });
@@ -109,19 +114,20 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
               )}
             />
 
-            {fields.length > 5 && (
+            {fields.length > 2 && (
               <Button variant="destructive" onClick={() => remove(index)}>
                 Remove
               </Button>
             )}
           </Card>
         ))}
-
-        <Button onClick={() => append({ name: "", id_game: "", nickname: "", position: "player" })} className="hidden">
-          Add Player
-        </Button>
+         {fields.length < 5 && (
+          <Button onClick={() => append({ name: "", id_game: "", nickname: "", position: "player" })}>
+            Add Player
+          </Button>
+         )}
         <Button type="submit" className="w-full text-white rounded-sm font-semibold hover:text-[#ff0000] bg-[#ff0000] justify-center items-center text-center p-3 transition-all hover:border-[#ff0000] border-transparent border hover:bg-transparent disabled:bg-red-700" disabled={!data.status?.is_open}>
-          Lanjutkan
+          Daftar
         </Button>
       </div>
     </form>

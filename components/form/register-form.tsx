@@ -157,7 +157,7 @@ export function RegisterForm({
                     />
                   </div>
                   <Button type="submit" className="w-full bg-red-600 text-white font-semibold lg:col-span-2 xl:col-span-1 hover:text-red-600 mt-4">
-                    Register {isLoading ? <LoadingSpinner className="size-4" /> : ""}
+                    Register {isLoading ? <LoadingSpinner className="size-4 text-white" /> : ""}
                   </Button>
                 </div>
                 <div className="text-center text-sm">

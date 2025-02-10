@@ -3,21 +3,10 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import NavigationBar from "../navigation-bar";
-import { Filter, StickyNote } from "lucide-react";
+import { CircleCheck, CircleX, Clock, Filter, StickyNote } from "lucide-react";
 import { Button } from "../ui/button";
-import QRCode from "react-qr-code";
 import useSWR from "swr";
 import axios from "axios";
-// import { Key } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 import { getAuthorization } from "@/lib/axios";
 const fetcher = (url: string) => {
   const token = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
@@ -137,42 +126,26 @@ export default function History() {
 
         {/* Mobile */}
         <div className="bg-white w-full aspect-auto h-fit grid grid-cols-3 lg:hidden rounded-md overflow-hidden">
-          <section className="w-full h-full bg-[#FF0000] flex flex-col justify-center md:items-center items-start p-2">
-            <p className="text-xs">{transaksi.status}</p>
-            <p className="font-semibold underline">{transaksi.created_at}</p>
-            <p className="font-supertall text-xl">{transaksi.method}</p>
-            <p className="font-supertall text-xs">{data.event_name}</p>
+          <section className="w-full h-full bg-[#FF0000] gap-2 flex flex-col justify-center md:items-center items-start p-2">
+            <div className="flex items-center border-white border-[5px] flex-col">
+            <p>{getIcon(transaksi.status)}</p>
+            <p className="text-sm uppercase font-extrabold">{transaksi.status}</p>
+            </div>
+            <p className="text-xs font-semibold underline">{data.order_number.length > 10 ? `${data.order_number.slice(0, 10)}...` : data.order_number}</p>
+            <p className="font-supertall text-xl">{data.order_type}</p>
+            {/* <p className="font-supertall text-xs">{data.event_name}</p> */}
           </section>
-          <section className="w-full h-fit col-span-2 grid justify-center items-center">
-            <div className="w-full px-9 grid justify-items-center items-center grid-cols-1">
-              <QRCode
-                size={256}
-                style={{ height: "auto", maxWidth: "60%", width: "100%", paddingTop: "8px" }}
-                value={data.archive_pdf ? data.archive_pdf : "https://example.com/not-found"}
-                viewBox={`0 0 256 256`}
-              />
-              <Dialog>
-                <DialogTrigger asChild>
-                  <a className="text-black p-2 text-center cursor-pointer">Klik Untuk Perbesar</a>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle></DialogTitle>
-                    <DialogDescription>
-
-                    </DialogDescription>
-                  </DialogHeader>
-
-                  <QRCode
-                    size={256}
-                    style={{ height: "auto", maxWidth: "100%", width: "100%", paddingTop: "8px" }}
-                    value={data.archive_pdf ? data.archive_pdf : "https://example.com/not-found"}
-                    viewBox={`0 0 256 256`}
-                  />
-                  <DialogFooter>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+          <section className="w-full h-full col-span-2 font-supertall grid justify-center items-center">
+            <div className="w-full h-full grid justify-items-center items-center grid-cols-1">
+            <p className="font-semibold text-lg text-[#ff0000]">{data.activity_name}</p>
+            <p className="font-semibold text-black">{transaksi.created_at}</p>
+            {data.archive_pdf ? (
+                <Button onClick={() => DownloadReceipt(data, token)} className="bg-[#FF0000] text-white font-semibold text-sm rounded-md px-14 py-1 hover:bg-white hover:text-[#FF0000] hover:border-[#FF0000] border-[#FF0000] border-2">
+                  <p className="p-2"> Unduh </p>
+                </Button>
+              ) : (
+                <p className="text-gray-500">File tidak tersedia</p>
+              )}
             </div>
           </section>
         </div>
@@ -222,7 +195,18 @@ export default function History() {
           ))}
         </section>
       </div>
-
     </div>
   )
 }
+const getIcon = (typeId: string) => {
+  switch (typeId) {
+    case "pending":
+      return <Clock className="w-9 h-9 text-white" />;
+    case "success":
+      return <CircleCheck className="w-9 h-9 text-white" />;
+    case "denied":
+      return <CircleX className="w-9 h-9 text-white" />;
+    default:
+      return null;
+  }
+};

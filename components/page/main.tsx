@@ -2,7 +2,6 @@
 import NavigationBar from '../navigation-bar';
 import Footer from '../footer';
 import { ChevronsRight, User2 } from 'lucide-react';
-
 import React from 'react';
 import axiosInstance from '@/lib/axios';
 import GameCard from '../gameCard';

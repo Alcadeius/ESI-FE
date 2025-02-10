@@ -129,7 +129,7 @@ const Card = ({ data }: { data: Ticket }) => {
         </div>
 
         {/* Mobile */}
-        <div className="bg-white w-full grid grid-cols-5 lg:hidden rounded-md overflow-hidden">
+        <div className="bg-white w-full h-[40%] grid grid-cols-5 lg:hidden rounded-md">
           <section className="col-span-3 w-full h-full bg-[#FF0000] flex gap-1">
             <div className="">
               <Button onClick={() => handleDelete(data.order_number)} className="text-white h-full bg-transparent">
@@ -162,7 +162,6 @@ const Card = ({ data }: { data: Ticket }) => {
         <div className="py-2 flex flex-col justify-center items-start">
           <p className="font-supertall text-sm">{data.activity_name}</p>
           <p className="font-supertall text-lg">{data.game_name}</p>
-          {/* <p className="font-semibold">Total Beli:{data.tot}</p> */}
         </div>
       </section>
       <section className="w-full h-full col-span-2 grid justify-center items-center text-black font-semibold">
@@ -213,7 +212,7 @@ const Card = ({ data }: { data: Ticket }) => {
   }
   
   return (
-    <div className="text-white bg-gradient-to-b lg:px-20 lg:pt-14 bg-gray-900 h-screen px-4 flex items-start lg:block">
+    <div className="text-white bg-gradient-to-b lg:px-20 lg:pt-14 bg-gray-900 lg:h-screen px-4 flex items-start lg:block">
 
       <div className={cn("bg-[url('/images/backdrop_1.png')]", "absolute lg:top-1/2 lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[707px] h-[471px] bg-contain z-10 bg-gray-900 bg-blend-lighten", "-top-20 right-0")}>
       </div>
@@ -223,14 +222,14 @@ const Card = ({ data }: { data: Ticket }) => {
 
       {/* Content */}
       <div className="w-full grid lg:mt-7 relative z-10 lg:grid-cols-7">
-        <section className="lg:col-span-4 h-[20vh]">
+        <section className="lg:col-span-4 h-full">
           <div className="flex justify-between w-full">
             <div className="flex items-center gap-2">
               <Box className="size-6 lg:block hidden" />
               <h1 className="text-2xl font-semibold">Looting Box</h1>
             </div>
           </div>
-          <div className="space-y-3 mt-3 h-full lg:h-fit lg:overflow-y-auto [&::-webkit-scrollbar]:w-1
+          <div className="space-y-3 mt-3 h-96 overflow-y-auto [&::-webkit-scrollbar]:w-1
         [&::-webkit-scrollbar-track]:bg-black
         [&::-webkit-scrollbar-thumb]:bg-[#ff0000]">
           {tickets.length === 0 && registrations.length === 0 ? (
@@ -249,7 +248,7 @@ const Card = ({ data }: { data: Ticket }) => {
                 <p className="font-semibold text-2xl">Detail Transaksi</p>
                 <p>Periksa kembali pesanan anda.</p>
               </div>
-              <div className="lg:h-32 lg:overflow-auto [&::-webkit-scrollbar]:w-1
+              <div className="lg:h-32 lg:overflow-auto [&::-webkit-scrollbar]:w-[0.10rem]
             [&::-webkit-scrollbar-track]:bg-red-100
             [&::-webkit-scrollbar-thumb]:bg-[#ff0000] ">
               {[...tickets, ...registrations].map((data, index) => (

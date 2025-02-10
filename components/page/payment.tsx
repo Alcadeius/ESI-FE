@@ -56,7 +56,6 @@ export default function Payment() {
   };
 
 
-  // Pemanggilan API untuk mengambil data cart
   useEffect(() => {
     const fetchCartItems = async () => {
       const token = localStorage.getItem("authToken");
@@ -71,10 +70,12 @@ export default function Payment() {
 
         if (response.status === 200) {
           setTotalPrice(response.data.total_price);
-          setTickets(response.data.details.tickets.map((ticket: any) => ({
+          const fetchedTickets = response.data.details.tickets.map((ticket: any) => ({
             activity_name: ticket.activity_name,
             total_price: ticket.total_price,
-          })));
+          }));
+          setTickets(fetchedTickets);
+          setTotalPrice(fetchedTickets.length > 0 ? response.data.total_price : 0);
         }
       } catch (error) {
         console.error("Gagal mengambil data cart:", error);
@@ -143,7 +144,7 @@ export default function Payment() {
     <p className="text-xs lg:text-base">Pastikan kembali pesanan anda sebelum mengirimkan formulir ini</p>
   </div>
 
-  {tickets.length > 0 && (
+  {tickets.length > 0 ? (
     <div className="mb-2 lg:h-full">
       {tickets.map((ticket, index) => (
         <div key={index} className="flex text-xs md:text-base font-bold justify-between mb-2">
@@ -152,6 +153,10 @@ export default function Payment() {
         </div>
       ))}
     </div>
+  ):(
+    <div className="text-center text-gray-500 h-full">
+    <h2 className="text-lg font-bold">Tidak ada daftar belanja</h2>
+  </div>
   )}
 
   <hr className="bg-black p-[0.5px] " />
@@ -159,7 +164,7 @@ export default function Payment() {
   {totalPrice !== null && (
     <div className="flex text-sm lg:text-lg font-bold justify-between mt-2">
       <h1>Total</h1>
-      <h4>Rp. {totalPrice.toLocaleString("id-ID")}</h4>
+      <h4>Rp. {totalPrice?.toLocaleString("id-ID") || "0"}</h4>
     </div>
   )}
 

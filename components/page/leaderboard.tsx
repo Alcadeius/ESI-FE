@@ -67,7 +67,7 @@ export default function Leaderboard() {
           <div
             key={game.id}
             className={`flex text-white items-center cursor-pointer ${
-              selectedGameId === game.id ? ' text-red-600' : ''
+              selectedGameId === game.id ? ' font-bold text-red-700' : ''
             }`}
             onClick={() => setSelectedGameId(game.id)}
           >
@@ -123,7 +123,7 @@ export default function Leaderboard() {
           <div
             key={game.id}
             className={`flex text-white items-center cursor-pointer ${
-              selectedGameId === game.id ? ' text-red-600' : ''
+              selectedGameId === game.id ? 'font-bold text-red-700' : ''
             }`}
             onClick={() => setSelectedGameId(game.id)}
           >

@@ -66,7 +66,7 @@ export default function Main() {
             <p className="text-white text-sm">{event?.category?.name}</p>
           </div>
           <div>
-            <ChevronsRight size={35} className="group-hover:scale-125 transition-all"/>
+            <ChevronsRight size={35} className="group-hover:scale-125 transition-all" />
           </div>
         </div>
         <div className="flex items-end gap-2 z-10">
@@ -104,7 +104,7 @@ export default function Main() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="w-fit flex-wrap md:w-full items-center justify-center text-white my-5 place-content-center flex">
+          <div className="w-full flex-wrap md:w-full items-center justify-center text-white my-5 place-content-center flex">
             {totalPages > 1 && (
               <Pagination>
                 <PaginationContent>
@@ -119,20 +119,65 @@ export default function Main() {
                     />
                   </PaginationItem>
 
-                  {Array.from({ length: totalPages }, (_, i) => (
-                    <PaginationItem key={i}>
+                  {currentPage == 1 && (
+                    <PaginationItem>
                       <PaginationLink
                         href="#"
-                        isActive={currentPage === i + 1}
                         onClick={(e) => {
                           e.preventDefault();
-                          setCurrentPage(i + 1);
+                          setCurrentPage(totalPages);
                         }}
                       >
-                        {i + 1}
+                        ...
                       </PaginationLink>
                     </PaginationItem>
-                  ))}
+                  )}
+
+                  {currentPage > 1 && (
+                    <PaginationItem>
+                      <PaginationLink
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage(currentPage - 1);
+                        }}
+                      >
+                        {currentPage - 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  )}
+
+                  <PaginationItem>
+                    <PaginationLink isActive>{currentPage}</PaginationLink>
+                  </PaginationItem>
+
+                  {currentPage < totalPages && (
+                    <PaginationItem>
+                      <PaginationLink
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage(currentPage + 1);
+                        }}
+                      >
+                        {currentPage + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  )}
+
+                  {currentPage == totalPages && (
+                    <PaginationItem>
+                      <PaginationLink
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage(1);
+                        }}
+                      >
+                        ...
+                      </PaginationLink>
+                    </PaginationItem>
+                  )}
 
                   <PaginationItem>
                     <PaginationNext

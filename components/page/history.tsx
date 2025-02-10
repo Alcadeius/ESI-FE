@@ -80,7 +80,7 @@ export default function History() {
       : new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
   });
 
-  const Card = ({ data,transaksi }: { data: TransactionDetail,transaksi:Transaction }) => {
+  const Card = ({ data, transaksi }: { data: TransactionDetail, transaksi: Transaction }) => {
     return (
       <>
         {/* Desktop */}
@@ -109,8 +109,8 @@ export default function History() {
               <p>Status - {transaksi.status}</p>
             </section>
             <section className="col-span-2 flex flex-col justify-center items-start text-sm font-medium text-black pl-8 font-supertall">
-              <p className="text-[#FF0000] text-4xl">{data.event_name}</p>
-              <p className="pl-1">{data.activity_name + ' - ' + data.activity_type}</p>
+              <p className="text-[#FF0000] text-2xl">{data.event_name.length > 40 ? `${data.event_name.slice(0, 40)}...` : data.event_name}</p>
+              <p>{data.activity_name + ' - ' + data.activity_type}</p>
             </section>
             <section className="w-full grid items-center justify-end col-span-1">
               {data.archive_pdf ? (
@@ -153,14 +153,14 @@ export default function History() {
     )
   }
   return (
-    <div className="text-white bg-gradient-to-b lg:px-20 lg:pt-14 bg-gray-900 h-screen px-4 flex items-start lg:block">
+    <div className="text-white bg-gradient-to-b lg:px-20 lg:py-14 lg:overflow-hidden bg-gray-900 h-screen px-4 flex items-start lg:grid relative">
 
       <div className={cn("bg-[url('/images/backdrop_1.png')]", "absolute lg:top-1/2 lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[707px] h-[471px] bg-contain z-10 bg-gray-900 bg-blend-lighten", "-top-20 right-0")}>
       </div>
 
       <NavigationBar />
 
-      <div className="w-full grid lg:mt-7 relative">
+      <div className="w-full grid lg:mt-7 relative h-full lg:overflow-y-hidden">
         <section className="flex justify-between w-full z-10">
           <div className="flex items-center gap-2">
             <StickyNote className="size-6 lg:block hidden" />
@@ -178,19 +178,21 @@ export default function History() {
             </Button>
           </div>
         </section>
-        <section className="z-10 space-y-3 mt-3">
+        <section className="z-10 relative h-full lg:overflow-y-auto pr-4">
           {transactions.map((transaction, index) => (
             <div key={index} className="w-full space-y-4">
-              <div className="flex justify-between items-center relative z-20 py-2">
-                  <span className="text-base lg:text-sm text-black w-full md:w-fit py-1 px-3 rounded-sm bg-white text-center font-supertall">
-                  {transaction.transaction_id.length > 20 ? `${transaction.transaction_id.slice(0, 20)}...` : transaction.transaction_id}
-                  </span>
-                  <span className="flex-grow h-0.5 bg-white rounded-lg ml-3 hidden lg:block">
-                  </span>
-                </div>
-              { transaction.detail_items.map((detail, index) => (
-                <Card key={index} data={detail} transaksi={transaction} />
-              ))}
+              <div className="bg-gray-900 flex justify-between items-center relative z-20 lg:py-4 lg:sticky lg:top-0">
+                <span className="text-base lg:text-sm text-black w-full md:w-fit py-1 px-3 rounded-sm bg-white text-center font-supertall">
+                  {transaction.transaction_id}
+                </span>
+                <span className="flex-grow h-0.5 bg-white rounded-lg ml-3 hidden lg:block">
+                </span>
+              </div>
+              <div className="space-y-4 pb-4">
+                {transaction.detail_items.map((detail, index) => (
+                  <Card key={index} data={detail} transaksi={transaction} />
+                ))}
+              </div>
             </div>
           ))}
         </section>

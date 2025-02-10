@@ -105,7 +105,7 @@ export default function Main() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="w-full items-center text-white my-5 place-content-center flex">
+          <div className="w-fit flex-wrap md:w-full items-center justify-center text-white my-5 place-content-center flex">
             {totalPages > 1 && (
               <Pagination>
                 <PaginationContent>

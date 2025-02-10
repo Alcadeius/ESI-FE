@@ -24,6 +24,7 @@ interface TicketFormProps {
 
 export function TicketForm({ ticketID, data }: TicketFormProps) {
   const [ticketQuantity, setTicketQuantity] = useState(1);
+  const [openDialog, setOpenDialog] = useState(false);
   const router = useRouter();
 
   const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +49,7 @@ export function TicketForm({ ticketID, data }: TicketFormProps) {
         return;
       }
       if (ticketQuantity > 10) {
+        setOpenDialog(false);
         Swal.fire({
           icon: "error",
           title: "Maksimum tiket yang bisa dibeli adalah 10!",
@@ -69,6 +71,7 @@ export function TicketForm({ ticketID, data }: TicketFormProps) {
       )
       console.log(response)
       if (response.status === 201) {
+        setOpenDialog(false);
         Swal.fire({
           title: "Ticket Berhasil Dipesan",
           text: "Apakah kamu mau melakukan pembayaran?",
@@ -84,6 +87,7 @@ export function TicketForm({ ticketID, data }: TicketFormProps) {
           }
         })
       } else {
+        setOpenDialog(false);
         Swal.fire({
           icon: 'error',
           title: 'Gagal Menambahkan Ticket',
@@ -97,9 +101,9 @@ export function TicketForm({ ticketID, data }: TicketFormProps) {
   };
 
   return (
-    <Dialog>
+    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
-        <Button className="w-full text-white rounded-sm font-semibold hover:text-[#ff0000] bg-[#ff0000] justify-center items-center text-center p-3 transition-all hover:border-[#ff0000] border-transparent border hover:bg-transparent disabled:bg-red-700" disabled={!data.status?.is_open}>
+        <Button onClick={() => setOpenDialog(true)} className="w-full text-white rounded-sm font-semibold hover:text-[#ff0000] bg-[#ff0000] justify-center items-center text-center p-3 transition-all hover:border-[#ff0000] border-transparent border hover:bg-transparent disabled:bg-red-700" disabled={!data.status?.is_open}>
           {(data.status?.is_open) ? `Tambahkan ke Keranjang` : `Segera Hadir`}
         </Button>
       </DialogTrigger>

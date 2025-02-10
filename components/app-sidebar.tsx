@@ -28,20 +28,25 @@ const items = [
     icon: <LayoutDashboard/>,
   },
   {
+    title: "Papan Peringkat",
+    url: "/leaderboard",
+    icon: <LayoutDashboard/>,
+  },
+  {
     title: "Keranjang",
-    url: "/main",
+    url: "/order",
     icon: <Box/>,
   },
   {
     title: "Riwayat Transaksi",
-    url: "/main",
+    url: "/history",
     icon: <Receipt/>,
   },
   {
     title: "Kelola Akun",
     url: "",
     icon: <User/>,
-    isActive: true,
+    isActive: false,
     items: [
       {
         title: "Login",

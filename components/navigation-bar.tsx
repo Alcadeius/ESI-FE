@@ -14,10 +14,10 @@ const pageList = [
     name: 'Beranda',
     link: '/main'
   },
-  // {
-  //   name: 'Papan Peringkat',
-  //   link: '/leaderboard'
-  // },
+  {
+    name: 'Papan Peringkat',
+    link: '/leaderboard'
+  },
   {
     name: 'Keranjang',
     link: '/order'

@@ -15,7 +15,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
-import { Box, ChevronRight, LayoutDashboard, Receipt, Slash, User } from "lucide-react"
+import { Box, ChevronRight, LayoutDashboard, Receipt, User } from "lucide-react"
 import { useUser } from "@/hooks/use-user"
 
 export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

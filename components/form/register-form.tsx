@@ -163,7 +163,7 @@ export function RegisterForm({
                 <div className="text-center text-sm">
                   Sudah memiliki akun? {" "}
                   <button type="button" onClick={() => router.replace('/login')} className="underline underline-offset-4">
-                    Register
+                    Login
                   </button>
                 </div>
               </div>

@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger,SidebarInset } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/app-sidebar";
 import Logo from "@/components/logo";
-
+// import {
+//   Breadcrumb,
+//   BreadcrumbItem,
+//   BreadcrumbLink,
+//   BreadcrumbList,
+//   BreadcrumbPage,
+//   BreadcrumbSeparator,
+// } from "@/components/ui/breadcrumb"
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -39,8 +46,22 @@ export default function RootLayout({
         <link href="https://fonts.cdnfonts.com/css/supertalls" rel="stylesheet" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <SidebarProvider open={false}>
-          <AppSidebar className="lg:hidden" />
+      <SidebarProvider>
+      <SidebarInset>
+        <main className="bg-gray-900 w-full">
+            <div className="text-white bg-gray lg:hidden w-full flex justify-between items-center p-4 bg-gray-900 z-50 shadow-md ">
+              <a href="/main"><Logo className="size-10"/></a>
+              <div className="font-medium text-base">ESI DENPASAR</div>
+              <SidebarTrigger className="w-fit bg-gray-700 size-10" />
+            </div>
+            <div className="w-full h-[72px] lg:hidden"></div>
+            {children}
+          </main>
+      </SidebarInset>
+      <AppSidebar side="right" className="lg:hidden"/>
+    </SidebarProvider>
+        {/* <SidebarProvider open={false}>
+          <SidebarInset>
           <main className="bg-gray-900 w-full">
             <div className="text-white bg-gray lg:hidden w-full flex justify-between items-center p-4 bg-gray-900 z-50 shadow-md fixed">
               <a href="/main"><Logo className="size-10"/></a>
@@ -50,7 +71,9 @@ export default function RootLayout({
             <div className="w-full h-[72px] lg:hidden"></div>
             {children}
           </main>
-        </SidebarProvider>
+        </SidebarInset>
+        <AppSidebar className="lg:hidden" side="right" />
+        </SidebarProvider> */}
       </body>
     </html>
   );

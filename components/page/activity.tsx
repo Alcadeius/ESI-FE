@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { cn } from "@/lib/utils";
 import NavigationBar from "../navigation-bar";
@@ -16,7 +16,6 @@ import { ICompetition } from "../types/competition";
 import { TicketForm } from "../form/ticket-form";
 import { Button } from "../ui/button";
 import LoadingScreen from "../loading-screen";
-import { useParams } from "next/navigation";
 
 const fetcher = (url: string) => axiosInstance.get(url).then((res) => res.data);
 
@@ -30,9 +29,10 @@ interface DetailProps {
   activities: ActivityProps[];
 }
 
-export default function ActivityComponent() {
-  const params = useParams();
-  const eventIdFromUrl = params.eventId ? Number(params.eventId) : null;
+const ActivityPage = () => {
+  const searchParams = useSearchParams();
+  const eventIdFromUrl = searchParams.get("event");
+
   const [selectedEventId, setSelectedEventId] = useState<number | null>(
     eventIdFromUrl ? Number(eventIdFromUrl) : null
   );
@@ -89,7 +89,7 @@ export default function ActivityComponent() {
               </div>
             </div>
             <div className="font-sans flex text-sm">
-              { isTicket(data) ? (
+              {isTicket(data) ? (
                 <TicketForm data={data} ticketID={data.id} />
               ) : (
                 <Button onClick={() => router.push(`/competition/register?id=${data.id}`)} className="w-full text-white rounded-sm font-semibold hover:text-[#ff0000] bg-[#ff0000] justify-center items-center text-center p-3 transition-all hover:border-[#ff0000] border-transparent border hover:bg-transparent disabled:bg-red-700" disabled={!data.status?.is_open}>
@@ -152,6 +152,8 @@ export default function ActivityComponent() {
     </div>
   );
 }
+
+export default ActivityPage;
 
 const getIcon = (typeId: number) => {
   switch (typeId) {

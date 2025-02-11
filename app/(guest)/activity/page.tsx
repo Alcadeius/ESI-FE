@@ -1,11 +1,9 @@
-import * as React from "react"
+import ActivityPage from "@/components/page/activity";
 
-import Activity from '@/components/page/activity';
-
-export default function activty() {
+export default function Activity() {
   return (
     <main>
-      <Activity />
+      <ActivityPage />
     </main>
   );
 }

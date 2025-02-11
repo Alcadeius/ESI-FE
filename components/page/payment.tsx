@@ -11,11 +11,30 @@ export default function Payment() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<keyof typeof paymentOptions|"">("");
   const [totalPrice, setTotalPrice] = useState<number | null>(null);
   const [tickets, setTickets] = useState<{ activity_name: string; total_price: string }[]>([]);
-
+  const [transferDestination, setTransferDestination] = useState("");
   const router = useRouter();
+
+  const paymentOptions = {
+    Qris: "1021048",
+    Dana: "2083920",
+    OVO: "3094820",
+    Gopay: "5029384",
+  };
+  useEffect(() => {
+  if (paymentMethod in paymentOptions) {
+    setTransferDestination(paymentOptions[paymentMethod as keyof typeof paymentOptions]);
+  } else {
+    setTransferDestination("");
+  }
+}, [paymentMethod]);
+
+    const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedMethod = e.target.value as keyof typeof paymentOptions;
+    setPaymentMethod(selectedMethod);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -25,14 +44,16 @@ export default function Payment() {
   }, [router]);
   const handleCopy = () => {
     const input = document.getElementById("input-transfer") as HTMLInputElement;
-    const inputValue = input.value;
-
-    navigator.clipboard.writeText(inputValue).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }).catch((err) => {
-      console.error("Gagal menyalin: ", err);
-    });
+    if (input) {
+      navigator.clipboard.writeText(input.value)
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        })
+        .catch((err) => {
+          console.error("Gagal menyalin: ", err);
+        });
+    }
   };
   const handleFileChange = (e: any) => {
     const selectedFile = e.target.files[0];
@@ -150,7 +171,7 @@ export default function Payment() {
     <div className="h-screen font-sans lg:px-20 lg:pt-14 bg-[url('/images/DSCF4041-3.png')] bg-cover bg-no-repeat before:absolute before:w-full before:content-['a'] before:h-full before:bg-black/35 before:top-0 before:left-0 before:z-0">
       <NavigationBar />
       <section className="px-5 relative grid grid-cols-1 2xl:place-content-center lg:flex z-10 py-6 lg:w-full lg:py-5">
-        <div className="flex flex-col lg:rounded-bl-md lg:rounded-tl-md rounded-t-md lg:w-full xl:max-w-4xl lg:max-w-lg py-3 bg-white px-5 lg:py-10 lg:px-10 xl:px-20 xl:py-14">
+        <div className="flex flex-col lg:rounded-bl-md lg:rounded-tl-md lg:rounded-tr-none lg:rounded-br-none rounded-t-md lg:w-full xl:max-w-4xl lg:max-w-lg py-3 bg-white px-5 lg:py-10 lg:px-10 xl:px-20 xl:py-14">
           <div className="text-black flex flex-col mb-5">
             <h1 className="text-lg text-blue-500 font-bold lg:text-2xl">Detail Belanja</h1>
             <p className="text-xs lg:text-base">Pastikan kembali pesanan anda sebelum mengirimkan formulir ini</p>
@@ -185,7 +206,7 @@ export default function Payment() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:max-w-2xl lg:w-3/4 lg:rounded-br-md lg:rounded-tr-md rounded-b-md bg-[#D9D9D9] py-3 px-5 lg:py-10 lg:px-10 xl:px-20 xl:py-14">
+        <div className="flex flex-col lg:max-w-2xl lg:w-3/4 lg:rounded-br-md lg:rounded-bl-none lg:rounded-tr-md rounded-b-md bg-[#D9D9D9] py-3 px-5 lg:py-10 lg:px-10 xl:px-20 xl:py-14">
           <h1 className="text-lg text-blue-500 lg:text-2xl font-bold">Pembayaran</h1>
           <div>
             <form onSubmit={handleSubmit} className="mx-auto pt-2">
@@ -193,14 +214,19 @@ export default function Payment() {
                 <p className="text-red-500 text-xs text-center mt-2">{errorMessage}</p>
               )}
               <label htmlFor="payment" className="block mb-2 text-sm font-medium text-gray-900">Pilih Metode Pembayaran</label>
-              <select id="payment" className="bg-gray-50 border mb-3 outline-none border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value)}
-              >
-                <option disabled>Pilih Metode Pembayaran</option>
-                <option value="Qris">Qris</option>
-                <option value="Dana">Dana</option>
-              </select>
+              <select
+          id="payment"
+          className="bg-gray-50 border mb-3 outline-none border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+          value={paymentMethod}
+          onChange={handlePaymentChange}
+        >
+          <option disabled value="">Pilih Metode Pembayaran</option>
+          {Object.keys(paymentOptions).map((method) => (
+            <option key={method} value={method}>
+              {method}
+            </option>
+          ))}
+        </select>
               <div>
                 <label htmlFor="input-group-1" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tujuan Transfer</label>
                 <div className="relative mb-6">
@@ -210,7 +236,7 @@ export default function Payment() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
                     </svg>
                   </div>
-                  <input type="text" id="input-transfer" className="bg-gray-50 border outline-none font-medium relativez z-10 border-gray-300 text-gray-900 text-sm rounded-lg block w-full cursor-pointer p-2" value="102091029104" onClick={handleCopy} readOnly />
+                  <input type="text" id="input-transfer" className="bg-gray-50 border outline-none font-medium relativez z-10 border-gray-300 text-gray-900 text-sm rounded-lg block w-full cursor-pointer p-2" value={transferDestination} onClick={handleCopy} readOnly />
                 </div>
                 <label htmlFor="dropzone-file" className="font-medium">Bukti Transfer</label>
                 <div

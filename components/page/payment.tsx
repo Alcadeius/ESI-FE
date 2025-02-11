@@ -89,8 +89,20 @@ export default function Payment() {
     e.preventDefault();
     setErrorMessage("");
     setLoading(true);
+    if(tickets.length==0){
+      Swal.fire({
+        icon: "error",
+        title: "Tidak Ada Belanjaan",
+        text: "Silahkan menambahkan pembelian terlebih dahulu",
+      });setLoading(false)
+      return;
+    }
     if (!file) {
-      alert("Silakan unggah bukti transfer terlebih dahulu!");
+      Swal.fire({
+        icon: "error",
+        title: "Kekurangan Data",
+        text: "Silahkan masukan Bukti Pembayaran",
+      });setLoading(false)
       return;
     }
 
@@ -185,7 +197,7 @@ export default function Payment() {
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value)}
               >
-                <option selected>Pilih Metode Pembayaran</option>
+                <option disabled>Pilih Metode Pembayaran</option>
                 <option value="Qris">Qris</option>
                 <option value="Dana">Dana</option>
               </select>

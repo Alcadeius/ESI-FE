@@ -46,10 +46,10 @@ export default function RootLayout({
         <link href="https://fonts.cdnfonts.com/css/supertalls" rel="stylesheet" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <SidebarProvider>
+      <SidebarProvider >
       <SidebarInset>
         <main className="bg-gray-900 w-full">
-            <div className="text-white bg-gray lg:hidden w-full flex justify-between items-center p-4 bg-gray-900 z-50 shadow-md ">
+            <div className="text-white bg-gray lg:hidden w-full flex justify-between items-center p-4 bg-gray-900 relative z-40 shadow-md ">
               <a href="/main"><Logo className="size-10"/></a>
               <div className="font-medium text-base">ESI DENPASAR</div>
               <SidebarTrigger className="w-fit bg-gray-700 size-10" />
@@ -58,7 +58,7 @@ export default function RootLayout({
             {children}
           </main>
       </SidebarInset>
-      <AppSidebar side="right" className="lg:hidden"/>
+      <AppSidebar side="left" className="lg:hidden absolute z-50 "/>
     </SidebarProvider>
         {/* <SidebarProvider open={false}>
           <SidebarInset>

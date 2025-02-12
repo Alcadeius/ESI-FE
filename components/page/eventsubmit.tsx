@@ -112,7 +112,7 @@ export default function EventSubmit() {
   return (
     <div className="bg-[url('/images/DSCF4041-3.png')] bg-blend-lighten bg-gray-900 bg-center bg-cover h-full 2xl:h-screen before:top-0 before:left-0 w-full bg-no-repeat before:absolute before:z-0 before:content-['a'] before:h-full before:w-full lg:px-20 lg:py-16">
       <NavigationBar />
-      <div className='px-3 my-[14vh] lg:my-0 md:px-14 md:py-10 lg:px-28 lg:mx-auto py-5 relative z-10 w-full'>
+      <div className='px-3  lg:my-0 md:px-14 md:py-10 lg:px-28 lg:mx-auto py-5 relative z-10 w-full'>
         <div className='bg-[#F9FAFB] rounded-md'>
           <div className='flex flex-col px-5 py-5 lg:px-20 lg:py-10 lg:justify-center w-full'>
             <div className='flex-col text-sm mb-5'>
@@ -187,7 +187,7 @@ export default function EventSubmit() {
                   )}
                 </div>
                 <div className='w-full lg:transition-all lg:hover:bg-black lg:float-right bg-[#ff0000] cursor-pointer p-2 text-white rounded-md text-center'>
-                  <input type="submit" className="cursor-pointer" value={loading ? "Submitting..." : "Submit"}/>
+                  <input type="submit" className="cursor-pointer w-full" value={loading ? "Submitting..." : "Submit"}/>
                 </div>
               </form>
             </div>

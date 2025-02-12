@@ -1,7 +1,7 @@
 "use client"
 import NavigationBar from '../navigation-bar';
 import Footer from '../footer';
-import { ChevronsRight, Globe, User2 } from 'lucide-react';
+import { ChevronsRight, Globe } from 'lucide-react';
 import React from 'react';
 import axiosInstance from '@/lib/axios';
 import useSWR from 'swr';
@@ -50,7 +50,7 @@ export default function Main() {
       <div key={index} onClick={() => handleEventClick(event)} className="bg-gray-900 rounded-sm p-5 w-full aspect-video z-20 relative bg-cover bg-center flex justify-between flex-col select-none cursor-pointer group" style={{ backgroundImage: `url(${event?.event_banner})` }}>
         <div className="flex justify-between items-start z-10">
           <div>
-            <div className="text-white font-bold lg:text-2xl">{event?.event_logo}</div>
+            {/* <div className="text-white font-bold lg:text-2xl">{event?.event_logo}</div> */}
             <h1 className="text-white font-bold text-2xl">{event?.name.length > 40 ? `${event.name.slice(0, 40)}...` : event.name}</h1>
             <p className="text-white text-sm"></p>
           </div>

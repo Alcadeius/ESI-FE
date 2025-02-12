@@ -54,7 +54,7 @@ export default function RootLayout({
               <div className="font-medium text-base">ESI DENPASAR</div>
               <SidebarTrigger className="w-fit bg-gray-700 size-10" />
             </div>
-            <div className="w-full h-[72px] lg:hidden"></div>
+            {/* <div className="w-full h-[72px] lg:hidden"></div> */}
             {children}
           </main>
       </SidebarInset>

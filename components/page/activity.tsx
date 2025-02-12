@@ -120,7 +120,8 @@ const ActivityPage = () => {
           <p className="uppercase text-white lg:text-2xl">{eventData.data.name.length > 50 ? `${eventData.data.name.slice(0, 50)}...` : eventData.data.name}</p>
         </div>
 
-        {selectedEventId && activitiesData && (
+        {selectedEventId && activitiesData ? (
+        activitiesData.data.activities.length > 0 ? (
           activitiesData.data.activities.map((activity, index) => (
             (activity.ticketSales || activity.competitions) && (
               <div key={index} className="pb-5">
@@ -128,26 +129,23 @@ const ActivityPage = () => {
                   <span className="text-base text-black w-full md:w-fit py-1 px-3 rounded-sm bg-white text-center font-supertall">
                     {activity.name}
                   </span>
-                  <span className="flex-grow h-0.5 bg-white rounded-lg ml-3 hidden lg:block">
-                  </span>
+                  <span className="flex-grow h-0.5 bg-white rounded-lg ml-3 hidden lg:block"></span>
                 </div>
                 <div className="mt-2 space-y-4 w-full h-full relative z-20">
-                  {activity.ticketSales && (
-                    activity.ticketSales.map((ticket) => (
-                      <Card key={ticket.id} data={ticket} activity={activity} />
-                    ))
-                  )}
-                  {activity.competitions && (
-                    activity.competitions.map((competition) => (
-                      <Card key={competition.id} data={competition} activity={activity} />
-                    ))
-                  )}
+                  {activity.ticketSales && activity.ticketSales.map((ticket) => (
+                    <Card key={ticket.id} data={ticket} activity={activity} />
+                  ))}
+                  {activity.competitions && activity.competitions.map((competition) => (
+                    <Card key={competition.id} data={competition} activity={activity} />
+                  ))}
                 </div>
               </div>
             )
-          )
-          )
-        )}
+          ))
+        ) : (
+          <p className="text-center lg:text-start lg:text-xl text-white mt-5 font-supertall">No Activities found</p>
+        )
+      ) : null}
       </div>
     </div>
   );

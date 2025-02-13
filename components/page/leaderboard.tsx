@@ -72,18 +72,18 @@ export default function Leaderboard() {
         <NavigationBar />
       </div>
       <div className="hidden font-supertall lg:flex h-[60vh] justify-center before:hidden before:absolute before:w-full before:h-full before:content-['a'] bg-center bg-[url('/images/optimized/hall_backdrop.webp')] bg-blend-lighten bg-gray-900 bg-cover bg-no-repeat">
-        <h1 className="[text-shadow:_0px_5px_16px_#838383] relative z-10 uppercase text-white my-auto font-extrabold text-center text-8xl">Hall Of Fame</h1>
+        <h1 className="[text-shadow:_0px_5px_16px_#000000] relative z-10 uppercase text-white my-auto font-extrabold text-center text-8xl">Hall Of Fame</h1>
       </div>
       <div className="h-full font-supertall bg-center lg:py-5">
         <div className="grid grid-cols-1 gap-4 mt-5 relative z-10">
           <div className="grid grid-cols-1 w-full place-items-center gap-5 lg:mb-5">
-            <h1 className="[text-shadow:_0px_5px_16px_#838383] uppercase text-white font-extrabold text-center text-3xl lg:hidden">Hall Of Fame</h1>
+            <h1 className="[text-shadow:_0px_5px_16px_#000000] uppercase text-white font-extrabold text-center text-3xl lg:hidden">Hall Of Fame</h1>
           </div>
           {!isLoading && (
             <section className="relative w-full mb-20">
               {/* Games */}
               <div className='grid grid-cols-1 justify-items-center'>
-                <div className='text-white font-supertall bg-red-600 text-xl lg:text-2xl lg:px-6 px-3 py-2 rounded-lg mt-10 lg:mt-0 lg:mb-5 h-fit text-center uppercase'>
+                <div className='text-white font-supertall bg-red-600 text-xl lg:text-2xl lg:px-10 px-3 py-2 rounded-lg lg:mb-5 h-fit text-center uppercase'>
                   <h1># Trending E-SPORTS GAMES</h1>
                 </div>
                 <div className='flex gap-10 mt-5 font-rocker w-full'>

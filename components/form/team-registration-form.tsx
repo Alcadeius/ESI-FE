@@ -12,7 +12,6 @@ import { ICompetition } from "../types/competition";
 import axiosInstance from "@/lib/axios";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
-import { FormMessage } from "../ui/form";
 
 const TeamSchema = z.object({
   competition_id: z.number(),

@@ -14,7 +14,7 @@ type PropType = {
 const GameCard: React.FC<PropType> = (props) => {
   const { slides, options } = props
   const [emblaRef, emblaApi] = useEmblaCarousel(options, [
-    AutoScroll({ playOnInit: true })
+    AutoScroll({stopOnFocusIn: false, stopOnInteraction: false, stopOnMouseEnter: false}),
   ])
 
   return (
@@ -23,7 +23,7 @@ const GameCard: React.FC<PropType> = (props) => {
         <div className="flex lg:justify-center">
           {slides.map((game, index) => (
             <div key={index} className="flex items-center justify-center z-20 shrink-0 w-[200px]">
-              <div className="relative lg:w-36 xl:w-[11rem] h-[470px] overflow-hidden border-4 border-white transform lg:skew-x-[-10deg]">
+              <div className="relative lg:w-36 xl:w-[11rem] h-[470px] overflow-hidden lg:border-4 lg:border-white transform lg:skew-x-[-10deg]">
                 <div className="w-[20rem] h-full transform lg:-translate-x-[3rem] -translate-x-[2.5rem] lg:skew-x-[10deg] relative">
                   <Image
                     src={game.image}

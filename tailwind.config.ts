@@ -70,7 +70,7 @@ const config: Config = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
 		fontFamily: {
-			rocker: ['New Rocker', 'sans-serif'],
+			rocker: ['var(--font-new-rocker)'],
 			supertall: ['Supertalls', 'sans-serif'],
 		},
   	}

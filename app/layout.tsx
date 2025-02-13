@@ -48,7 +48,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       <SidebarProvider >
       <SidebarInset>
-        <main className="bg-gray-900 w-full">
+        <main className="bg-gray-900 w-full min-h-screen">
             <div className="text-white bg-gray lg:hidden w-full flex justify-between items-center p-4 bg-gray-900 relative z-40 shadow-md ">
               <a href="/main"><Logo className="size-10"/></a>
               <div className="font-medium text-base">ESI DENPASAR</div>

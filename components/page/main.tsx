@@ -87,7 +87,7 @@ export default function Main() {
         <div className="text-white grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 place-content-center gap-7 px-5">
           {eventLoading ? (
             Array.from({ length: 6 }).map((_, index) => (
-              <Skeleton className="lg:h-[238px] lg:w-[423px] w-full h-[188px]" key={index} />
+              <Skeleton className="w-full aspect-video" key={index} />
             ))
           ) :
             selectedEvents.map((event: IEvent, index: number) => {

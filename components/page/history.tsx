@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import useSWR from "swr";
 import axios from "axios";
 import { getAuthorization } from "@/lib/axios";
+import LoadingScreen from "../loading-screen";
 const fetcher = (url: string) => {
   const token = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
   return axios.get(url, {
@@ -69,8 +70,8 @@ export default function History() {
 
   const { data, error } = useSWR("https://esi.bagoesesport.com/api/v1/transaction/history", fetcher);
   if (error) return <p className="text-red-500">Gagal memuat data</p>;
-  if (!data) return <p className="text-white">Memuat...</p>;
-
+  if (!data) return <LoadingScreen/>;
+  
   const transactions: Transaction[] = data?.data ?? [];
   transactions.sort((a: any, b: any) => {
     return sortOrder === "terbaru"

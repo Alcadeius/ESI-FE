@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import useSWR, { mutate } from "swr";
 import Swal from "sweetalert2";
+import LoadingScreen from "../loading-screen";
 
 const fetcher = (url: string) =>
   axios.get(url, {
@@ -72,7 +73,7 @@ export default function Order() {
     }
   };
   if (error) return <div className="text-white">Gagal memuat data...</div>;
-  if (!cartData) return <div className="text-white">Memuat data...</div>;
+  if (!cartData) return <LoadingScreen/>;
 
   const tickets: Ticket[] = Array.isArray(cartData?.details?.tickets)
     ? cartData.details.tickets

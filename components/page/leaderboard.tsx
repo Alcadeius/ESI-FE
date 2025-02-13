@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import Image from "next/image";
+// import Image from "next/image";
 import NavigationBar from "../navigation-bar";
 import useSWR from 'swr';
 import axios from 'axios';
 import { useState } from 'react';
 import axiosInstance from "@/lib/axios";
 import GameCard from "../gameCard";
-import { Gamepad2, Trophy } from "lucide-react";
+import {  Trophy } from "lucide-react";
 import Footer from "../footer";
 import LoadingScreen from "../loading-screen";
 
@@ -71,7 +71,7 @@ export default function Leaderboard() {
       <div className='lg:px-20 lg:py-14'>
         <NavigationBar />
       </div>
-      <div className="hidden font-supertall lg:flex h-[60vh] justify-center before:absolute before:w-full before:h-full before:content-['a'] bg-center bg-[url('/images/optimized/hall_backdrop.webp')] bg-blend-lighten bg-gray-900 bg-cover bg-no-repeat">
+      <div className="hidden font-supertall lg:flex h-[60vh] justify-center before:hidden before:absolute before:w-full before:h-full before:content-['a'] bg-center bg-[url('/images/optimized/hall_backdrop.webp')] bg-blend-lighten bg-gray-900 bg-cover bg-no-repeat">
         <h1 className="[text-shadow:_0px_5px_16px_#838383] relative z-10 uppercase text-white my-auto font-extrabold text-center text-8xl">Hall Of Fame</h1>
       </div>
       <div className="h-full font-supertall bg-center lg:py-5">
@@ -155,7 +155,7 @@ export default function Leaderboard() {
       </div>
 
       {/* Tampilan Destkop */}
-      <div className="hidden lg:flex flex-col text-white px-5 py-5 text-2xl bg-[url('/images/')] bg-cover bg-no-repeat font-supertall">
+      <div className="hidden lg:flex flex-col text-white px-5 py-5 text-2xl font-supertall">
         <div className="flex justify-center w-full ">
           <p className="text-3xl p-2 uppercase rounded-md text-white flex">
             <Wing className="size-20 fill-white transform -translate-y-4" />
@@ -170,25 +170,25 @@ export default function Leaderboard() {
               Games List
             </p>
             {games.map((game) => (
-              <div
-                key={game.id}
-                className={`flex text-white items-center cursor-pointer ${selectedGameId === game.id ? 'font-bold text-red-700' : ''
-                  }`}
-                onClick={() => setSelectedGameId(game.id)}
+            <div
+              key={game.id}
+              className={`flex text-white items-center cursor-pointer ${(selectedGameId === game.id) ? 'font-bold text-red-700' : ''
+                }`}
+              onClick={() => setSelectedGameId(game.id)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`size-6`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                </svg>
-                <p className="text-xs uppercase md:text-base justify-center">{game.name}</p>
-              </div>
-            ))}
+                <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
+              </svg>
+              <p className="uppercase md:text-base justify-center">{game.name}</p>
+            </div>
+          ))}
           </div>
 
           {/* Leaderboard Section */}

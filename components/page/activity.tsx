@@ -131,30 +131,20 @@ const ActivityPage = () => {
                   <span className="flex-grow h-0.5 bg-white rounded-lg ml-3 hidden lg:block"></span>
                 </div>
                 <div className="mt-2 space-y-4 w-full h-full relative z-20">
-<<<<<<< HEAD
-                {activity.ticketSales && activity.ticketSales.length > 0 ? (
+                {/* {activity.ticketSales && activity.ticketSales.length > 0 ? (
             activity.ticketSales.map((ticket) => (
               <Card key={ticket.id} data={ticket} activity={activity} />
             ))
           ) : (
-            <p className="text-center text-white bg-black text-lg font-supertall">No Ticket available</p>
+            <p className="text-center text-white hidden bg-black text-lg font-supertall">No Ticket available</p>
           )}
           {activity.competitions && activity.competitions.length > 0 ? (
             activity.competitions && activity.competitions.map((competition) => (
               <Card key={competition.id} data={competition} activity={activity} />
             ))
           ):(
-            <p className="text-center text-black bg-black text-lg font-supertall">No Competition</p>
-          )}
-                </div>
-              </div>
-            )
-          ))
-        ) : (
-          <p className="text-center lg:text-start h-screen lg:text-xl text-white mt-5 font-supertall">No Activities found</p>
-        )
-      ) : null}
-=======
+            <p className="text-center text-white hidden bg-black text-lg font-supertall">No Competition</p>
+          )} */}
                   {(activity.ticketSales || activity.competitions) ? (
                     <>
                       {activity.ticketSales && activity.ticketSales.map((ticket) => (
@@ -174,7 +164,6 @@ const ActivityPage = () => {
             <p className="text-center lg:text-start lg:text-lg text-white mt-5 font-supertall flex gap-2"><Cog/> Akan Segera Hadir</p>
           )
         ) : null}
->>>>>>> a068ee5e4999a8cf6758251a61e6d97cfce66a5b
       </div>
     </div>
   );

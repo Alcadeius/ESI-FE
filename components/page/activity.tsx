@@ -132,18 +132,26 @@ const ActivityPage = () => {
                   <span className="flex-grow h-0.5 bg-white rounded-lg ml-3 hidden lg:block"></span>
                 </div>
                 <div className="mt-2 space-y-4 w-full h-full relative z-20">
-                  {activity.ticketSales && activity.ticketSales.map((ticket) => (
-                    <Card key={ticket.id} data={ticket} activity={activity} />
-                  ))}
-                  {activity.competitions && activity.competitions.map((competition) => (
-                    <Card key={competition.id} data={competition} activity={activity} />
-                  ))}
+                {activity.ticketSales && activity.ticketSales.length > 0 ? (
+            activity.ticketSales.map((ticket) => (
+              <Card key={ticket.id} data={ticket} activity={activity} />
+            ))
+          ) : (
+            <p className="text-center text-white bg-black text-lg font-supertall">No Ticket available</p>
+          )}
+          {activity.competitions && activity.competitions.length > 0 ? (
+            activity.competitions && activity.competitions.map((competition) => (
+              <Card key={competition.id} data={competition} activity={activity} />
+            ))
+          ):(
+            <p className="text-center text-black bg-black text-lg font-supertall">No Competition</p>
+          )}
                 </div>
               </div>
             )
           ))
         ) : (
-          <p className="text-center lg:text-start lg:text-xl text-white mt-5 font-supertall">No Activities found</p>
+          <p className="text-center lg:text-start h-screen lg:text-xl text-white mt-5 font-supertall">No Activities found</p>
         )
       ) : null}
       </div>

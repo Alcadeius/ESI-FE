@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { cn } from "@/lib/utils";
 import NavigationBar from "../navigation-bar";
-import { Wrench, Presentation, ScreenShare, Gamepad } from "lucide-react";
+import { Wrench, Presentation, ScreenShare, Gamepad, Cog } from "lucide-react";
 import { IActivity } from "../types/activity";
 import Image from "next/image";
 import { IEvent } from "../types/event";
@@ -113,7 +113,7 @@ const ActivityPage = () => {
         )}
       />
       <NavigationBar />
-      <div className="text-black px-5 py-5 relative z-20 lg:pt-14">
+      <div className="text-black px-5 py-5 relative z-20 lg:pt-10">
 
         <div className="flex items-center gap-2 font-supertall">
           <Image alt="" src={eventData.data.event_logo ?? "/images/logo.png"} width={50} height={50} className="p-0.5 bg-white rounded-sm" />
@@ -121,9 +121,8 @@ const ActivityPage = () => {
         </div>
 
         {selectedEventId && activitiesData ? (
-        activitiesData.data.activities.length > 0 ? (
-          activitiesData.data.activities.map((activity, index) => (
-            (activity.ticketSales || activity.competitions) && (
+          activitiesData.data.activities.length > 0 ? (
+            activitiesData.data.activities.map((activity, index) => (
               <div key={index} className="pb-5">
                 <div className="flex justify-between items-center relative z-20 py-5">
                   <span className="text-base text-black w-full md:w-fit py-1 px-3 rounded-sm bg-white text-center font-supertall">
@@ -132,6 +131,7 @@ const ActivityPage = () => {
                   <span className="flex-grow h-0.5 bg-white rounded-lg ml-3 hidden lg:block"></span>
                 </div>
                 <div className="mt-2 space-y-4 w-full h-full relative z-20">
+<<<<<<< HEAD
                 {activity.ticketSales && activity.ticketSales.length > 0 ? (
             activity.ticketSales.map((ticket) => (
               <Card key={ticket.id} data={ticket} activity={activity} />
@@ -154,6 +154,27 @@ const ActivityPage = () => {
           <p className="text-center lg:text-start h-screen lg:text-xl text-white mt-5 font-supertall">No Activities found</p>
         )
       ) : null}
+=======
+                  {(activity.ticketSales || activity.competitions) ? (
+                    <>
+                      {activity.ticketSales && activity.ticketSales.map((ticket) => (
+                        <Card key={ticket.id} data={ticket} activity={activity} />
+                      ))}
+                      {activity.competitions && activity.competitions.map((competition) => (
+                        <Card key={competition.id} data={competition} activity={activity} />
+                      ))}
+                    </>
+                  ):(
+                    <p className="lg:ml-14 text-start lg:text-lg text-white mt-5 font-supertall">Akan Segera Hadir</p>
+                  )}
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-center lg:text-start lg:text-lg text-white mt-5 font-supertall flex gap-2"><Cog/> Akan Segera Hadir</p>
+          )
+        ) : null}
+>>>>>>> a068ee5e4999a8cf6758251a61e6d97cfce66a5b
       </div>
     </div>
   );

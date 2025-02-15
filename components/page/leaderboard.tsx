@@ -58,11 +58,12 @@ export default function Leaderboard() {
     name: game.game_name,
   }));
 
-  // Game yang dipilih (default ke game pertama jika belum ada pilihan)
   const selectedGame = leaderboardData[selectedGameId!] || leaderboardData[Object.keys(leaderboardData)[0]];
-  if (selectedGameId == null) {
-    setSelectedGameId(selectedGame.game_id);
-  }
+
+// Set selectedGameId jika belum dipilih dan ada game yang tersedia
+if (selectedGameId == null && selectedGame) {
+  setSelectedGameId(selectedGame.game_id);
+}
   const players = selectedGame ? Object.values(selectedGame.leaderboard) : [];
 
 
@@ -98,68 +99,93 @@ export default function Leaderboard() {
         </div>
       </div>
       {/* Tampilan Mobile - Tablet */}
-      <div className="grid grid-cols-1 font-supertall lg:hidden relative z-10 px-5 py-5">
-        <p className="text-xl text-white pb-4">
-          Games List
-        </p>
-        <div className="grid grid-cols-1 gap-1">
-          {games.map((game) => (
-            <div
-              key={game.id}
-              className={`flex text-white items-center cursor-pointer ${(selectedGameId === game.id) ? 'font-bold text-red-700' : ''
-                }`}
-              onClick={() => setSelectedGameId(game.id)}
+      {games.length > 0 ? (
+  selectedGame ? (
+    <div className="grid grid-cols-1 font-supertall lg:hidden relative z-10 px-5 py-5">
+      <p className="text-xl text-white pb-4">Games List</p>
+      <div className="grid grid-cols-1 gap-1">
+        {games.map((game) => (
+          <div
+            key={game.id}
+            className={`flex text-white items-center cursor-pointer ${
+              selectedGameId === game.id ? 'font-bold text-red-700' : ''
+            }`}
+            onClick={() => setSelectedGameId(game.id)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`size-6`}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className={`size-6`}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-              </svg>
-              <p className="uppercase md:text-base justify-center">{game.name}</p>
-            </div>
-          ))}
-        </div>
-        <div className="text-xl uppercase rounded-md text-white text-center pt-10">
-          <Trophy className="size-20 mx-auto" />
-          ESI DENPASAR
-          <br />
-          TOP {selectedGame.game_name} ESPORT PLAYERS
-        </div>
-        <div className="grid grid-cols-1 bg-gray-900 text-white font-semibold mt-5">
-          <table className="uppercase">
-            <thead>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5"
+              />
+            </svg>
+            <p className="uppercase md:text-base justify-center">{game.name}</p>
+          </div>
+        ))}
+      </div>
+      <div className="text-xl uppercase rounded-md text-white text-center pt-10">
+        <Trophy className="size-20 mx-auto" />
+        ESI DENPASAR
+        <br />
+        TOP {selectedGame?.game_name ?? 'Game'} ESPORT PLAYERS
+      </div>
+      <div className="grid grid-cols-1 bg-gray-900 text-white font-semibold mt-5">
+        <table className="uppercase">
+          <thead>
+            <tr>
+              <td className="text-start md:text-base font-light">Rank</td>
+              <td className="text-start md:text-base font-light">Nama Player</td>
+              <td className="text-start md:text-base font-light">Points</td>
+            </tr>
+          </thead>
+          <tbody className="text-sm md:text-base font-sans">
+            {players.length === 0 ? (
               <tr>
-                <td className="text-start md:text-base font-light">Rank</td>
-                <td className="text-start md:text-base font-light">Nama Player</td>
-                <td className="text-start md:text-base font-light">Points</td>
+                <td colSpan={3} className="text-center text-white font-supertall text-2xl">
+                  Belum ada Peringkat
+                </td>
               </tr>
-            </thead>
-            <tbody className="text-sm md:text-base font-sans">
-              {players
+            ) : (
+              players
                 .sort((a: any, b: any) => b.point - a.point)
                 .map((player: any, index: number) => (
                   <tr key={player.id_game}>
                     <td>#{index + 1}</td>
-                    <td>{player.name.length > 40 ? `${player.name.slice(0, 40)}...` : player.name}</td>
+                    <td>{player.name}</td>
                     <td>{player.point} PTS</td>
                   </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
+                ))
+            )}
+          </tbody>
+        </table>
       </div>
+    </div>
+  ) : (
+    <div className="text-center font-supertall lg:hidden text-white text-2xl py-10">
+      Belum ada Ranking yang Tercatat
+    </div>
+  )
+) : (
+  <div className="text-center font-supertall lg:hidden text-white text-2xl py-10">
+    Belum ada Ranking yang Tercatat
+  </div>
+)}
 
       {/* Tampilan Destkop */}
+      {games.length > 0 ? (
+      selectedGame ? (
       <div className="hidden lg:flex flex-col text-white px-5 py-5 text-2xl font-supertall">
         <div className="flex justify-center w-full ">
           <p className="text-3xl p-2 uppercase rounded-md text-white flex">
             <Wing className="size-20 fill-white transform -translate-y-4" />
-            ESI DENPASAR TOP {selectedGame.game_name} E-SPORT PLAYERS
+            ESI DENPASAR TOP {selectedGame?.game_name ?? "Game"} E-SPORT PLAYERS
             <Wing className="-scale-x-100 size-20 fill-white transform -translate-y-4" />
           </p>
         </div>
@@ -190,7 +216,6 @@ export default function Leaderboard() {
             </div>
           ))}
           </div>
-
           {/* Leaderboard Section */}
           <div className="flex flex-col justify-center col-span-8">
             <table className="uppercase text-lg">
@@ -202,20 +227,45 @@ export default function Leaderboard() {
                 </tr>
               </thead>
               <tbody className="font-sans">
-                {players
-                  .sort((a: any, b: any) => b.point - a.point)
-                  .map((player: any, index: number) => (
-                    <tr key={player.id_game}>
-                      <td>#{index + 1}</td>
-                      <td>{player.name}</td>
-                      <td>{player.point} PTS</td>
-                    </tr>
-                  ))}
+              {players.length === 0 ? (
+    <p className="text-center text-white text-2xl">Belum ada Peringkat</p>
+  ) : (
+    <table className="uppercase text-lg">
+      <thead>
+        <tr>
+          <td className="text-start">Rank</td>
+          <td className="text-start">Nama Player</td>
+          <td className="text-start">Points</td>
+        </tr>
+      </thead>
+      <tbody className="font-sans">
+        {players
+          .sort((a: any, b: any) => b.point - a.point)
+          .map((player: any, index: number) => (
+            <tr key={player.id_game}>
+              <td>#{index + 1}</td>
+              <td>{player.name}</td>
+              <td>{player.point} PTS</td>
+            </tr>
+          ))}
+      </tbody>
+    </table>
+  )}
               </tbody>
             </table>
           </div>
         </div>
       </div>
+      ) : (
+        <div className="text-center font-supertall hidden lg:inline text-white text-2xl py-10">
+          Belum ada Ranking yang Tercatat
+        </div>
+      )
+    ) : (
+      <div className="text-center font-supertall hidden lg:inline text-white text-2xl py-10">
+        Belum ada Ranking yang Tercatat
+      </div>
+    )}
       <Footer />
     </div>
   );

@@ -9,4 +9,5 @@ export interface IEvent {
   created_at: string
   updated_at: string
   category: ICategory
+  is_active:number
 }

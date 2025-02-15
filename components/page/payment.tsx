@@ -14,6 +14,7 @@ export default function Payment() {
   const [paymentMethod, setPaymentMethod] = useState<keyof typeof paymentOptions|"">("");
   const [totalPrice, setTotalPrice] = useState<number | null>(null);
   const [tickets, setTickets] = useState<{ activity_name: string; total_price: string }[]>([]);
+  const [registrations, setRegistrations] = useState<{ activity_name: string; total_price: string }[]>([]);
   const [transferDestination, setTransferDestination] = useState("");
   const router = useRouter();
 
@@ -81,7 +82,7 @@ export default function Payment() {
     const fetchCartItems = async () => {
       const token = localStorage.getItem("authToken");
       if (!token) return;
-
+      
       try {
         const response = await axios.get("https://esi.bagoesesport.com/api/v1/cart/items", {
           headers: {
@@ -95,8 +96,14 @@ export default function Payment() {
             activity_name: ticket.activity_name,
             total_price: ticket.total_price,
           }));
+          const fetchedRegistrations = response.data.details.registrations.map((registration: any) => ({
+            activity_name: registration.activity_name,
+            total_price: registration.total_price,
+          }));
+          
           setTickets(fetchedTickets);
-          setTotalPrice(fetchedTickets.length > 0 ? response.data.total_price : 0);
+          setRegistrations(fetchedRegistrations);
+          setTotalPrice(fetchedTickets.length || fetchedRegistrations.length > 0 ? response.data.total_price : 0);
         }
       } catch (error) {
         console.error("Gagal mengambil data cart:", error);
@@ -110,7 +117,7 @@ export default function Payment() {
     e.preventDefault();
     setErrorMessage("");
     setLoading(true);
-    if(tickets.length==0){
+    if(tickets.length || registrations.length == 0){
       Swal.fire({
         icon: "error",
         title: "Tidak Ada Belanjaan",
@@ -176,8 +183,8 @@ export default function Payment() {
             <h1 className="text-lg text-blue-500 font-bold lg:text-2xl">Detail Belanja</h1>
             <p className="text-xs lg:text-base">Pastikan kembali pesanan anda sebelum mengirimkan formulir ini</p>
           </div>
-
-          {tickets.length > 0 ? (
+          
+          {tickets.length || registrations.length > 0 ? (
             <div className="mb-2 lg:h-full">
               {tickets.map((ticket, index) => (
                 <div key={index} className="flex text-xs md:text-base font-medium justify-between mb-2">
@@ -185,6 +192,12 @@ export default function Payment() {
                   <h4>Rp. {parseFloat(ticket.total_price).toLocaleString("id-ID")}</h4>
                 </div>
               ))}
+               {registrations.map((reg, index) => (
+              <div key={index} className="flex text-xs md:text-base font-medium justify-between mb-2">
+                <h1>{reg.activity_name || "Nama Tidak ada"}</h1>
+                <h4>Rp. {parseFloat(reg.total_price).toLocaleString("id-ID")}</h4>
+              </div>
+            ))}
             </div>
           ) : (
             <div className="text-center text-gray-500 h-full">

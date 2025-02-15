@@ -12,7 +12,9 @@ import { Skeleton } from '../ui/skeleton';
 import Image from 'next/image';
 
 function FetchEvents() {
-  const fetcher = (url: string) => axiosInstance(url).then((r) => r.data?.data)
+  const fetcher = (url: string) => 
+    axiosInstance(url).then((r) => r.data?.data.filter((event: IEvent) => event.is_active === 1))
+
   const { data, isLoading } = useSWR(`/events`, fetcher)
 
   return {

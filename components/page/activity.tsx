@@ -77,6 +77,7 @@ const ActivityPage = () => {
             <div>
               <p className="text-sm text-white">Mulai {activity.start_at}</p>
               <p className="text-sm text-white max-w-64">Lokasi di {activity.location}</p>
+              <p className="text-sm text-white font-bold">Total Quota: {data.quantity}</p>
             </div>
           </div>
           <div className="bg-white flex px-2 py-2 lg:py-0 flex-col lg:px-5 lg:justify-between lg:flex-row h-full justify-between lg:items-center gap-3 lg:gap-0 lg:col-span-2 lg:p-2 font-supertall text-xl">

@@ -11,31 +11,62 @@ export default function Payment() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<keyof typeof paymentOptions|"">("");
+  const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [totalPrice, setTotalPrice] = useState<number | null>(null);
   const [tickets, setTickets] = useState<{ activity_name: string; total_price: string }[]>([]);
   const [registrations, setRegistrations] = useState<{ activity_name: string; total_price: string }[]>([]);
+  const [bankAccounts, setBankAccounts] = useState<
+  { id: number; bank_name: string; account_number: string; account_name: string }[]
+>([]);
+
   const [transferDestination, setTransferDestination] = useState("");
   const router = useRouter();
 
-  const paymentOptions = {
-    Qris: "1021048",
-    Dana: "2083920",
-    OVO: "3094820",
-    Gopay: "5029384",
-  };
+  // const paymentOptions = {
+  //   Mandiri: "1750002029386",
+  //   Dana: "0881037250064",
+  //   ShopeePay: "0881037250064",
+  //   Gopay: "5029384",
+  // };
   useEffect(() => {
-  if (paymentMethod in paymentOptions) {
-    setTransferDestination(paymentOptions[paymentMethod as keyof typeof paymentOptions]);
-  } else {
-    setTransferDestination("");
-  }
-}, [paymentMethod]);
+    const fetchBankAccounts = async () => {
+      const token = localStorage.getItem("authToken");
+      if (!token) return;
+  
+      try {
+        const response = await axios.get(`https://esi.bagoesesport.com/api/v1/bank-accounts/2`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        if (response.status === 200 && response.data.default_bank_account.length > 0) {
+          setBankAccounts(response.data.default_bank_account);
+        } else {
+          console.warn(response.data.message || "Data bank tidak ditemukan.");
+        }
+      } catch (error) {
+        console.error("Gagal mengambil data bank:", error);
+      }
+    };
+  
+    fetchBankAccounts();
+  }, []);
+  
+//   useEffect(() => {
+//   if (paymentMethod in paymentOptions) {
+//     setTransferDestination(paymentOptions[paymentMethod as keyof typeof paymentOptions]);
+//   } else {
+//     setTransferDestination("");
+//   }
+// }, [paymentMethod]);
 
-    const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedMethod = e.target.value as keyof typeof paymentOptions;
-    setPaymentMethod(selectedMethod);
-  };
+const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectedBank = bankAccounts.find(bank => bank.bank_name === e.target.value);
+  setPaymentMethod(selectedBank?.bank_name || "");
+  setTransferDestination(selectedBank?.account_number || "");
+};
+
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -138,6 +169,9 @@ export default function Payment() {
     const token = localStorage.getItem("authToken");
     formData.append("method", paymentMethod);
     formData.append("proof_image", file);
+    const selectedBank = bankAccounts.find(bank => bank.bank_name === paymentMethod);
+formData.append("bank_account_id", `${selectedBank?.id}`);
+    // formData.append("bank_account_id", );
 
     try {
       const response = await axios.post("https://esi.bagoesesport.com/api/v1/transaction", formData, {
@@ -228,18 +262,19 @@ export default function Payment() {
               )}
               <label htmlFor="payment" className="block mb-2 text-sm font-medium text-gray-900">Pilih Metode Pembayaran</label>
               <select
-          id="payment"
-          className="bg-gray-50 border mb-3 outline-none border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-          value={paymentMethod}
-          onChange={handlePaymentChange}
-        >
-          <option disabled value="">Pilih Metode Pembayaran</option>
-          {Object.keys(paymentOptions).map((method) => (
-            <option key={method} value={method}>
-              {method}
-            </option>
-          ))}
-        </select>
+  id="payment"
+  className="bg-gray-50 border mb-3 outline-none border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+  value={paymentMethod}
+  onChange={handlePaymentChange}
+>
+  <option disabled value="">Pilih Metode Pembayaran</option>
+  {bankAccounts.map((bank) => (
+    <option key={bank.id} value={bank.bank_name}>
+      {bank.bank_name} ({bank.account_name})
+    </option>
+  ))}
+</select>
+
               <div>
                 <label htmlFor="input-group-1" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tujuan Transfer</label>
                 <div className="relative mb-6">

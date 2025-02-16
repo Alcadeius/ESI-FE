@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
-
+import Cookies from "js-cookie";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -54,10 +54,10 @@ export function LoginForm({
         "Accept": "application/json"
       }
     })
-      .then(function (response) {
-        localStorage.setItem("authToken", response.data.meta.token);
-        router.push('/main')
-      })
+    .then(function (response) {
+      Cookies.set("authToken", response.data.meta.token, { expires: 7, secure: true });
+      router.push("/main");
+    })
       .catch(function (error) {
         if (error.response.status === 401) {
           Swal.fire({

@@ -9,8 +9,9 @@ import useSWR from "swr";
 import axios from "axios";
 import { getAuthorization } from "@/lib/axios";
 import LoadingScreen from "../loading-screen";
+import Cookies from "js-cookie";
 const fetcher = (url: string) => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+  const token = typeof window !== "undefined" ? Cookies.get("authToken") : null;
   return axios.get(url, {
     headers: {
       Authorization: `Bearer ${token}`,

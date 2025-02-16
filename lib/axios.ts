@@ -1,7 +1,7 @@
 import Axios from "axios";
-
+import Cookies from "js-cookie";
 export const getAuthorization = async () => {
-    const token = localStorage.getItem("authToken");
+    const token = Cookies.get("authToken");
     if(token){
         return `Bearer ${token}`;
     }

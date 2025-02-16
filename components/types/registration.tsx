@@ -3,6 +3,7 @@ interface TeamMember {
   id_game: string
   nickname: string
   position: string
+  domicile: string
 }
 
 export interface IRegistration {

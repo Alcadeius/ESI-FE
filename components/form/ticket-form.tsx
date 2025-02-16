@@ -16,7 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { ITicket } from "../types/ticket";
-
+import Cookies from "js-cookie";
 interface TicketFormProps {
   ticketID: number | null;
   data: ITicket
@@ -42,7 +42,7 @@ export function TicketForm({ ticketID, data }: TicketFormProps) {
 
   const handleBuyTicket = async () => {
     try {
-      const token = localStorage.getItem("authToken");
+      const token = Cookies.get("authToken");
 
       if (!token) {
         alert("Anda harus login terlebih dahulu!");

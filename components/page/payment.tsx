@@ -5,7 +5,7 @@ import NavigationBar from "../navigation-bar";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-
+import Cookies from "js-cookie";
 export default function Payment() {
   const [file, setFile] = useState<any>(null);
   const [copied, setCopied] = useState(false);
@@ -30,7 +30,7 @@ export default function Payment() {
   // };
   useEffect(() => {
     const fetchBankAccounts = async () => {
-      const token = localStorage.getItem("authToken");
+      const token = Cookies.get("authToken");
       if (!token) return;
   
       try {
@@ -69,7 +69,7 @@ const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
+    const token = Cookies.get("authToken");
     if (!token) {
       router.push("/login");
     }
@@ -111,7 +111,7 @@ const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 
   useEffect(() => {
     const fetchCartItems = async () => {
-      const token = localStorage.getItem("authToken");
+      const token = Cookies.get("authToken");
       if (!token) return;
       
       try {
@@ -166,11 +166,11 @@ const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     }
 
     const formData = new FormData();
-    const token = localStorage.getItem("authToken");
+    const token = Cookies.get("authToken");
     formData.append("method", paymentMethod);
     formData.append("proof_image", file);
     const selectedBank = bankAccounts.find(bank => bank.bank_name === paymentMethod);
-formData.append("bank_account_id", `${selectedBank?.id}`);
+    formData.append("bank_account_id", `${selectedBank?.id}`);
     // formData.append("bank_account_id", );
 
     try {
@@ -184,7 +184,7 @@ formData.append("bank_account_id", `${selectedBank?.id}`);
         Swal.fire({
           icon: "success",
           title: "Pengajuan Berhasil!",
-          text: "Data event Anda telah berhasil diajukan.",
+          text: "Pembayaran Anda telah berhasil dikirimkan.",
           confirmButtonText: "OK",
         }).then(() => {
           router.push("/main");

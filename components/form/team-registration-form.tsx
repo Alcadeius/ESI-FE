@@ -34,6 +34,7 @@ const TeamSchema = z.object({
         id_game: z.string().min(1, "Game ID is required"),
         nickname: z.string().min(1, "Nickname is required"),
         position: z.enum(["leader", "player"]),
+        domicile: z.string().min(1, "Domicile is required"),
       })
     )
     .min(2, "A team must have at least 2 members")
@@ -51,8 +52,8 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
       team_name: "",
       no_hp: "",
       team_members: [
-        { name: "", id_game: "", nickname: "", position: "leader" },
-        { name: "", id_game: "", nickname: "", position: "player" },
+        { name: "", id_game: "", nickname: "", domicile: "", position: "leader" },
+        { name: "", id_game: "", nickname: "", domicile: "", position: "player" },
       ],
     },
   });
@@ -170,6 +171,20 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
 
               <FormField
                 control={form.control}
+                name={`team_members.${index}.domicile`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Domicile</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Domicile" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
                 name={`team_members.${index}.position`}
                 render={({ field }) => (
                   <FormItem>
@@ -199,7 +214,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
           ))}
 
           {fields.length < 5 && (
-            <Button onClick={() => append({ name: "", id_game: "", nickname: "", position: "player" })}>
+            <Button onClick={() => append({ name: "", id_game: "", nickname: "", domicile: "", position: "player" })}>
               Add Player
             </Button>
           )}

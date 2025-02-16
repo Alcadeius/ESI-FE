@@ -9,11 +9,11 @@ import axios from "axios";
 import useSWR, { mutate } from "swr";
 import Swal from "sweetalert2";
 import LoadingScreen from "../loading-screen";
-
+import Cookies from "js-cookie";
 const fetcher = (url: string) =>
   axios.get(url, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      Authorization: `Bearer ${Cookies.get("authToken")}`,
     },
   }).then(res => res.data);
 
@@ -48,7 +48,7 @@ export default function Order() {
     try {
       await axios.delete(`https://esi.bagoesesport.com/api/v1/cart/${orderNumber}/delete`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          Authorization: `Bearer ${Cookies.get("authToken")}`,
         },
       })
       Swal.fire({

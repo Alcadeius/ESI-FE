@@ -4,7 +4,7 @@ import axios from 'axios';
 import NavigationBar from '../navigation-bar';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
-
+import Cookies from 'js-cookie';
 interface FormData {
   event_name: string;
   event_date: string;
@@ -63,7 +63,7 @@ export default function EventSubmit() {
     setErrorMessage(''); 
     setLoading(true);
     try {
-      const token = localStorage.getItem("authToken");
+      const token = Cookies.get("authToken");
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
         if (formData[key] !== null) { 

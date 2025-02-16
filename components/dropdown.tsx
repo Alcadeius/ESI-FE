@@ -14,9 +14,10 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
   import axios from "axios";
+  import Cookies from "js-cookie";
   export default function DropdownMenuDemo() {
     const handleDelete = async () => {
-        const token = localStorage.getItem("authToken");
+        const token = Cookies.get("authToken");
         if (!token) {
             return;
         }

@@ -61,7 +61,7 @@ export default function Leaderboard() {
   const selectedGame = leaderboardData[selectedGameId!] || leaderboardData[Object.keys(leaderboardData)[0]];
 
 // Set selectedGameId jika belum dipilih dan ada game yang tersedia
-if (selectedGameId == null && selectedGame) {
+if (selectedGameId == null && selectedGame?.game_id) {
   setSelectedGameId(selectedGame.game_id);
 }
   const players = selectedGame ? Object.values(selectedGame.leaderboard) : [];

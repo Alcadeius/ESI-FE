@@ -7,15 +7,17 @@ export interface ICompetition {
   price: number
   quantity: number
   status?: {
-    is_open: boolean
-    message: string
-    competition_sales: {
-      in_cart: number
-      in_transaction: {
-        pending: number
-        success: number
+    data:{
+      is_open: boolean
+      message: string
+      competition_sales: {
+        in_cart: number
+        in_transaction: {
+          pending: number
+          success: number
+        }
+        total_sold: number
       }
-      total_sold: number
     }
   }
   created_at: string

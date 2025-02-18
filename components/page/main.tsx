@@ -63,13 +63,13 @@ export default function Main() {
         <div className='flex justify-between items-end z-10'>
           <div className="flex items-end gap-2 z-10">
             <Globe className='size-6 lg:size-8' />
-            <p className="text-white lg:text-xl text-sm font-medium font-sans">{event?.category?.name} Event</p>
+            <p className="text-white lg:text-xl text-sm font-medium font-sans shadow-md">{event?.category?.name} Event</p>
           </div>
           <div>
             <Image alt="" src={event.event_logo ?? "/images/logo.png"} width={50} height={50} className="p-0.5 bg-white rounded-sm" />
           </div>
         </div>
-        <div className='absolute left-0 top-0 w-full h-full bg-black opacity-50 group-hover:opacity-30 z-0'></div>
+        <div className='absolute left-0 top-0 w-full h-full bg-black opacity-70 group-hover:opacity-50 z-0'></div>
       </div>
     )
   }

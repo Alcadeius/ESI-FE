@@ -1,12 +1,25 @@
 "use client"
 
-import LoadingScreen from "@/components/loading-screen"
-import React, { Suspense } from "react"
+import React, { useEffect, useState } from "react";
+import LoadingScreen from "@/components/loading-screen";
+import { useUser } from "@/hooks/use-user"; 
 
 export default function GuestLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <Suspense fallback={<LoadingScreen />}>
-      {children}
-    </Suspense>
-  )
+  const { user, isLoading, isError } = useUser(); 
+  const [showLoading, setShowLoading] = useState(true); 
+
+  useEffect(() => {
+    if (isLoading) {
+      setShowLoading(true); 
+    } else {
+      setShowLoading(false); 
+    }
+  }, [isLoading]); 
+
+ 
+  if (isLoading || isError || (user && showLoading)) {
+    return <LoadingScreen />;
+  }
+
+  return <>{children}</>;
 }

@@ -134,7 +134,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
                   <FormItem>
                     <FormLabel>Player Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Full Name" {...field} />
+                      <Input placeholder="Nama Lengkap" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -162,7 +162,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
                   <FormItem>
                     <FormLabel>Nickname</FormLabel>
                     <FormControl>
-                      <Input placeholder="Nickname" {...field} />
+                      <Input placeholder="Nickname Game" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -174,9 +174,9 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
                 name={`team_members.${index}.domicile`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Domicile</FormLabel>
+                    <FormLabel>Domisili / Alamat</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter Domicile" {...field} />
+                      <Input placeholder="Tempat Tinggal" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -213,14 +213,14 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
             </Card>
           ))}
 
-          {fields.length < 5 && (
+          {fields.length < 6 && (
             <Button onClick={() => append({ name: "", id_game: "", nickname: "", domicile: "", position: "player" })}>
               Add Player
             </Button>
           )}
         </div>
 
-        <Button type="submit" className="w-full bg-red-600 text-white hover:bg-red-700 disabled:bg-red-400" disabled={!data.status?.is_open}>
+        <Button type="submit" className="w-full bg-red-600 text-white hover:bg-red-700 disabled:bg-red-400" disabled={!data.status?.data.is_open}>
           Daftar
         </Button>
       </form>

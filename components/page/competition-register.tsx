@@ -15,7 +15,7 @@ const CompetitionRegisterPage = () => {
   const { data } = useSWR(`/competition/${competitionID}`, fetcher);
 
   return (
-    <div className="bg-[url('/images/DSCF4041-3.png')] bg-blend-lighten bg-gray-900 bg-center bg-cover h-full 2xl:h-screen before:top-0 before:left-0 w-full bg-no-repeat before:absolute before:z-0 before:content-['a'] before:h-full before:w-full lg:px-20 lg:py-16">
+    <div className="bg-none lg:bg-[url('/images/DSCF4041-3.png')] bg-blend-lighten bg-gray-900 bg-center bg-cover h-full 2xl:h-screen before:top-0 before:left-0 w-full bg-no-repeat before:absolute before:z-0 before:content-['a'] before:h-full before:w-full lg:px-20 lg:py-16">
       <NavigationBar />
       <div className='px-3 lg:my-0 md:px-14 md:py-10 lg:px-28 lg:mx-auto py-5 relative z-10 w-full'>
         <div className='bg-[#F9FAFB] rounded-md lg:bg-[url("/images/logo.png")] bg-blend-lighten'>
@@ -25,7 +25,7 @@ const CompetitionRegisterPage = () => {
               <p className='text-xs'>Formulir Untuk melakukan pendaftaran lomba</p>
             </div>
             <div className='lg:max-w-full'>
-              {data && ( (data.data as ICompetition).status?.is_open ?
+              {data && ( (data.data as ICompetition).status?.data.is_open ?
               <TeamRegistrationForm data={data.data}/> : "Formulir tidak tersedia."
               )}
             </div>

@@ -1,25 +1,33 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
-import LoadingScreen from "@/components/loading-screen";
-import { useUser } from "@/hooks/use-user"; 
+import LoadingScreen from "@/components/loading-screen"
+import React from "react"
+import Cookies from "js-cookie"
+import axiosInstance from "@/lib/axios"
+import { useUser } from "@/hooks/use-user"
 
 export default function GuestLayout({ children }: { children: React.ReactNode }) {
-  const { user, isLoading, isError } = useUser(); 
-  const [showLoading, setShowLoading] = useState(true); 
+  const [pageLoading, setPageLoading] = React.useState(true)
+  const {setUserData} = useUser()
 
-  useEffect(() => {
-    if (isLoading) {
-      setShowLoading(true); 
-    } else {
-      setShowLoading(false); 
+  React.useEffect(() => {
+    async function checkAuth() {
+      const user = await axiosInstance.get("/auth/user").then((res) => { return res.data?.data })
+      setUserData(user)
+      setPageLoading(false)
     }
-  }, [isLoading]); 
+    if (Cookies.get("authToken")) {
+      checkAuth()
+    } else {
+      setPageLoading(false)
+    }
+  }, [setUserData])
 
- 
-  if (isLoading || isError || (user && showLoading)) {
-    return <LoadingScreen />;
-  }
+  if(pageLoading) return <LoadingScreen />
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+    </>
+  )
 }

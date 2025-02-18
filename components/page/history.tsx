@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import NavigationBar from "../navigation-bar";
@@ -7,17 +8,10 @@ import { CircleCheck, CircleX, Clock, Filter, StickyNote } from "lucide-react";
 import { Button } from "../ui/button";
 import useSWR from "swr";
 import axios from "axios";
-import { getAuthorization } from "@/lib/axios";
+import axiosInstance, { getAuthorization } from "@/lib/axios";
 import LoadingScreen from "../loading-screen";
-import Cookies from "js-cookie";
-const fetcher = (url: string) => {
-  const token = typeof window !== "undefined" ? Cookies.get("authToken") : null;
-  return axios.get(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).then(res => res.data);
-};
+
+const fetcher = (url: string) => axiosInstance.get(url).then((res) => res.data);
 
 interface Transaction {
   transaction_id: string;
@@ -69,7 +63,7 @@ export default function History() {
     getToken();
   }, [])
 
-  const { data, error } = useSWR("https://esi.bagoesesport.com/api/v1/transaction/history", fetcher);
+  const { data, error } = useSWR("/transaction/history", fetcher);
   if (error) return <p className="text-red-500">Gagal memuat data</p>;
   if (!data) return <LoadingScreen/>;
   
@@ -154,7 +148,7 @@ export default function History() {
   return (
     <div className="text-white bg-gradient-to-b lg:px-20 lg:py-14 lg:overflow-hidden bg-gray-900 h-screen px-4 flex items-start lg:flex lg:flex-col relative">
 
-      <div className={cn("bg-[url('/images/optimized/backdrop_1.png')]", "absolute lg:top-1/2 lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[707px] h-[471px] bg-contain z-10 bg-gray-900 bg-blend-lighten", "-top-20 right-0")}>
+      <div className={cn("bg-[url('/images/optimized/backdrop_1.png')]", "hidden lg:block absolute lg:top-1/2 lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[707px] h-[471px] bg-contain z-10 bg-gray-900 bg-blend-lighten", "-top-20 right-0")}>
       </div>
 
       <NavigationBar />

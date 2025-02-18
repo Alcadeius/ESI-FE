@@ -1,14 +1,10 @@
-import axiosInstance from '@/lib/axios'
-import useSWR from 'swr'
+import { UserContext } from '@/context/user-context';
+import { useContext } from 'react';
 
-export function useUser () {
-  const fetcher = (url: string) => axiosInstance(url).then((r) => r.data?.data)
-  const { data, error, isLoading } = useSWR(`/auth/user`, fetcher)
- 
-  return {
-    user: data,
-    isLoading,
-    isError: error
+export const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error('useUser must be used within a UserProvider');
   }
+  return context
 }
-

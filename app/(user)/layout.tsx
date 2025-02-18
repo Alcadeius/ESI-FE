@@ -3,18 +3,30 @@
 import LoadingScreen from "@/components/loading-screen"
 import { useUser } from "@/hooks/use-user"
 import { useRouter } from "next/navigation"
-import React from "react"
 import Cookies from "js-cookie"
+import React from "react"
+import axiosInstance from "@/lib/axios"
+
 export default function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
-  const { isLoading, user } = useUser()
   const router = useRouter()
 
-  if (isLoading) return <LoadingScreen/>
+  const [pageLoading, setPageLoading] = React.useState(true)
+  const {setUserData} = useUser()
 
-  if (!isLoading && !user) {
-    Cookies.remove("authToken")
-    router.push("/login")
-  }
+  React.useEffect(() => {
+    async function checkAuth() {
+      const user = await axiosInstance.get("/auth/user").then((res) => { return res.data?.data })
+      setUserData(user)
+      setPageLoading(false)
+    }
+    if (Cookies.get("authToken")) {
+      checkAuth()
+    } else {
+      router.replace("/login")
+    }
+  }, [setUserData, router])
+
+  if(pageLoading) return <LoadingScreen />
 
   return (
     <>

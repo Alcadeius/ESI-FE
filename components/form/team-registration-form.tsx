@@ -11,6 +11,7 @@ import { ICompetition } from "../types/competition";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -38,7 +39,7 @@ const TeamSchema = z.object({
       })
     )
     .min(2, "A team must have at least 2 members")
-    .max(5, "A team can only have 5 members"),
+    .max(6, "A team can only have 6 members"),
 });
 
 type TeamFormType = z.infer<typeof TeamSchema>;
@@ -64,21 +65,20 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
   });
 
   const onSubmit = async (formData: TeamFormType) => {
-    try {
-      const res = await axiosInstance.post("/registration", formData);
+      await axiosInstance.post("/registration", formData).then((res) => {
       Swal.fire({
         icon: "success",
         title: "Registration Success",
         text: res.data.message,
       });
       router.push("/order");
-    } catch {
+    }).catch((error) => {
       Swal.fire({
         icon: "error",
         title: "Registration Failed",
-        text: "Please try again later",
+        text: error?.response?.data?.message,
       });
-    }
+    });
   };
 
   return (
@@ -92,7 +92,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
         </Card>
 
         {/* Team Info */}
-        <Card className="p-4 space-y-2 border">
+        <Card className="p-4 space-y-4 border">
           <FormField
             control={form.control}
             name="team_name"
@@ -111,10 +111,11 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
             name="no_hp"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone Number / Nomor Handphone (Ketua)</FormLabel>
+                <FormLabel>Phone Number / Nomor Handphone</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter Contact Number" {...field} />
                 </FormControl>
+                <FormDescription>Isi dengan data ketua tim</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -124,7 +125,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
         {/* Team Members */}
         <div className="space-y-4">
           {fields.map((field, index) => (
-            <Card key={field.id} className="p-4 space-y-2 border">
+            <Card key={field.id} className="p-4 space-y-4 border">
               <Label>Player {index + 1}</Label>
               
               <FormField
@@ -150,6 +151,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
                     <FormControl>
                       <Input placeholder="Game ID" {...field} />
                     </FormControl>
+                    <FormDescription>Isi dengan &apos;-&apos; jika tidak ada</FormDescription>
                     <FormMessage/>
                   </FormItem>
                 )}
@@ -164,6 +166,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
                     <FormControl>
                       <Input placeholder="Nickname Game" {...field} />
                     </FormControl>
+                    <FormDescription>Isi dengan &apos;-&apos; jika tidak ada</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -206,7 +209,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
               />
 
               {fields.length > 2 && (
-                <Button variant="destructive" onClick={() => remove(index)}>
+                <Button type="button" variant="destructive" onClick={() => remove(index)}>
                   Remove Player
                 </Button>
               )}
@@ -214,14 +217,14 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
           ))}
 
           {fields.length < 6 && (
-            <Button onClick={() => append({ name: "", id_game: "", nickname: "", domicile: "", position: "player" })}>
+            <Button type="button" onClick={() => append({ name: "", id_game: "", nickname: "", domicile: "", position: "player" })}>
               Add Player
             </Button>
           )}
         </div>
 
-        <Button type="submit" className="w-full bg-red-600 text-white hover:bg-red-700 disabled:bg-red-400" disabled={!data.status?.data.is_open}>
-          Daftar
+        <Button type="submit" className="w-full bg-[#ff0000] text-white hover:bg-red-600 disabled:bg-red-400 font-bold" disabled={!data.status?.data.is_open}>
+          Daftar Sekarang
         </Button>
       </form>
     </Form>

@@ -5,17 +5,12 @@ import { cn } from "@/lib/utils";
 import NavigationBar from "../navigation-bar";
 import { Box, X } from "lucide-react";
 import { Button } from "../ui/button";
-import axios from "axios";
 import useSWR, { mutate } from "swr";
 import Swal from "sweetalert2";
 import LoadingScreen from "../loading-screen";
-import Cookies from "js-cookie";
-const fetcher = (url: string) =>
-  axios.get(url, {
-    headers: {
-      Authorization: `Bearer ${Cookies.get("authToken")}`,
-    },
-  }).then(res => res.data);
+import axiosInstance from "@/lib/axios";
+
+const fetcher = (url: string) => axiosInstance.get(url).then(res => res.data);
 
 interface CartAPIResponse {
   message: string;
@@ -41,16 +36,12 @@ interface Ticket {
 }
 export default function Order() {
   const { data: cartData, error } = useSWR<CartAPIResponse>(
-    "https://esi.bagoesesport.com/api/v1/cart/items",
+    "/cart/items",
     fetcher
   );
   const handleDelete = async (orderNumber: string) => {
     try {
-      await axios.delete(`https://esi.bagoesesport.com/api/v1/cart/${orderNumber}/delete`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("authToken")}`,
-        },
-      })
+      await axiosInstance.delete(`/cart/${orderNumber}/delete`)
       Swal.fire({
         title: "Berhasil!",
         text: "Order berhasil dihapus.",
@@ -59,7 +50,7 @@ export default function Order() {
         showConfirmButton: false,
       });
 
-      mutate("https://esi.bagoesesport.com/api/v1/cart/items");
+      mutate(process.env.NEXT_PUBLIC_API_URL + "/cart/items");
 
     } catch (err) {
       console.error("Gagal menghapus order:", err);
@@ -215,7 +206,7 @@ export default function Order() {
   return (
     <div className="text-white bg-gradient-to-b lg:px-20 lg:pt-14 bg-gray-900 lg:h-screen px-4 flex items-start lg:block">
 
-      <div className={cn("bg-[url('/images/optimized/backdrop_1.png')]", "absolute lg:top-1/2 lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[707px] h-[471px] bg-contain z-10 bg-gray-900 bg-blend-lighten", "-top-20 right-0")}>
+      <div className={cn("bg-[url('/images/optimized/backdrop_1.png')]", "hidden lg:block absolute lg:top-1/2 lg:right-[5rem] lg:transform lg:-translate-y-1/2 w-[707px] h-[471px] bg-contain z-10 bg-gray-900 bg-blend-lighten", "-top-20 right-0")}>
       </div>
 
       {/* Navbar */}
@@ -246,7 +237,7 @@ export default function Order() {
         <section className="w-full text-black lg:p-11 lg:py-0 py-3 lg:col-span-3">
           <div className="w-full bg-white px-10 py-16 rounded-sm space-y-3">
             <div className="border-b border-black pb-4">
-              <p className="font-semibold text-2xl">Detail Transaksi</p>
+              <p className="font-semibold text-2xl text-blue-600">Detail Transaksi</p>
               <p>Periksa kembali pesanan anda.</p>
             </div>
             <div className="lg:h-32 space-y-4 lg:overflow-auto [&::-webkit-scrollbar]:w-[0.10rem]

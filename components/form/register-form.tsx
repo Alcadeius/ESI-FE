@@ -53,12 +53,7 @@ export function RegisterForm({
   })
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true)
-    axios.post("https://esi.bagoesesport.com/api/v1/register", data, {
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      }
-    })
+    axios.post(process.env.NEXT_PUBLIC_API_URL + "/register", data)
       .then(() => {
         router.push('/login')
         Swal.fire({
@@ -68,14 +63,13 @@ export function RegisterForm({
           confirmButtonText: 'OK'
         })
       })
-      .catch(function (error) {
+      .catch(function () {
         Swal.fire({
           title: 'Error!',
           text: 'Terjadi kesalahan pada server. Silahkan tunggu beberapa saat dan coba kembali.',
           icon: 'error',
           confirmButtonText: 'OK'
         })
-        console.error(error)
         setIsLoading(false)
       })
   }

@@ -6,6 +6,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
+import axiosInstance from "@/lib/axios";
 export default function Payment() {
   const [file, setFile] = useState<any>(null);
   const [copied, setCopied] = useState(false);
@@ -16,8 +17,8 @@ export default function Payment() {
   const [tickets, setTickets] = useState<{ activity_name: string; total_price: string }[]>([]);
   const [registrations, setRegistrations] = useState<{ activity_name: string; total_price: string }[]>([]);
   const [bankAccounts, setBankAccounts] = useState<
-  { id: number; bank_name: string; account_number: string; account_name: string }[]
->([]);
+    { id: number; bank_name: string; account_number: string; account_name: string }[]
+  >([]);
 
   const [transferDestination, setTransferDestination] = useState("");
   const router = useRouter();
@@ -32,14 +33,10 @@ export default function Payment() {
     const fetchBankAccounts = async () => {
       const token = Cookies.get("authToken");
       if (!token) return;
-  
+
       try {
-        const response = await axios.get(`https://esi.bagoesesport.com/api/v1/bank-accounts/2`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-  
+        const response = await axiosInstance.get(`/bank-accounts/2`);
+
         if (response.status === 200 && response.data.default_bank_account.length > 0) {
           setBankAccounts(response.data.default_bank_account);
         } else {
@@ -49,23 +46,23 @@ export default function Payment() {
         console.error("Gagal mengambil data bank:", error);
       }
     };
-  
+
     fetchBankAccounts();
   }, []);
-  
-//   useEffect(() => {
-//   if (paymentMethod in paymentOptions) {
-//     setTransferDestination(paymentOptions[paymentMethod as keyof typeof paymentOptions]);
-//   } else {
-//     setTransferDestination("");
-//   }
-// }, [paymentMethod]);
 
-const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  const selectedBank = bankAccounts.find(bank => bank.bank_name === e.target.value);
-  setPaymentMethod(selectedBank?.bank_name || "");
-  setTransferDestination(selectedBank?.account_number || "");
-};
+  //   useEffect(() => {
+  //   if (paymentMethod in paymentOptions) {
+  //     setTransferDestination(paymentOptions[paymentMethod as keyof typeof paymentOptions]);
+  //   } else {
+  //     setTransferDestination("");
+  //   }
+  // }, [paymentMethod]);
+
+  const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedBank = bankAccounts.find(bank => bank.bank_name === e.target.value);
+    setPaymentMethod(selectedBank?.bank_name || "");
+    setTransferDestination(selectedBank?.account_number || "");
+  };
 
 
   useEffect(() => {
@@ -113,13 +110,9 @@ const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const fetchCartItems = async () => {
       const token = Cookies.get("authToken");
       if (!token) return;
-      
+
       try {
-        const response = await axios.get("https://esi.bagoesesport.com/api/v1/cart/items", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axiosInstance.get("/cart/items");
 
         if (response.status === 200) {
           setTotalPrice(response.data.total_price);
@@ -131,7 +124,7 @@ const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
             activity_name: registration.activity_name,
             total_price: registration.total_price,
           }));
-          
+
           setTickets(fetchedTickets);
           setRegistrations(fetchedRegistrations);
           setTotalPrice(fetchedTickets.length || fetchedRegistrations.length > 0 ? response.data.total_price : 0);
@@ -148,12 +141,12 @@ const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
     setErrorMessage("");
     setLoading(true);
-    if(tickets.length || registrations.length == 0){
+    if (tickets.length || registrations.length == 0) {
       Swal.fire({
         icon: "error",
         title: "Tidak Ada Belanjaan",
         text: "Silahkan menambahkan pembelian terlebih dahulu",
-      });setLoading(false)
+      }); setLoading(false)
       return;
     }
     if (!file) {
@@ -161,22 +154,19 @@ const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         icon: "error",
         title: "Kekurangan Data",
         text: "Silahkan masukan Bukti Pembayaran",
-      });setLoading(false)
+      }); setLoading(false)
       return;
     }
 
     const formData = new FormData();
-    const token = Cookies.get("authToken");
     formData.append("method", paymentMethod);
     formData.append("proof_image", file);
     const selectedBank = bankAccounts.find(bank => bank.bank_name === paymentMethod);
     formData.append("bank_account_id", `${selectedBank?.id}`);
-    // formData.append("bank_account_id", );
 
     try {
-      const response = await axios.post("https://esi.bagoesesport.com/api/v1/transaction", formData, {
+      const response = await axiosInstance.post("/transaction", formData, {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
@@ -209,7 +199,7 @@ const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   };
 
   return (
-    <div className="h-screen font-sans lg:px-20 lg:pt-14 bg-[url('/images/DSCF4041-3.png')] bg-cover bg-no-repeat before:absolute before:w-full before:content-['a'] before:h-full before:bg-black/35 before:top-0 before:left-0 before:z-0">
+    <div className="h-screen font-sans lg:px-20 lg:pt-14 lg:bg-[url('/images/DSCF4041-3.png')] bg-gray-900 bg-cover bg-no-repeat">
       <NavigationBar />
       <section className="px-5 relative grid grid-cols-1 2xl:place-content-center lg:flex z-10 py-6 lg:w-full lg:py-5">
         <div className="flex flex-col lg:rounded-bl-md lg:rounded-tl-md lg:rounded-tr-none lg:rounded-br-none rounded-t-md lg:w-full xl:max-w-4xl lg:max-w-lg py-3 bg-white px-5 lg:py-10 lg:px-10 xl:px-20 xl:py-14">
@@ -217,7 +207,7 @@ const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
             <h1 className="text-lg text-blue-500 font-bold lg:text-2xl">Detail Belanja</h1>
             <p className="text-xs lg:text-base">Pastikan kembali pesanan anda sebelum mengirimkan formulir ini</p>
           </div>
-          
+
           {tickets.length || registrations.length > 0 ? (
             <div className="mb-2 lg:h-full">
               {tickets.map((ticket, index) => (
@@ -226,12 +216,12 @@ const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
                   <h4>Rp. {parseFloat(ticket.total_price).toLocaleString("id-ID")}</h4>
                 </div>
               ))}
-               {registrations.map((reg, index) => (
-              <div key={index} className="flex text-xs md:text-base font-medium justify-between mb-2">
-                <h1>{reg.activity_name || "Nama Tidak ada"}</h1>
-                <h4>Rp. {parseFloat(reg.total_price).toLocaleString("id-ID")}</h4>
-              </div>
-            ))}
+              {registrations.map((reg, index) => (
+                <div key={index} className="flex text-xs md:text-base font-medium justify-between mb-2">
+                  <h1>{reg.activity_name || "Nama Tidak ada"}</h1>
+                  <h4>Rp. {parseFloat(reg.total_price).toLocaleString("id-ID")}</h4>
+                </div>
+              ))}
             </div>
           ) : (
             <div className="text-center text-gray-500 h-full">
@@ -262,18 +252,18 @@ const handlePaymentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
               )}
               <label htmlFor="payment" className="block mb-2 text-sm font-medium text-gray-900">Pilih Metode Pembayaran</label>
               <select
-  id="payment"
-  className="bg-gray-50 border mb-3 outline-none border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-  value={paymentMethod}
-  onChange={handlePaymentChange}
->
-  <option disabled value="">Pilih Metode Pembayaran</option>
-  {bankAccounts.map((bank) => (
-    <option key={bank.id} value={bank.bank_name}>
-      {bank.bank_name} ({bank.account_name})
-    </option>
-  ))}
-</select>
+                id="payment"
+                className="bg-gray-50 border mb-3 outline-none border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                value={paymentMethod}
+                onChange={handlePaymentChange}
+              >
+                <option disabled value="">Pilih Metode Pembayaran</option>
+                {bankAccounts.map((bank) => (
+                  <option key={bank.id} value={bank.bank_name}>
+                    {bank.bank_name} ({bank.account_name})
+                  </option>
+                ))}
+              </select>
 
               <div>
                 <label htmlFor="input-group-1" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tujuan Transfer</label>

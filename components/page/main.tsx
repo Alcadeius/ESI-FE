@@ -1,4 +1,5 @@
 "use client"
+
 import NavigationBar from '../navigation-bar';
 import Footer from '../footer';
 import { ChevronsRight, Globe } from 'lucide-react';
@@ -30,7 +31,6 @@ export default function Main() {
   const itemsPerPage = 6;
   const totalPages = events && events.length > 0 ? Math.ceil(events.length / itemsPerPage) : 1;
 
-
   // Ensure the current page never goes out of bounds
   const [currentPage, setCurrentPage] = React.useState(1);
   React.useEffect(() => {
@@ -52,12 +52,11 @@ export default function Main() {
       <div key={index} onClick={() => handleEventClick(event)} className="bg-gray-900 rounded-sm p-5 w-full aspect-video z-20 relative bg-cover bg-center flex justify-between flex-col select-none cursor-pointer group" style={{ backgroundImage: `url(${event?.event_banner})` }}>
         <div className="flex justify-between items-start z-10">
           <div>
-            {/* <div className="text-white font-bold lg:text-2xl">{event?.event_logo}</div> */}
-            <h1 className="text-white font-bold text-2xl">{event?.name.length > 40 ? `${event.name.slice(0, 40)}...` : event.name}</h1>
+            <h1 className="text-white text-2xl font-supertall" style={{textShadow: "2px 2px 4px black"}}>{event?.name.length > 40 ? `${event.name.slice(0, 40)}...` : event.name}</h1>
             <p className="text-white text-sm"></p>
           </div>
           <div>
-            <ChevronsRight size={35} className="group-hover:scale-125 transition-all" />
+            <ChevronsRight size={35} className="group-hover:scale-125 transition-all group-hover:animate-spin" />
           </div>
         </div>
         <div className='flex justify-between items-end z-10'>
@@ -69,7 +68,7 @@ export default function Main() {
             <Image alt="" src={event.event_logo ?? "/images/logo.png"} width={50} height={50} className="p-0.5 bg-white rounded-sm" />
           </div>
         </div>
-        <div className='absolute left-0 top-0 w-full h-full bg-black opacity-70 group-hover:opacity-50 z-0'></div>
+        <div className='absolute left-0 top-0 w-full h-full bg-black opacity-75 group-hover:opacity-50 group-hover:duration-300 transition-all z-0'></div>
       </div>
     )
   }
@@ -79,7 +78,6 @@ export default function Main() {
       <div className="lg:px-20 lg:pt-14 min-h-screen">
         {/* Header */}
         <NavigationBar />
-
 
         {/* Hero */}
         <div className="flex lg:text-2xl text-base font-supertall uppercase text-white px-5 lg:mt-10 mt-5 mb-5">

@@ -14,7 +14,7 @@ export default function Forgot() {
     setErrorMessage("");
 
     try {
-      const response = await axios.post(
+      await axios.post(
         "https://esi.bagoesesport.com/api/v1/forgot-password",
         { email },
         {

@@ -19,7 +19,7 @@ const CompetitionRegisterPage = () => {
       <NavigationBar />
       <div className='px-3 lg:my-0 md:px-14 md:py-10 lg:px-28 lg:mx-auto py-5 relative z-10 w-full'>
         <div className='bg-[#F9FAFB] rounded-md lg:bg-[url("/images/logo.png")] bg-blend-lighten'>
-          <div className='flex flex-col px-5 py-5 lg:px-20 lg:py-10 lg:justify-center w-full'>
+          <div className='flex flex-col px-5 py-8 lg:px-20 lg:py-16 lg:justify-center w-full'>
             <div className='flex-col text-sm mb-5'>
               <h1 className='text-[#3B82F6] uppercase text-base lg:text-xl font-bold font-sans'>Formulir Pendaftaran Lomba</h1>
               <p className='text-xs'>Formulir Untuk melakukan pendaftaran lomba</p>

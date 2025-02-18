@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
-import Cookies from "js-cookie";
-import { cn } from "@/lib/utils"
+
+import Cookies from "js-cookie"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -11,7 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
@@ -21,6 +19,7 @@ import { useForm } from "react-hook-form"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { LoadingSpinner } from "../loading-spinner"
 import Swal from 'sweetalert2'
+import { useUser } from "@/hooks/use-user"
 
 const FormSchema = z.object({
   email: z.string().email().min(2, {
@@ -32,12 +31,11 @@ const FormSchema = z.object({
   remember_token: z.boolean()
 })
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+export function LoginForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = React.useState(false)
+  const { setUserData } = useUser()
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -46,19 +44,17 @@ export function LoginForm({
       remember_token: true
     },
   })
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true)
-    axios.post("https://esi.bagoesesport.com/api/v1/login", data, {
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      }
-    })
-    .then(function (response) {
-      Cookies.set("authToken", response.data.meta.token, { expires: 7, secure: true });
-      router.push("/main");
-    })
+    axios.post(process.env.NEXT_PUBLIC_API_URL + "/login", data)
+      .then(function (response) {
+        Cookies.set("authToken", response.data.meta.token, { expires: 7, secure: true });
+        setUserData(response?.data?.data)
+        router.back();
+      })
       .catch(function (error) {
+        setIsLoading(false)
         if (error.response.status === 401) {
           Swal.fire({
             title: 'Gagal Masuk!',
@@ -74,9 +70,9 @@ export function LoginForm({
             confirmButtonText: 'OK'
           })
         }
-        setIsLoading(false)
       })
   }
+
   return (
     <div className="w-full lg:px-3 dark z-10">
       <Card className="bg-transparent border-0">
@@ -114,13 +110,13 @@ export function LoginForm({
                         <FormItem>
                           <FormLabel>
                             <div className="flex items-center">
-                              <Label htmlFor="password">Password</Label>
-                              <a
+                              <div>Password</div>
+                              {/* <a
                                 href="#"
                                 className="ml-auto text-sm underline-offset-4 hover:underline"
                               >
                                 lupa sandi?
-                              </a>
+                              </a> */}
                             </div>
                           </FormLabel>
                           <FormControl>

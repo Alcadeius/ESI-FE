@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { RegisterForm } from "../form/register-form";
+import Image from "next/image";
 
 export default function Register() {
   return (
@@ -9,7 +10,7 @@ export default function Register() {
         "w-full h-full lg:col-span-2 bg-center xl:col-span-2 bg-no-repeat bg-contain z-0 bg-gray-900 bg-blend-lighten",
         "hidden lg:flex justify-end items-start")}>
           <div className="flex items-center lg:justify-start p-10">
-            <img alt='logo' src="/images/logo.png" width={75} />
+            <Image alt='logo' src="/images/logo.png" width={75} height={75}/>
           </div>
       </div>
     </div>

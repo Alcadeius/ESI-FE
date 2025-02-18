@@ -33,7 +33,7 @@ const pageList = [
 ]
 
 const NavigationBar = () => {
-  const { user, isLoading } = useUser()
+  const { userData: user } = useUser()
   const router = useRouter()
 
   return (
@@ -50,7 +50,7 @@ const NavigationBar = () => {
           )
         })}
       </div>
-      {((user as IUser) && !isLoading) ? (
+      {user ? (
         <div className="hidden lg:flex justify-end w-full items-center">
           <div>
             <h2 className="mx-3">{user ? user?.email : ("Loading...")}</h2>

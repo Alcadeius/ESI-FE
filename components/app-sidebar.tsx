@@ -19,7 +19,7 @@ import { Box, ChevronRight, LayoutDashboard, Receipt, User } from "lucide-react"
 import { useUser } from "@/hooks/use-user"
 
 export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { user } = useUser()
+  const { userData: user } = useUser()
 
   const items = [
     {

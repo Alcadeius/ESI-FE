@@ -1,6 +1,5 @@
 "use client"
 
-import axios from "axios";
 import { Minus, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -17,6 +16,8 @@ import {
 } from "@/components/ui/dialog"
 import { ITicket } from "../types/ticket";
 import Cookies from "js-cookie";
+import axiosInstance from "@/lib/axios";
+
 interface TicketFormProps {
   ticketID: number | null;
   data: ITicket
@@ -56,17 +57,11 @@ export function TicketForm({ ticketID, data }: TicketFormProps) {
         });
         return;
       }
-      const response = await axios.post(
-        `https://esi.bagoesesport.com/api/v1/buy-ticket`,
+      const response = await axiosInstance.post(
+        `/buy-ticket`,
         {
           ticket_sale_id: ticketID,
           quantity: ticketQuantity
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
         }
       )
       if (response.status === 201) {

@@ -76,8 +76,8 @@ export default function Forgot() {
           <p className="text-sm 2xl:text-xl 2xl:my-1">
             Silahkan Masukan Alamat Email Anda
           </p>
-          <form onSubmit={handleSubmit} className="sm:max-w-md 2xl:max-w-full mx-auto">
-            <div className="relative my-5">
+          <form onSubmit={handleSubmit} className="sm:max-w-md 2xl:max-w-full items-center flex flex-col mx-auto">
+            <div className="relative mt-2 w-full">
               <div className="absolute inset-y-0 start-0 flex items-center ps-1.5 pointer-events-none">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -101,13 +101,13 @@ export default function Forgot() {
               />
             </div>
             
-            <div className="bg-[#E8462D] text-center xl:my-5 font-extrabold 2xl:text-3xl my-5 mx-3 p-2">
+            <button type="submit" className="bg-[#E8462D] w-full text-center xl:my-5 font-extrabold 2xl:text-3xl my-5 mx-3 p-2">
               <input
                 type="submit"
                 value={loading ? "Requesting..." : "Request"}
                 disabled={loading}
               />
-            </div>
+            </button>
             {errorMessage && (
               <p className="text-red-500 text-xs text-center mt-2">{errorMessage}</p>
             )}

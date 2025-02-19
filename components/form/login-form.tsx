@@ -111,12 +111,12 @@ export function LoginForm() {
                           <FormLabel>
                             <div className="flex items-center">
                               <div>Password</div>
-                              {/* <a
-                                href="#"
+                              <a
+                                href="/forgot"
                                 className="ml-auto text-sm underline-offset-4 hover:underline"
                               >
                                 lupa sandi?
-                              </a> */}
+                              </a>
                             </div>
                           </FormLabel>
                           <FormControl>

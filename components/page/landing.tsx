@@ -3,8 +3,23 @@
 import Image from "next/image";
 import NavigationBar from "../navigation-bar";
 import { cn } from "@/lib/utils";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import LoadingScreen from "@/components/loading-screen"
+import React from "react"
 export default function Landing() {
+  const router = useRouter();
+  const [pageLoading, setPageLoading] = React.useState(true)
 
+
+  React.useEffect(() => {
+    if (Cookies.get("authToken")) {
+      router.push("/main")
+    } else {
+      setPageLoading(false)
+    }
+  }, [router])
+  if(pageLoading) return <LoadingScreen />
   return (
     <div className="text-white bg-gradient-to-b lg:px-20 lg:pt-14 bg-gray-900 h-screen px-4 flex items-start lg:block">
 

@@ -306,9 +306,9 @@ export default function Payment() {
                   </div>
                 )}
               </div>
-              <div className='w-full lg:float-right mt-5 bg-[#ff0000] cursor-pointer p-2 text-white rounded-md text-center'>
-                <input type="submit" className="w-full" disabled={loading} value={loading ? "Submitting..." : "Submit"} />
-              </div>
+              <button type="submit"  className='w-full lg:float-right mt-5 bg-[#ff0000] cursor-pointer p-2 text-white rounded-md text-center h-full'>
+              <input type="submit" disabled={loading} value={loading ? "Submitting..." : "Submit"} />
+              </button>
             </form>
           </div>
         </div>

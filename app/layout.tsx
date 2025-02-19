@@ -7,7 +7,7 @@ import Logo from "@/components/logo";
 import { UserProvider } from "@/context/user-context";
 
 const supertalls = localFont({
-  src: "./fonts/supertalls.otf",
+  src: "./fonts/Supertalls.woff",
   variable: "--font-supertall",
   weight: "100 900",
 });

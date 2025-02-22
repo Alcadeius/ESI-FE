@@ -9,6 +9,11 @@ export interface IActivity {
   map_link: string;
   created_at: string;
   updated_at: string;
+  status: {
+            data: {
+                is_open: true,
+            }
+        },
   type: {
     id: number;
     name: string;

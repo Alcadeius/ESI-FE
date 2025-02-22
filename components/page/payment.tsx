@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import NavigationBar from "../navigation-bar";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import axiosInstance from "@/lib/axios";
@@ -23,33 +23,64 @@ export default function Payment() {
   const [transferDestination, setTransferDestination] = useState("");
   const router = useRouter();
 
-  // const paymentOptions = {
-  //   Mandiri: "1750002029386",
-  //   Dana: "0881037250064",
-  //   ShopeePay: "0881037250064",
-  //   Gopay: "5029384",
-  // };
+  const defaultBankAccounts = useMemo(()=>[
+    {
+      id: 3,
+      bank_name: "BPD BALI",
+      account_number: "0110202557402",
+      account_name: "esi denpasar",
+      created_at: "2025/02/15 14:46:02",
+      updated_at: "2025/02/16 19:37:30",
+    },
+    {
+      id: 4,
+      bank_name: "DANA",
+      account_number: "085191387200",
+      account_name: "esi denpasar official",
+      created_at: "2025/02/15 14:46:36",
+      updated_at: "2025/02/16 19:38:16",
+    },
+    {
+      id: 5,
+      bank_name: "GOPAY",
+      account_number: "085191387200",
+      account_name: "esi denpasar official",
+      created_at: "2025/02/15 14:47:17",
+      updated_at: "2025/02/16 19:38:39",
+    },
+    {
+      id: 6,
+      bank_name: "OVO",
+      account_number: "085191387200",
+      account_name: "esi denpasar official",
+      created_at: "2025/02/16 19:40:00",
+      updated_at: "2025/02/16 19:40:00",
+    },
+  ],[])  
+  const param = useSearchParams()
+  const event = param.get("event")
   useEffect(() => {
     const fetchBankAccounts = async () => {
       const token = Cookies.get("authToken");
       if (!token) return;
-
+  
       try {
-        const response = await axiosInstance.get(`/bank-accounts/2`);
-
-        if (response.status === 200 && response.data.default_bank_account.length > 0) {
+        const response = await axiosInstance.get(`/bank-accounts/${event}`);
+  
+        if (response.status === 200 && response.data.default_bank_account?.length > 0) {
           setBankAccounts(response.data.default_bank_account);
         } else {
-          console.warn(response.data.message || "Data bank tidak ditemukan.");
+          setBankAccounts(defaultBankAccounts);
         }
       } catch (error) {
         console.error("Gagal mengambil data bank:", error);
+        setBankAccounts(defaultBankAccounts);
       }
     };
-
+  
     fetchBankAccounts();
-  }, []);
-
+  }, [defaultBankAccounts,event]);
+  
   //   useEffect(() => {
   //   if (paymentMethod in paymentOptions) {
   //     setTransferDestination(paymentOptions[paymentMethod as keyof typeof paymentOptions]);

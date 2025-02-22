@@ -2,18 +2,18 @@
 import Cookies from "js-cookie";
 import LoadingScreen from "@/components/loading-screen"
 import React from "react"
-
+import { useRouter } from "next/navigation";
 export default function GuestLayout({ children }: { children: React.ReactNode }) {
-  const [loading, setLoading] = React.useState(true)
-
+  const router = useRouter();
+  const [pageLoading, setPageLoading] = React.useState(true)
   React.useEffect(() => {
     if (Cookies.get("authToken")) {
-      Cookies.remove("authToken")
+      router.push("/main")
+    } else {
+      setPageLoading(false)
     }
-    setLoading(false)
-  }, [])
-
-  if (loading) return <LoadingScreen/>
+  }, [router])
+  if(pageLoading) return <LoadingScreen />
 
   return (
     <>

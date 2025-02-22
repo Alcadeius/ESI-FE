@@ -9,6 +9,7 @@ import useSWR, { mutate } from "swr";
 import Swal from "sweetalert2";
 import LoadingScreen from "../loading-screen";
 import axiosInstance from "@/lib/axios";
+import { useSearchParams } from "next/navigation";
 
 const fetcher = (url: string) => axiosInstance.get(url).then(res => res.data);
 
@@ -39,6 +40,8 @@ export default function Order() {
     "/cart/items",
     fetcher
   );
+  const param=useSearchParams();
+  const event=param.get("eventId")
   const handleDelete = async (orderNumber: string) => {
     try {
       await axiosInstance.delete(`/cart/${orderNumber}/delete`)
@@ -264,7 +267,7 @@ export default function Order() {
                 })}
               </div>
               <p className="lg:text-base text-sm pb-2">*Catatan: Total harga belum termasuk ppn</p>
-              <Button className="w-full bg-[#FF0000] text-white hover:text-[#FF0000] hover:bg-transparent hover:border-[#FF0000] border"><a className="w-full" href="/payment">Bayar</a></Button>
+              <Button className="w-full bg-[#FF0000] text-white hover:text-[#FF0000] hover:bg-transparent hover:border-[#FF0000] border"><a className="w-full h-full" href={`/payment?event=${event}`}>Bayar</a></Button>
             </div>
           </div>
         </section>

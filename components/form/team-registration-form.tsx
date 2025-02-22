@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { IActivity } from "../types/activity";
 
 const TeamSchema = z.object({
   competition_id: z.number(),
@@ -44,7 +45,7 @@ const TeamSchema = z.object({
 
 type TeamFormType = z.infer<typeof TeamSchema>;
 
-const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
+const TeamRegistrationForm = ({ data,activity }: { data: ICompetition,activity:IActivity }) => {
   const router = useRouter();
   const form = useForm<TeamFormType>({
     resolver: zodResolver(TeamSchema),
@@ -71,7 +72,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
         title: "Registration Success",
         text: res.data.message,
       });
-      router.push("/order");
+      router.push(`/order?eventId=${activity?.id}`);
     }).catch((error) => {
       Swal.fire({
         icon: "error",

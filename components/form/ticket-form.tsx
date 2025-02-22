@@ -77,7 +77,7 @@ export function TicketForm({ ticketID, data }: TicketFormProps) {
           confirmButtonText: "Ya, Arahkan Saya ke Pembayaran"
         }).then((result) => {
           if (result.isConfirmed) {
-            router.push("/order");
+            router.push(`/order?eventId=${ticketID}`);
           }
         })
       } else {

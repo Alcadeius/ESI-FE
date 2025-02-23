@@ -10,8 +10,6 @@ import React from "react"
 export default function Landing() {
   const router = useRouter();
   const [pageLoading, setPageLoading] = React.useState(true)
-
-
   React.useEffect(() => {
     if (Cookies.get("authToken")) {
       router.push("/main")

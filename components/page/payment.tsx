@@ -153,8 +153,7 @@ export default function Payment() {
             activity_name: registration.activity_name,
             total_price: registration.total_price,
           }));
-          const fetchevent = response.data.event.event_id;
-          setEventId(fetchevent)
+          setEventId(response.data.event.event_id)
           setTickets(fetchedTickets);
           setRegistrations(fetchedRegistrations);
           setTotalPrice(fetchedTickets.length || fetchedRegistrations.length > 0 ? response.data.total_price : 0);

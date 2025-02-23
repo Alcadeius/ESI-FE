@@ -10,10 +10,10 @@ export interface IActivity {
   created_at: string;
   updated_at: string;
   status: {
-            data: {
-                is_open: true,
-            }
-        },
+  data: {
+  is_open: boolean,
+  }
+  },
   type: {
     id: number;
     name: string;

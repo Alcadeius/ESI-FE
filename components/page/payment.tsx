@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import NavigationBar from "../navigation-bar";
 import axios from "axios";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import axiosInstance from "@/lib/axios";
@@ -19,7 +19,7 @@ export default function Payment() {
   const [bankAccounts, setBankAccounts] = useState<
     { id: number; bank_name: string; account_number: string; account_name: string }[]
   >([]);
-
+  const [eventId, setEventId] = useState<number | null>(null);
   const [transferDestination, setTransferDestination] = useState("");
   const router = useRouter();
 
@@ -57,15 +57,13 @@ export default function Payment() {
       updated_at: "2025/02/16 19:40:00",
     },
   ],[])  
-  const param = useSearchParams()
-  const event = param.get("event")
   useEffect(() => {
     const fetchBankAccounts = async () => {
       const token = Cookies.get("authToken");
       if (!token) return;
   
       try {
-        const response = await axiosInstance.get(`/bank-accounts/${event}`);
+        const response = await axiosInstance.get(`/bank-accounts/${eventId}`);
   
         if (response.status === 200 && response.data.default_bank_account?.length > 0) {
           setBankAccounts(response.data.default_bank_account);
@@ -79,7 +77,7 @@ export default function Payment() {
     };
   
     fetchBankAccounts();
-  }, [defaultBankAccounts,event]);
+  }, [defaultBankAccounts,eventId]);
   
   //   useEffect(() => {
   //   if (paymentMethod in paymentOptions) {
@@ -155,7 +153,8 @@ export default function Payment() {
             activity_name: registration.activity_name,
             total_price: registration.total_price,
           }));
-
+          const fetchevent = response.data.event.event_id;
+          setEventId(fetchevent)
           setTickets(fetchedTickets);
           setRegistrations(fetchedRegistrations);
           setTotalPrice(fetchedTickets.length || fetchedRegistrations.length > 0 ? response.data.total_price : 0);

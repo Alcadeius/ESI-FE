@@ -6,16 +6,13 @@ import TeamRegistrationForm from "../form/team-registration-form";
 import useSWR from "swr";
 import axiosInstance from "@/lib/axios";
 import { ICompetition } from "../types/competition";
-import { IActivity } from "../types/activity";
 
 const fetcher = (url: string) => axiosInstance.get(url).then((res) => res.data);
 
 const CompetitionRegisterPage = () => {
   const searchParams = useSearchParams();
   const competitionID = searchParams.get("id");
-  const EventID = searchParams.get("event")
   const { data } = useSWR(`/competition/${competitionID}`, fetcher);
-  const { data: activityData } = useSWR(`/activity/${EventID}`, fetcher);
   return (
     <div className="bg-none lg:bg-[url('/images/DSCF4041-3.png')] bg-blend-lighten bg-gray-900 bg-center bg-cover h-full 2xl:h-screen before:top-0 before:left-0 w-full bg-no-repeat before:absolute before:z-0 before:content-['a'] before:h-full before:w-full lg:px-20 lg:py-16">
       <NavigationBar />
@@ -27,8 +24,8 @@ const CompetitionRegisterPage = () => {
               <p className='text-xs'>Formulir Untuk melakukan pendaftaran lomba</p>
             </div>
             <div className='lg:max-w-full'>
-            {data && activityData && (data.data as ICompetition && activityData.data as IActivity).status?.data.is_open ?
-              <TeamRegistrationForm data={data.data} activity={activityData.data}/> : "Formulir tidak tersedia."
+            {data  && (data.data as ICompetition).status?.data.is_open ?
+              <TeamRegistrationForm data={data.data}/> : "Formulir tidak tersedia."
             }
             </div>
           </div>

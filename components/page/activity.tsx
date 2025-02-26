@@ -16,9 +16,8 @@ import { ICompetition } from "../types/competition";
 import { TicketForm } from "../form/ticket-form";
 import { Button } from "../ui/button";
 import LoadingScreen from "../loading-screen";
-
+import { isAfter } from "date-fns";
 const fetcher = (url: string) => axiosInstance.get(url).then((res) => res.data);
-
 interface ActivityProps extends IActivity {
   ticketSales?: ITicket[];
   competitions?: ICompetition[];
@@ -30,6 +29,7 @@ interface DetailProps {
 }
 
 const ActivityPage = () => {
+  const [expiredActivities, setExpiredActivities] = useState<{ [key: number]: boolean }>({});
   const searchParams = useSearchParams();
   const eventIdFromUrl = searchParams.get("event");
 
@@ -54,7 +54,20 @@ const ActivityPage = () => {
       setSelectedEventId(Number(eventIdFromUrl));
     }
   }, [eventIdFromUrl]);
-
+  useEffect(() => {
+    if (activitiesData?.data?.activities) {
+      const now = new Date();
+  
+      const expiredStatus = activitiesData.data.activities.reduce((acc, activity) => {
+        const endDate = new Date(activity.end_at);
+        acc[activity.id] = isAfter(now, endDate); 
+        return acc;
+      }, {} as { [key: number]: boolean });
+  
+      setExpiredActivities(expiredStatus);
+    }
+  }, [activitiesData]);
+  console.log(setExpiredActivities)
   if (eventError) return <div className="text-white">Error loading events</div>;
   if (activityError) return <div className="text-white">Error loading activities</div>;
   if (!eventData) return <LoadingScreen />;
@@ -90,19 +103,28 @@ const ActivityPage = () => {
               </div>
             </div>
             <div className="font-sans flex text-sm">
-              {isTicket(data) ? (
-                <TicketForm data={data} ticketID={data.id} />
-              ) : (
-                <Button onClick={() => router.push(`/competition/register?id=${data.id}`)} className="w-full text-white rounded-sm font-semibold hover:text-[#ff0000] bg-[#ff0000] justify-center items-center text-center p-3 transition-all hover:border-[#ff0000] border-transparent border hover:bg-transparent disabled:bg-red-700" disabled={!data.status?.data.is_open}>
-                  {(data?.status?.data.is_open) ? `Daftar Sekarang` : `Segera Hadir`}
-                </Button>
-              )}
-            </div>
-          </div>
+          {isTicket(data) ? (
+            <TicketForm data={data} ticketID={data.id} />
+          ) : (
+              <Button
+                onClick={() => router.push(`/competition/register?id=${data.id}`)}
+                className="w-full text-white rounded-sm font-semibold hover:text-[#ff0000] bg-[#ff0000] justify-center items-center text-center p-3 transition-all hover:border-[#ff0000] border-transparent border hover:bg-transparent disabled:bg-red-700"
+                disabled={!data.status?.data.is_open || expiredActivities[data.id]} 
+              >
+                {expiredActivities[data.id]
+                ? `Event ini sudah berakhir`
+                : !data.status?.data.is_open
+                ? `Segera Hadir`
+                : `Daftar Sekarang`}
+              </Button>
+          )}
         </div>
-      </div>
-    )
-  }
+
+          </div>
+          </div>
+          </div>
+        )
+      }
 
   return (
     <div className="lg:py-[56px] lg:px-[80px] h-full w-full">
@@ -132,20 +154,6 @@ const ActivityPage = () => {
                   <span className="flex-grow h-0.5 bg-white rounded-lg ml-3 hidden lg:block"></span>
                 </div>
                 <div className="mt-2 space-y-4 w-full h-full relative z-20">
-                {/* {activity.ticketSales && activity.ticketSales.length > 0 ? (
-            activity.ticketSales.map((ticket) => (
-              <Card key={ticket.id} data={ticket} activity={activity} />
-            ))
-          ) : (
-            <p className="text-center text-white hidden bg-black text-lg font-supertall">No Ticket available</p>
-          )}
-          {activity.competitions && activity.competitions.length > 0 ? (
-            activity.competitions && activity.competitions.map((competition) => (
-              <Card key={competition.id} data={competition} activity={activity} />
-            ))
-          ):(
-            <p className="text-center text-white hidden bg-black text-lg font-supertall">No Competition</p>
-          )} */}
                   {(activity.ticketSales || activity.competitions) ? (
                     <>
                       {activity.ticketSales && activity.ticketSales.map((ticket) => (

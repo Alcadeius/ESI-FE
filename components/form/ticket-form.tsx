@@ -26,6 +26,7 @@ interface TicketFormProps {
 export function TicketForm({ ticketID, data }: TicketFormProps) {
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [openDialog, setOpenDialog] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +58,7 @@ export function TicketForm({ ticketID, data }: TicketFormProps) {
         });
         return;
       }
+      setIsSubmitting(true);
       const response = await axiosInstance.post(
         `/buy-ticket`,
         {
@@ -91,6 +93,9 @@ export function TicketForm({ ticketID, data }: TicketFormProps) {
     } catch (error) {
       console.error("Error saat membeli tiket:", error);
       alert("Gagal membeli tiket!");
+    }
+    finally{
+      setIsSubmitting(false); 
     }
   };
 
@@ -143,9 +148,10 @@ export function TicketForm({ ticketID, data }: TicketFormProps) {
           <button
             type="button"
             onClick={handleBuyTicket}
+            disabled={isSubmitting}
             className="bg-[#ff0000] text-white font-semibold text-base w-full rounded-sm py-2 hover:bg-white hover:text-[#ff0000] hover:border-[#ff0000] border-[#ff0000] border"
           >
-            Beli
+            {isSubmitting ? "Menambahkan..." : "Beli Sekarang"}
           </button>
         </DialogFooter>
       </DialogContent>

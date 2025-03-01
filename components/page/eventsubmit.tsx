@@ -17,6 +17,7 @@ interface FormData {
 
 export default function EventSubmit() {
   const [file, setFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     event_name: '',
     event_date: '',
@@ -63,6 +64,7 @@ export default function EventSubmit() {
     e.preventDefault();
     setErrorMessage(''); 
     setLoading(true);
+    setIsSubmitting(true)
     try {
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
@@ -73,7 +75,6 @@ export default function EventSubmit() {
       if (file) {
         formDataToSend.append('application_file', file);
       }
-
       const response = await axiosInstance.post("/application", formDataToSend);
 
       if (response.status === 201) {
@@ -101,6 +102,7 @@ export default function EventSubmit() {
       }
     } finally {
         setLoading(false);
+        setIsSubmitting(false);
     }
   };
 
@@ -181,9 +183,9 @@ export default function EventSubmit() {
                     </div>
                   )}
                 </div>
-                <div className='w-full lg:transition-all lg:hover:bg-black lg:float-right bg-[#ff0000] cursor-pointer p-2 text-white rounded-md text-center'>
+                <button type='submit' disabled={isSubmitting} className='w-full lg:transition-all lg:hover:bg-black lg:float-right bg-[#ff0000] cursor-pointer p-2 text-white rounded-md text-center'>
                   <input type="submit" className="cursor-pointer w-full" value={loading ? "Submitting..." : "Submit"}/>
-                </div>
+                </button>
               </form>
             </div>
           </div>

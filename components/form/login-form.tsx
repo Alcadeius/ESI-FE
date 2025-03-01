@@ -33,6 +33,7 @@ const FormSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter()
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
   const { setUserData } = useUser()
 
@@ -47,6 +48,7 @@ export function LoginForm() {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true)
+    setIsSubmitting(true)
     axios.post(process.env.NEXT_PUBLIC_API_URL + "/login", data)
       .then(function (response) {
         Cookies.set("authToken", response.data.meta.token, { expires: 7, secure: true });
@@ -55,6 +57,7 @@ export function LoginForm() {
       })
       .catch(function (error) {
         setIsLoading(false)
+        setIsSubmitting(false)
         if (error.response.status === 401) {
           Swal.fire({
             title: 'Gagal Masuk!',
@@ -128,7 +131,7 @@ export function LoginForm() {
                       )}
                     />
                   </div>
-                  <Button type="submit" className="w-full bg-red-600 text-white font-semibold hover:text-red-600 mt-4">
+                  <Button type="submit" disabled={isSubmitting} className="w-full bg-red-600 text-white font-semibold hover:text-red-600 mt-4">
                     Login {isLoading ? <LoadingSpinner className="size-4 text-white" /> : ""}
                   </Button>
                 </div>

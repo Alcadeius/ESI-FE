@@ -6,7 +6,7 @@ import { z } from "zod";
 import axiosInstance from "@/lib/axios";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
-
+import { useState } from "react";
 import { ICompetition } from "../types/competition";
 import {
   Form,
@@ -46,6 +46,7 @@ type TeamFormType = z.infer<typeof TeamSchema>;
 
 const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false); 
   const form = useForm<TeamFormType>({
     resolver: zodResolver(TeamSchema),
     defaultValues: {
@@ -65,21 +66,26 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
   });
 
   const onSubmit = async (formData: TeamFormType) => {
-      await axiosInstance.post("/registration", formData).then((res) => {
+    setIsSubmitting(true); 
+    try {
+      const res = await axiosInstance.post("/registration", formData);
       Swal.fire({
         icon: "success",
         title: "Registration Success",
         text: res.data.message,
       });
       router.push("/order");
-    }).catch((error) => {
+    } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Registration Failed",
-        text: error?.response?.data?.message,
+        text: String(error || "Terjadi Kesalahan dalam Register"),
       });
-    });
+    } finally {
+      setIsSubmitting(false); 
+    }
   };
+
 
   return (
     <Form {...form}>
@@ -223,8 +229,8 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
           )}
         </div>
 
-        <Button type="submit" className="w-full bg-[#ff0000] text-white hover:bg-red-600 disabled:bg-red-400 font-bold" disabled={!data.status?.data.is_open}>
-          Daftar Sekarang
+        <Button type="submit" className="w-full bg-[#ff0000] text-white hover:bg-red-600 disabled:bg-red-400 font-bold" disabled={isSubmitting ||!data.status?.data.is_open}>
+        {isSubmitting ? "Submitting..." : "Daftar Sekarang"} 
         </Button>
       </form>
     </Form>

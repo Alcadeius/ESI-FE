@@ -112,7 +112,7 @@ const ActivityPage = () => {
                 disabled={!data.status?.data.is_open || expiredActivities[data.id]} 
               >
                 {expiredActivities[data.id]
-                ? `Event ini sudah berakhir`
+                ? `Event berakhir`
                 : !data.status?.data.is_open
                 ? `Segera Hadir`
                 : `Daftar Sekarang`}

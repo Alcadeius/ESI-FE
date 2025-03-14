@@ -24,6 +24,15 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 
+const dummyData = [
+  {
+    email: "andre123@gmail.com"
+  },
+  {
+    email: "rodokrodokrodok@gmail.com"
+  }
+]
+
 const TeamSchema = z.object({
   competition_id: z.number(),
   team_name: z.string().min(1, "Team name is required"),
@@ -31,11 +40,13 @@ const TeamSchema = z.object({
   team_members: z
     .array(
       z.object({
-        name: z.string().min(1, "Player name is required"),
+        email: z.string().email().min(1, "Player email is required"),
         id_game: z.string().min(1, "Game ID is required"),
         nickname: z.string().min(1, "Nickname is required"),
         position: z.enum(["leader", "player"]),
-        domicile: z.string().min(1, "Domicile is required"),
+      }).refine((data) => dummyData.filter((each) => each.email == data.email).length == 1, {
+        message: "Email tidak terdaftar",
+        path: ["email"],
       })
     )
     .min(2, "A team must have at least 2 members")
@@ -54,8 +65,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
       team_name: "",
       no_hp: "",
       team_members: [
-        { name: "", id_game: "", nickname: "", domicile: "", position: "leader" },
-        { name: "", id_game: "", nickname: "", domicile: "", position: "player" },
+        { email: "", id_game: "", nickname: "", position: "leader" },
       ],
     },
   });
@@ -136,13 +146,14 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
               
               <FormField
                 control={form.control}
-                name={`team_members.${index}.name`}
+                name={`team_members.${index}.email`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Player Name</FormLabel>
+                    <FormLabel>Email Akun Atlet</FormLabel>
                     <FormControl>
-                      <Input placeholder="Nama Lengkap" {...field} />
+                      <Input placeholder="Email Akun Atlet" {...field} />
                     </FormControl>
+                    <FormDescription>Isi dengan email akun yang telah terdaftar menjadi atlet</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -180,20 +191,6 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
 
               <FormField
                 control={form.control}
-                name={`team_members.${index}.domicile`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Domisili / Alamat</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Tempat Tinggal" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
                 name={`team_members.${index}.position`}
                 render={({ field }) => (
                   <FormItem>
@@ -214,7 +211,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
                 )}
               />
 
-              {fields.length > 2 && (
+              {fields.length > 1 && (
                 <Button type="button" variant="destructive" onClick={() => remove(index)}>
                   Remove Player
                 </Button>
@@ -223,7 +220,7 @@ const TeamRegistrationForm = ({ data }: { data: ICompetition }) => {
           ))}
 
           {fields.length < 6 && (
-            <Button type="button" onClick={() => append({ name: "", id_game: "", nickname: "", domicile: "", position: "player" })}>
+            <Button type="button" onClick={() => append({ email: "", id_game: "", nickname: "", position: "player" })}>
               Add Player
             </Button>
           )}

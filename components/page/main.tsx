@@ -11,9 +11,12 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '../ui/skeleton';
 import Image from 'next/image';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
+import { Button } from '../ui/button';
+import Link from 'next/link';
 
 function FetchEvents() {
-  const fetcher = (url: string) => 
+  const fetcher = (url: string) =>
     axiosInstance(url).then((r) => r.data?.data.filter((event: IEvent) => event.is_active === 1))
 
   const { data, isLoading } = useSWR(`/events`, fetcher)
@@ -30,6 +33,15 @@ export default function Main() {
 
   const itemsPerPage = 6;
   const totalPages = events && events.length > 0 ? Math.ceil(events.length / itemsPerPage) : 1;
+
+  const [alertPopup, setAlertPopup] = React.useState(() => {
+    const saved = localStorage.getItem("alertPopup");
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem("alertPopup", JSON.stringify(alertPopup));
+  }, [alertPopup]);
 
   // Ensure the current page never goes out of bounds
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -52,7 +64,7 @@ export default function Main() {
       <div key={index} onClick={() => handleEventClick(event)} className="bg-gray-900 rounded-sm p-5 w-full aspect-video z-20 relative bg-cover bg-center flex justify-between flex-col select-none cursor-pointer group" style={{ backgroundImage: `url(${event?.event_banner})` }}>
         <div className="flex justify-between items-start z-10">
           <div>
-            <h1 className="text-white text-2xl font-supertall" style={{textShadow: "2px 2px 4px black"}}>{event?.name.length > 40 ? `${event.name.slice(0, 40)}...` : event.name}</h1>
+            <h1 className="text-white text-2xl font-supertall" style={{ textShadow: "2px 2px 4px black" }}>{event?.name.length > 40 ? `${event.name.slice(0, 40)}...` : event.name}</h1>
             <p className="text-white text-sm"></p>
           </div>
           <div>
@@ -73,11 +85,50 @@ export default function Main() {
     )
   }
 
+  const PopupAlert = () => {
+    return (
+      <Dialog open={alertPopup} onOpenChange={setAlertPopup}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Pengumuman Penting!</DialogTitle>
+            <DialogDescription>
+              Pemberitahuan penting untuk seluruh atlet yang ingin mendaftar melalui platform web.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex items-center space-x-2">
+            <div className="grid flex-1 gap-2">
+              <p className="text-sm">
+                Bagi peserta yang ingin berpartisipasi dalam lomba yang diselenggarakan, 
+                peserta <b>diwajibkan untuk membuat akun</b> dan <b>mendaftarkan akun tersebut sebagai atlet </b> 
+                dengan mengisi formulir yang disediakan.
+              </p>
+              <p className="text-sm">
+                <b>Email</b> yang diperlukan di Formulir Pendaftaran Lomba akan dapat ter-deteksi setelah akun menggunakan email tersebut terdaftar sebagai atlet.
+              </p>
+            </div>
+          </div>
+          <DialogFooter className="sm:justify-start">
+            <Button asChild>
+              <Link href={"/player-regist"}>Daftar Disini</Link>
+            </Button>
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Tutup
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    )
+  }
+
   return (
     <div className="bg-gray-900">
       <div className="lg:px-20 lg:pt-14 min-h-screen">
         {/* Header */}
         <NavigationBar />
+
+        <PopupAlert /> 
 
         {/* Hero */}
         <div className="flex lg:text-2xl text-base font-supertall uppercase text-white px-5 lg:mt-10 mt-5 mb-5">
@@ -191,7 +242,7 @@ export default function Main() {
           </div>
         )}
       </div>
-      
+
       {/* Footer */}
       <Footer />
     </div>

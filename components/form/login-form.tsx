@@ -52,6 +52,7 @@ export function LoginForm() {
     axios.post(process.env.NEXT_PUBLIC_API_URL + "/login", data)
       .then(function (response) {
         Cookies.set("authToken", response.data.meta.token, { expires: 7, secure: true });
+        localStorage.removeItem("alertPopup");
         setUserData(response?.data?.data)
         router.back();
       })

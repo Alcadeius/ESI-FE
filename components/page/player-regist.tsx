@@ -59,6 +59,7 @@ export default function AthleteSubmit() {
           confirmButtonText: "OK",
         }).then(() => {
           router.push("/main");
+          router.push("/main");
         });
       } else {
         Swal.fire({
@@ -73,13 +74,14 @@ export default function AthleteSubmit() {
         setErrorMessage(e.response.data.message);
       } else {
         setErrorMessage("Terjadi kesalahan, coba lagi nanti!");
+        setErrorMessage("Terjadi kesalahan, coba lagi nanti!");
       }
     } finally {
       setLoading(false);
       setIsSubmitting(false);
     }
   };
-
+  
   return (
     <div className="bg-gray-900 h-full w-full p-10">
       <NavigationBar />

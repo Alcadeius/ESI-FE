@@ -109,7 +109,7 @@ export default function Main() {
           </div>
           <DialogFooter className="sm:justify-start">
             <Button asChild>
-              <Link href={"/player-regist"}>Daftar Disini</Link>
+              <Link className='mt-2 md:mt-0' href={"/player-regist"}>Daftar Disini</Link>
             </Button>
             <DialogClose asChild>
               <Button type="button" variant="secondary">

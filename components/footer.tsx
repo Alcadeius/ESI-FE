@@ -49,6 +49,9 @@ export default function Footer() {
                   <li className="mb-4">
                     <a href="/event-submit" className="hover:underline">Pengajuan Organizer</a>
                   </li>
+                  <li className="mb-4">
+                    <a href="/player-regist" className="hover:underline">Pendaftaran Atlet</a>
+                  </li>
                   {/* <li>
                     <a href="#" className="hover:underline">Panduan</a>
                   </li> */}

@@ -63,10 +63,21 @@ export function RegisterForm({
           confirmButtonText: 'OK'
         })
       })
-      .catch(function () {
+      .catch(function (error) {
+        let errorMessage = 'Terjadi kesalahan pada server. Silahkan tunggu beberapa saat dan coba kembali.';
+
+        if (error.response && error.response.data) {
+          const responseData = error.response.data;
+          
+          if (responseData.errors && responseData.errors.email) {
+            errorMessage = "Email sudah dipakai pada akun lain"; 
+          } else if (responseData.message) {
+            errorMessage = responseData.message; 
+          }
+        }
         Swal.fire({
           title: 'Error!',
-          text: 'Terjadi kesalahan pada server. Silahkan tunggu beberapa saat dan coba kembali.',
+          text:  errorMessage,
           icon: 'error',
           confirmButtonText: 'OK'
         })

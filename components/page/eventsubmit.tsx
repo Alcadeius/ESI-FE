@@ -75,7 +75,11 @@ export default function EventSubmit() {
       if (file) {
         formDataToSend.append('application_file', file);
       }
-      const response = await axiosInstance.post("/application", formDataToSend);
+      const response = await axiosInstance.post("/application", formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
 
       if (response.status === 201) {
         Swal.fire({

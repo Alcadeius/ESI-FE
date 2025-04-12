@@ -15,15 +15,33 @@ export default function AuthenticatedLayout({ children }: { children: React.Reac
 
   React.useEffect(() => {
     async function checkAuth() {
-      const user = await axiosInstance.get("/auth/user").then((res) => { return res.data?.data })
-      setUserData(user)
-      setPageLoading(false)
+      const token = Cookies.get("authToken")
+
+      if (!token) {
+        router.push("/login")
+        return
+      }
+
+      try {
+        const user = await axiosInstance.get("/auth/user")
+        setUserData(user.data?.data)
+        setPageLoading(false)
+      } catch (error) {
+        console.error("Auth error:", error)
+        Cookies.remove("authToken") 
+        router.push("/login")
+      }
     }
-    if (Cookies.get("authToken")) {
-      checkAuth()
-    } else {
-      router.replace("/login")
-    }
+
+    checkAuth()
+
+    const interval = setInterval(() => {
+      if (!Cookies.get("authToken")) {
+        router.replace("/login")
+      }
+    }, 5000)
+
+    return () => clearInterval(interval)
   }, [setUserData, router])
 
   if(pageLoading) return <LoadingScreen />

@@ -51,10 +51,11 @@ export function LoginForm() {
     setIsSubmitting(true)
     axios.post(process.env.NEXT_PUBLIC_API_URL + "/login", data)
       .then(function (response) {
-        Cookies.set("authToken", response.data.meta.token, { expires: 7, secure: true });
+        // const oneMinute = new Date(new Date().getTime() + 60 * 1000);
+        Cookies.set("authToken", response.data.meta.token, { expires: 1, secure: true });
         localStorage.removeItem("alertPopup");
         setUserData(response?.data?.data)
-        router.back();
+        router.push("/main");
       })
       .catch(function (error) {
         setIsLoading(false)

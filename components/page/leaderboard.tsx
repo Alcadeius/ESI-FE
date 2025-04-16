@@ -222,43 +222,37 @@ if (selectedGameId == null && selectedGame?.game_id) {
           ))}
           </div>
           {/* Leaderboard Section */}
-          <div className="flex flex-col justify-center col-span-8">
-            <table className="uppercase text-lg">
-              <thead>
-                <tr>
-                  <td className="text-start">Rank</td>
-                  <td className="text-start">Nama Player</td>
-                  <td className="text-start">Points</td>
-                </tr>
-              </thead>
-              <tbody className="font-sans">
-              {players.length === 0 ? (
-    <p className="text-center text-white text-2xl">Belum ada Peringkat</p>
-  ) : (
-    <table className="uppercase text-lg">
-      <thead>
+          <div className="flex flex-col justify-center col-span-8 overflow-x-auto">
+  <table className="uppercase text-lg text-white w-full">
+    <thead>
+      <tr>
+        <th className="text-left py-2 px-4">Rank</th>
+        <th className="text-left py-2 px-4">Nama Player</th>
+        <th className="text-left py-2 px-4">Points</th>
+      </tr>
+    </thead>
+    <tbody className="font-sans">
+      {players.length === 0 ? (
         <tr>
-          <td className="text-start">Rank</td>
-          <td className="text-start">Nama Player</td>
-          <td className="text-start">Points</td>
+          <td colSpan={3} className="text-center text-white text-2xl py-4">
+            Belum ada Peringkat
+          </td>
         </tr>
-      </thead>
-      <tbody className="font-sans">
-        {players
+      ) : (
+        players
           .sort((a: any, b: any) => b.point - a.point)
           .map((player: any, index: number) => (
             <tr key={player.id_game}>
-              <td>#{index + 1}</td>
-              <td>{player.name}</td>
-              <td>{player.point} PTS</td>
+              <td className="py-2 px-4">#{index + 1}</td>
+              <td className="py-2 px-4">{player.name}</td>
+              <td className="py-2 px-4">{player.point} PTS</td>
             </tr>
-          ))}
-      </tbody>
-    </table>
-  )}
-              </tbody>
-            </table>
-          </div>
+          ))
+      )}
+    </tbody>
+  </table>
+</div>
+
         </div>
       </div>
       ) : (

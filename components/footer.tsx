@@ -27,6 +27,9 @@ export default function Footer() {
                   <li className="mb-4">
                     <a href="/order" className="hover:underline">Keranjang</a>
                   </li>
+                  <li className="mb-4">
+                    <a href="/membership" className="hover:underline">Membership</a>
+                  </li>
                   {/* <li>
                     <a href="#" className="hover:underline">Tentang Kami</a>
                   </li> */}
